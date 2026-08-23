@@ -111,10 +111,19 @@ export default function HomePage() {
             headline={home.demoTeaser.headline}
             standfirst={home.demoTeaser.body}
           />
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          <div className="mt-10 flex flex-wrap items-center gap-6">
             <Button asChild>
               <Link href={home.demoTeaser.cta.href}>{home.demoTeaser.cta.label}</Link>
             </Button>
+            {home.demoTeaser.links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-body font-medium underline decoration-rule underline-offset-4 hover:decoration-ink"
+              >
+                {link.label}
+              </Link>
+            ))}
             <IllustrativeBadge />
           </div>
         </div>

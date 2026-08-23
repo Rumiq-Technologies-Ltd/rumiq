@@ -371,6 +371,40 @@ frontend:
           agent: "main"
           comment: "The menu now opens with a plane rail (three coloured plane markers joined by hairlines) above three plane columns; pointing at a plane on the rail or at a column highlights that plane's modules and dims the others, and focusing a module link does the same for keyboard users. content/navigation.ts now derives platformMenu from content/platform.ts, so the mega-menu, the mobile overlay and /platform cannot disagree about what the platform contains. Modules with no deep page point at /platform, where their drawer lives."
 
+  - task: "Sector registry (Section 9.2)"
+    implemented: true
+    working: true
+    file: "lib/sectors/types.ts, lib/sectors/dental.ts, lib/sectors/transport.ts, lib/sectors/index.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "One config file per sector, collected by index.ts. SectorConfig carries vocabulary, hero (included now so Prompt 8 needs no type change), and the whole dashboard dataset: funnel stage labels, date ranges, dimensions, rows, capacity cells, actions and connector health. Adding a sector means adding a file and one array entry; the dashboard has no switch statements and no sector names in it. Both datasets synthetic. Transport kept generic: no dispatch system named, no brokers, no structural claims. Added vocabulary.costStageIndex so the cost label and the arithmetic cannot drift (dental divides by attended, transport by completed)."
+  - task: "Growth Intelligence dashboard demo (9.2)"
+    implemented: true
+    working: true
+    file: "app/demo/dashboard/dashboard.tsx, app/demo/dashboard/page.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Five panels, all computed from the rows surviving the filters. Verified through the preview URL that filters genuinely filter: 393 enquiries all-locations, 157 for Lakeview, 440 at 90 days, 193 with Hygiene added. Sector switch changes vocabulary and dimensions (Location/Service to Service area/Journey type, Chair to Vehicle utilisation) with zero component changes. Unmapped-source row present in both sectors at 14% of enquiries with an amber data-quality warning in the table and in the data-quality strip. Capacity matrix has two over-committed amber cells and three under-used pale-teal cells per sector. IllustrativeBadge and DataFreshness on the panel; filter state announced via aria-live. Keyboard: radio-group toggle plus native selects."
+  - task: "Call review demo (9.3)"
+    implemented: true
+    working: true
+    file: "app/demo/call-intelligence/calls.tsx, lib/demo/calls.ts, app/demo/call-intelligence/page.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Twelve synthetic calls verified in the DOM, eight-item reason taxonomy, two calls below the 70% threshold flagged for human review with amber confidence values. Verified the full correction flow: selecting c-1046, changing the label and pressing Correct this updated the list item, the detail heading and the classification row (now 100%, human), announced the change via aria-live, and appended an audit line reading tenant=demo actor=human call=c-1046 field=reason_not_booked from=Coverage not confirmed to=No suitable time offered decision=ALLOW source=manual_correction. Transcripts are generic summaries with no clinical content. Homepage demo teaser now links all three demo surfaces."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
@@ -409,3 +443,6 @@ agent_communication:
 
     - agent: "main"
       message: "Prompt 5 complete: /platform built to Section 8.2 with ten module cards, five deep links and five detail drawers, the canonical data model table with privacy-class colour coding, and the Platform mega-menu rebuilt as a mini three-plane diagram fed from the same module list. No backend change. Frontend testing agent NOT invoked - awaiting user permission. Still outstanding: narrow-viewport and reduced-motion passes."
+
+    - agent: "main"
+      message: "Prompt 6 complete: sector registry with dental and transport configs, the Section 9.2 dashboard (five panels, filters that really filter, unmapped-source row) and the Section 9.3 call review with working human correction and audit trail. No new API routes, so no backend testing. Frontend testing agent NOT invoked - awaiting user permission. Still outstanding: narrow-viewport and reduced-motion passes across all pages."

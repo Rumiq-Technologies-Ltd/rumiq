@@ -114,7 +114,12 @@ export const home = {
     eyebrow: 'THE PRODUCT SURFACE',
     headline: 'A control surface, not a slide.',
     body: 'The Growth Intelligence dashboard, the Policy Sandbox and the call review interface all run in the browser on synthetic data. Nothing is a screenshot.',
-    cta: { label: 'Explore the demo', href: '/demo/policy-sandbox' },
+    cta: { label: 'Open the Policy Sandbox', href: '/demo/policy-sandbox' },
+    /** All three demo surfaces, so none of them is buried. */
+    links: [
+      { label: 'Growth Intelligence dashboard', href: '/demo/dashboard' },
+      { label: 'Call review', href: '/demo/call-intelligence' },
+    ],
   },
 
   whoItsFor: {
