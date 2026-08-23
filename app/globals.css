@@ -1,0 +1,112 @@
+/* Rumiq design system — Specification Section 5.
+   Token declarations only. Component styling belongs in Tailwind classes. */
+
+@layer base {
+  :root {
+    /* ---------------------------------------------------------------
+       Section 5.2 colour tokens, verbatim.
+       Each token is declared twice: once as the canonical hex, once as an
+       HSL triplet consumed by tailwind.config.js so that opacity modifiers
+       work. The two must be edited together.
+       --------------------------------------------------------------- */
+
+    /* surfaces */
+    --paper: #f2f4f3; /* default page background, cool paper */
+    --paper-raised: #ffffff; /* cards, panels */
+    --ink: #0f1f1c; /* deep pine-black: body text, dark sections */
+    --paper-dark: #0a1614; /* inverted section background */
+
+    /* the two planes — these carry meaning, use them consistently */
+    --plane-public: #0e7c6b; /* teal: marketing, demand, public data */
+    --plane-protected: #1e3a6b; /* deep clinical blue: PHI, operational systems */
+
+    /* the boundary — sparingly, only for policy moments */
+    --boundary: #d98a16; /* amber: blocked, redacted, policy-enforced */
+
+    /* utility */
+    --rule: #cbd5d1; /* hairlines, dividers, table borders */
+    --muted: #5c6b67; /* secondary text, captions */
+    --signal-red: #a8342a; /* status signal only: missed calls, red data-quality chips */
+
+    /* HSL triplets consumed by Tailwind */
+    --paper-hsl: 150 8.3% 95.3%;
+    --paper-raised-hsl: 0 0% 100%;
+    --ink-hsl: 168.8 34.8% 9%;
+    --paper-dark-hsl: 170 37.5% 6.3%;
+    --plane-public-hsl: 170.7 79.7% 27.1%;
+    --plane-protected-hsl: 218.2 56.2% 26.9%;
+    --boundary-hsl: 35.7 81.6% 46.9%;
+    --rule-hsl: 156 10.6% 81.6%;
+    --muted-hsl: 164 7.5% 39%;
+    --signal-red-hsl: 4.3 60.5% 41.2%;
+
+    /* shadcn/ui contract, pointed at the Rumiq palette */
+    --background: var(--paper-hsl);
+    --foreground: var(--ink-hsl);
+    --card: var(--paper-raised-hsl);
+    --card-foreground: var(--ink-hsl);
+    --popover: var(--paper-raised-hsl);
+    --popover-foreground: var(--ink-hsl);
+    --primary: var(--ink-hsl);
+    --primary-foreground: var(--paper-hsl);
+    --secondary: var(--paper-raised-hsl);
+    --secondary-foreground: var(--ink-hsl);
+    --accent: var(--paper-raised-hsl);
+    --accent-foreground: var(--ink-hsl);
+    --muted-foreground: var(--muted-hsl);
+    --destructive: var(--signal-red-hsl);
+    --destructive-foreground: var(--paper-hsl);
+    --border: var(--rule-hsl);
+    --input: var(--rule-hsl);
+    --ring: var(--ink-hsl);
+    --radius: 4px;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans text-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+
+  /* Section 13 — visible focus rings, 2px, offset 2px, never removed. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ink ring-offset-2 ring-offset-paper;
+  }
+
+  ::selection {
+    @apply bg-ink text-paper;
+  }
+}
+
+@layer utilities {
+  /* Section 5.5 — when reduced motion is requested, everything resolves
+     instantly to its final state. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
