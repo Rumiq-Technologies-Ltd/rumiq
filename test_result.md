@@ -292,6 +292,51 @@ frontend:
           agent: "main"
           comment: "Real bug caught by screenshot: the header primary CTA rendered as an empty dark block. tailwind-merge could not tell text-caption (font size) from text-paper (colour), treated them as one group and dropped the colour, giving ink text on ink. Replaced lib/utils.js with a typed lib/utils.ts using extendTailwindMerge registering the Section 5.3 scale and the 5.2 palette for font-size, text-color, bg-color and rounded. Verified both classes now survive in the rendered markup."
 
+  - task: "Homepage per Section 8.1"
+    implemented: true
+    working: true
+    file: "app/page.tsx, content/home.ts, components/rumiq/hero.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "All eleven sections in the specified order: hero, benefit strip, problem (inverted), three-plane diagram, 17-stage FunnelTrack, demo teaser, who it is for (five cards, single-site first), regions, proof, FAQ, CTA band. Every string lives in content/home.ts; app/page.tsx is composition only. Each section declares data-plane so the boundary rule tracks it. Proof section renders three ProofSlot placeholders with a TODO; no logo, testimonial, statistic or customer count anywhere. FAQ section renders an awaiting-Document-05 placeholder rather than invented copy."
+  - task: "Hero component with headline/subhead props"
+    implemented: true
+    working: true
+    file: "components/rumiq/hero.tsx, content/home.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Takes headline, subhead, eyebrow, both CTAs and the assurance strip as props, defaulting to heroDefaults in content/home.ts. No homepage wording inside the component, so a solutions page can pass its sector config copy unchanged. Right column is children, so the hero knows nothing about the demo it hosts. Staggered 400ms rise-in at 60ms per line."
+  - task: "Hero LCP: server-rendered static first frame"
+    implemented: true
+    working: true
+    file: "app/demo/policy-sandbox/static-frame.tsx, components/demo/policy-sandbox-embed.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "PolicySandboxStaticFrame is a pure server component rendering preset one exactly as the interactive version would. The embed renders only that during SSR and swaps in the interactive sandbox via a client-only dynamic import after mount, so the sandbox JavaScript is off the hero critical path. Verified: the SSR HTML contains the payload table with its ALLOWED rows, and after hydration the six page-type radios are present and operable."
+  - task: "Interactive three-plane diagram"
+    implemented: true
+    working: true
+    file: "components/rumiq/plane-diagram.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Verified through the preview URL: hovering a module dims the other two planes (2 columns measured below opacity 1) and draws an amber hairline across all three planes. Focus does the same, so it works from the keyboard. Dimming is lg-only, so touch gets the static layout; prefers-reduced-motion skips the draw and shows the path at full extent. Two iterations were needed on the path position - at the module mid-line it read as a strikethrough through the labels of other columns, so it now runs in the 8px inter-row gap below the active module, which every column shares."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
@@ -324,3 +369,6 @@ agent_communication:
 
     - agent: "testing"
       message: "Policy Sandbox verification COMPLETE - ALL TESTS PASSED. Exhaustively tested GET /api/policy-sandbox/verify against Section 9.1 specification. Created comprehensive Python test script (/app/backend_test.py) that verifies all 72 combinations programmatically. Verified through both external URL (https://build-guide-127.preview.emergentagent.com/api/policy-sandbox/verify) and localhost (http://localhost:3000/api/policy-sandbox/verify). All 15 test sections passed: (1) Basic structure - 72 evaluations with correct field order, (2) Consent rule for non-essential destinations - all 36 evaluations with denied/not_set consent correctly BLOCK with sent=0, (3) Consent rule for internal - consent-independent across all 6 page types, (4) Marketing pages with consent - all allowed to all destinations, (5-7) Service page with consent - correct redaction/generalisation per destination, (8-9) Appointment form with consent - sensitive fields blocked to ads/ga4, all allowed to internal, (10) Protected pages with consent - fully blocked to ads/ga4, allowed to internal, (11) Integrity checks - all 72 evaluations have correct counts and decision logic, (12) Critical security assertion - NO email, phone, or form_free_text sent to google_ads, meta, or ga4 under ANY circumstances. The engine is fully specification-compliant. No issues found."
+
+    - agent: "main"
+      message: "Prompt 4 complete: homepage built to Section 8.1 with the Policy Sandbox in the hero right column, server-rendered static first frame for LCP, and the interactive three-plane diagram. No backend change, so no backend testing. Frontend testing agent NOT invoked - awaiting user permission. Outstanding across prompts 2-4: no narrow-viewport pass yet (screenshot harness pins the viewport at 1920), and no reduced-motion pass."

@@ -108,7 +108,7 @@ function ControlGroup<T extends string>({
   );
 }
 
-export function PolicySandbox() {
+export function PolicySandbox({ compact = false }: { compact?: boolean }) {
   const [pageType, setPageType] = React.useState<PageTypeId>(PRESETS[0]!.pageType);
   const [destination, setDestination] = React.useState<DestinationId>(PRESETS[0]!.destination);
   const [consent, setConsent] = React.useState<ConsentState>(PRESETS[0]!.consent);
@@ -127,9 +127,9 @@ export function PolicySandbox() {
     const index = counter.current;
     counter.current += 1;
     setLedger((previous) =>
-      [{ id: index, timestamp: ledgerTimestamp(index), evaluation }, ...previous].slice(0, 8),
+      [{ id: index, timestamp: ledgerTimestamp(index), evaluation }, ...previous].slice(0, compact ? 3 : 8),
     );
-  }, [evaluation]);
+  }, [evaluation, compact]);
 
   // Idle preset cycle. Any interaction stops it permanently: the effect depends
   // on `interacted`, and once true the interval is never created again.
@@ -157,7 +157,7 @@ export function PolicySandbox() {
   return (
     <div className="rounded-card border border-rule bg-paper-raised">
       {/* Controls */}
-      <div className="grid gap-10 border-b border-rule p-6 lg:grid-cols-3">
+      <div className={cn('grid gap-8 border-b border-rule p-6', compact ? '' : 'lg:grid-cols-3')}>
         <ControlGroup
           legend={copy.controls.pageType}
           name="page-type"
@@ -248,7 +248,13 @@ export function PolicySandbox() {
               <th scope="col" className="py-3 pr-4 font-mono text-mono-eyebrow font-medium uppercase text-muted">
                 {copy.columns.value}
               </th>
-              <th scope="col" className="py-3 font-mono text-mono-eyebrow font-medium uppercase text-muted">
+              <th
+                scope="col"
+                className={cn(
+                  'py-3 font-mono text-mono-eyebrow font-medium uppercase text-muted',
+                  compact && 'hidden',
+                )}
+              >
                 {copy.columns.why}
               </th>
             </tr>
@@ -278,13 +284,15 @@ export function PolicySandbox() {
                     </span>
                   )}
                 </td>
-                <td className="py-3 text-caption text-muted">{field.note ?? ''}</td>
+                <td className={cn('py-3 text-caption text-muted', compact && 'hidden')}>
+                  {field.note ?? ''}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <div className={cn('mt-6 flex flex-wrap items-center gap-x-6 gap-y-3', compact && 'hidden')}>
           {(['allowed', 'redacted', 'blocked', 'absent'] as FieldState[]).map((state) => (
             <p key={state} className="flex items-center gap-2 text-caption text-muted">
               <span className={cn('font-mono text-mono-eyebrow uppercase', stateStyle[state])}>
