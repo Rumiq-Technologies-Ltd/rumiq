@@ -1,15 +1,16 @@
-import type { Metadata } from 'next';
 import { CTABand, Hero, PolicyCallout, StepSection } from '@/components/rumiq';
 import { GrowthDashboard } from '@/app/demo/dashboard/dashboard';
 import { growthIntelligencePage as copy } from '@/content/platform-pages';
+import { pageMetadata } from '@/lib/seo';
 
 /* Section 8.5 */
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Growth Intelligence',
   description:
     'Spend, access, attendance, delivered care and patient feedback in one view, with the gaps shown rather than smoothed.',
-};
+  path: '/platform/growth-intelligence',
+});
 
 export default function GrowthIntelligencePage() {
   return (

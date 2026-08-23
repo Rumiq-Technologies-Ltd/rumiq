@@ -1,22 +1,32 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { fontVariables } from '@/lib/fonts';
-import { NOINDEX } from '@/lib/flags';
-import { BoundaryRule, ConsentBanner, Footer, Header } from '@/components/rumiq';
+import { BoundaryRule, ConsentBanner, Footer, Header, JsonLd } from '@/components/rumiq';
+import { BASE_URL, organisationJsonLd, robotsDirective, websiteJsonLd } from '@/lib/seo';
+import { tokenHex } from '@/lib/design-tokens';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE_URL),
   title: {
     default: 'Rumiq — healthcare growth operating system',
     template: '%s · Rumiq',
   },
   description:
     'Rumiq connects marketing, patient access and operational data into one governed view of growth, without handing patient data to ad platforms.',
-  // Section 13 — the site stays out of the index until launch.
-  robots: NOINDEX ? { index: false, follow: false, nocache: true } : { index: true, follow: true },
+  // Section 13 — every route gets a canonical. './' resolves against
+  // metadataBase and the current path, so routes that do not set their own
+  // still self-canonicalise rather than inheriting the homepage's.
+  alternates: { canonical: './' },
+  // Section 13 — the site stays out of the index until launch. Reinforced by
+  // app/robots.ts and by the X-Robots-Tag header set in proxy.ts.
+  robots: robotsDirective,
+  applicationName: 'Rumiq',
+  formatDetection: { telephone: false, address: false, email: false },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#F2F4F3',
+  // Section 12: no hex literal in a component. --paper, via the token table.
+  themeColor: tokenHex('paper'),
   width: 'device-width',
   initialScale: 1,
 };
@@ -36,6 +46,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer />
         <ConsentBanner />
+        {/* Section 13 — organisation and site nodes, once, site-wide. */}
+        <JsonLd data={[organisationJsonLd(), websiteJsonLd()]} />
       </body>
     </html>
   );

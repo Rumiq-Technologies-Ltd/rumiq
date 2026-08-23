@@ -1,6 +1,7 @@
-import type { Metadata } from 'next';
-import { CTABand, Hero, PlaneDiagram, SectionHeader } from '@/components/rumiq';
+import { CTABand, FaqSection, Hero, JsonLd, PlaneDiagram, SectionHeader } from '@/components/rumiq';
 import { platform } from '@/content/platform';
+import { faqFor } from '@/content/faq';
+import { breadcrumbJsonLd, faqJsonLd, pageMetadata, webPageJsonLd } from '@/lib/seo';
 import { cn } from '@/lib/utils';
 import { ModuleGrid } from './module-grid';
 
@@ -9,26 +10,41 @@ import { ModuleGrid } from './module-grid';
  * Ten modules in three stacked plane sections, then the canonical data model.
  */
 
-export const metadata: Metadata = {
+const seo = {
   title: 'Platform',
   description:
     'Ten modules across two planes and the boundary between them, over one canonical data model with a privacy class on every entity.',
+  path: '/platform',
 };
+
+export const metadata = pageMetadata(seo);
 
 /** Privacy-class colour coding for the data model table. Teal public, ink
  *  operational, amber policy, blue protected — consistent with Section 5.2. */
 const classStyle: Record<string, string> = {
   public: 'text-plane-public border-plane-public',
   operational: 'text-ink border-ink',
-  policy: 'text-boundary border-boundary',
+  policy: 'text-boundary-ink border-boundary-ink',
   protected: 'text-plane-protected border-plane-protected',
 };
 
 export default function PlatformPage() {
   const byPlane = (plane: string) => platform.modules.filter((module) => module.plane === plane);
+  const faqs = faqFor('platform');
 
   return (
     <main id="main">
+      <JsonLd
+        data={[
+          webPageJsonLd({ title: seo.title, description: seo.description, path: seo.path }),
+          breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Platform', path: seo.path },
+          ]),
+          faqJsonLd(faqs),
+        ]}
+      />
+
       <Hero
         eyebrow={platform.hero.eyebrow}
         headline={platform.hero.headline}
@@ -144,6 +160,8 @@ export default function PlatformPage() {
           <p className="mt-8 max-w-measure text-caption text-muted">{platform.dataModel.note}</p>
         </div>
       </section>
+
+      <FaqSection page="platform" />
 
       <CTABand />
     </main>

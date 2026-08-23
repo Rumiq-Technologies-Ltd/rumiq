@@ -12,10 +12,15 @@ export type AuditDecision = 'ALLOW' | 'REDACT' | 'BLOCK';
 
 export type AuditFields = Record<string, string | number>;
 
-const decisionStyle: Record<AuditDecision, string> = {
-  ALLOW: 'text-plane-public',
-  REDACT: 'text-boundary',
-  BLOCK: 'text-boundary',
+/**
+ * On a dark surface the amber token itself is legible (6.7:1). On a light one it
+ * is not (2.5:1), so the light form of the token is used there instead. Same
+ * policy meaning, two surfaces.
+ */
+const decisionStyle: Record<AuditDecision, { light: string; inverted: string }> = {
+  ALLOW: { light: 'text-plane-public', inverted: 'text-plane-public' },
+  REDACT: { light: 'text-boundary-ink', inverted: 'text-boundary' },
+  BLOCK: { light: 'text-boundary-ink', inverted: 'text-boundary' },
 };
 
 export function AuditLine({
@@ -51,7 +56,7 @@ export function AuditLine({
         </span>
       ))}
       <span>
-        decision=<span className={cn('font-medium', decisionStyle[decision])}>{decision}</span>
+        decision=<span className={cn('font-medium', decisionStyle[decision][inverted ? 'inverted' : 'light'])}>{decision}</span>
       </span>
       {trailing
         ? Object.entries(trailing).map(([key, value]) => (

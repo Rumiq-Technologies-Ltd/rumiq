@@ -76,6 +76,15 @@ export const colourTokens: ColourToken[] = [
       'Amber. Only where a policy decision is made or shown: blocked events, redacted fields, consent gates, the boundary rule. Never on a button or a heading.',
   },
   {
+    name: 'boundary-ink',
+    hex: '#9C6200',
+    swatchClass: 'bg-boundary-ink',
+    group: 'boundary',
+    semantic: true,
+    usage:
+      'The boundary token as text on a light surface. Amber at #D98A16 reaches only 2.5:1 against paper, so amber words on paper fail WCAG 2.2 AA. Fills, borders and dark surfaces keep --boundary.',
+  },
+  {
     name: 'rule',
     hex: '#CBD5D1',
     swatchClass: 'bg-rule',
@@ -244,3 +253,15 @@ export const contrastPairs: ContrastPair[] = [
     note: 'Decorative hairlines only. Below the 3:1 non-text threshold, so an input border or a focus boundary must not rely on it alone. Open question for Rumiq: a darker rule variant for form controls.',
   },
 ];
+
+/**
+ * The hex for one token, for the two places a Tailwind class cannot reach: the
+ * <meta name="theme-color"> value in app/layout.tsx, and the OG image renderer,
+ * which has no CSS. Section 12 forbids a hex literal in a component, so both go
+ * through here instead.
+ */
+export function tokenHex(name: string): string {
+  const found = colourTokens.find((entry) => entry.name === name);
+  if (!found) throw new Error(`Unknown colour token: ${name}`);
+  return found.hex;
+}

@@ -20,6 +20,7 @@ module.exports = {
     './components/**/*.{js,jsx,ts,tsx,mdx}',
     './lib/**/*.{js,jsx,ts,tsx,mdx}',
     './content/**/*.{md,mdx}',
+    './mdx-components.tsx',
   ],
   prefix: '',
   theme: {
@@ -44,8 +45,13 @@ module.exports = {
           protected: token('plane-protected'),
         },
 
-        /* The boundary. Policy moments only. */
-        boundary: token('boundary'),
+        /* The boundary. Policy moments only. `boundary-ink` is the same token
+           as text on a light surface, where the amber itself cannot reach
+           4.5:1 (see app/globals.css). */
+        boundary: {
+          DEFAULT: token('boundary'),
+          ink: token('boundary-ink'),
+        },
 
         /* Utility */
         rule: token('rule'),

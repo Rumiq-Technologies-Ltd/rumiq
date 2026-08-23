@@ -1,19 +1,20 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CTABand, IllustrativeBadge, SectionHeader } from '@/components/rumiq';
 import { policySandboxCopy as copy } from '@/content/demo/policy-sandbox';
 import { PolicySandbox } from './sandbox';
+import { pageMetadata } from '@/lib/seo';
 
 /*
  * Primary reader: compliance, IT and the data protection officer (Section 2).
  * The marketing director is the secondary reader.
  */
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Policy Sandbox',
   description:
     'Pick a page type and a destination and watch what Rumiq allows, redacts or blocks before anything leaves.',
-};
+  path: '/demo/policy-sandbox',
+});
 
 export default function PolicySandboxPage() {
   return (

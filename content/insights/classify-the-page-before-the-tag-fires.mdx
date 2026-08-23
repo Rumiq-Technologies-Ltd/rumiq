@@ -1,0 +1,45 @@
+Almost every healthcare web tracking problem gets described as a decision, and almost none of them were. Nobody sat in a meeting and resolved to send the URL of a symptom page to an advertising platform alongside a persistent identifier. Someone installed a tag manager, the tag fired on every page because that is what tags do, and the pages that should have been treated differently were never marked as different in the first place.
+
+That is the actual failure: not a wrong decision, an absent one. There was no point in the pipeline where anything asked what kind of page this is.
+
+## Review is the wrong control
+
+The usual response is a review. Somebody audits the tag configuration, produces a list of pages to exclude, and the exclusions hold until the next page is published.
+
+This fails for a structural reason. A review is a snapshot of a system that changes weekly. New service pages, new landing pages for a campaign, a new form, a translated variant, a page moved under a different path — each is a fresh opportunity for the default to reassert itself, and the default is to fire.
+
+Exclusion lists also fail in the direction that matters most. They are allowlists inverted: everything is permitted unless someone remembered to name it. In a domain where the cost of one wrong page is a disclosure, the polarity is backwards.
+
+## Classification at publication
+
+The control that holds is a classification step that runs when a page is created, not when it is audited.
+
+Every page gets a class as part of publishing it. The class is a property of the page, stored with the page, and it decides what may be emitted from it. A few classes cover most of a provider site:
+
+- **General**: brand, about, careers, contact. Unremarkable.
+- **Service**: describes a procedure or specialty. Sensitive by inference, because interest in the page implies something about the reader.
+- **Condition**: describes a condition or symptom. Sensitive, plainly.
+- **Access**: booking, forms, patient portal entry points. Sensitive, and usually carrying identifiers as well.
+- **Authenticated**: anything behind a login. No non-essential emission, ever.
+
+The classes are not the interesting part. The interesting part is where the decision sits: upstream of every destination, applied by default, and impossible to skip by forgetting.
+
+## Default deny, and a record
+
+Two properties make the difference between a policy and a preference.
+
+The first is that sensitive classes default to deny. An unclassified page is treated as sensitive until someone classifies it, which means the failure mode of forgetting is a missing data point rather than an unintended disclosure. Missing data is an annoyance you notice. A disclosure is one you find out about later, from somebody else.
+
+The second is that every decision is recorded: what was emitted, to which destination, and which version of which policy permitted it. Not because a log prevents anything — it does not — but because without it the question "what left last month" has no answer, and a risk you cannot state is a risk you cannot reduce.
+
+> A policy nobody can produce the output of is a preference.
+
+## What you give up
+
+Be honest about the trade. Classifying properly means some conversion signal that platforms would happily ingest does not reach them, and the optimisation those platforms perform gets slightly worse. Anyone claiming otherwise is selling something.
+
+What you get in exchange is a measurement layer where the useful signal — which demand became care — is computed on your own infrastructure and never needed to leave. That is a better trade than it sounds, because the number that actually moves budget was never available in the ad platform anyway.
+
+## Where to start
+
+List your page types. Not your pages, your types. There are usually fewer than eight. Decide the emission rule for each one, write it down, and then make classification a required field in whatever publishes a page. The engineering is small. The change in failure mode is not.

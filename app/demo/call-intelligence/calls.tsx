@@ -126,7 +126,7 @@ export function CallIntelligence() {
                     {call.line} · {call.callerType} · {duration(call.durationSeconds)}
                   </p>
                   {review ? (
-                    <p className="mt-2 font-mono text-mono-eyebrow uppercase text-boundary">
+                    <p className="mt-2 font-mono text-mono-eyebrow uppercase text-boundary-ink">
                       Flagged for human review
                     </p>
                   ) : null}
@@ -139,6 +139,13 @@ export function CallIntelligence() {
 
       {/* Detail */}
       <div className="space-y-4">
+        {/* Choosing a call in the list replaces this whole column, which is a
+            silent change for a screen reader unless it is announced. */}
+        <p aria-live="polite" className="sr-only">
+          {`Showing call ${selected.id}. ${reasonLabel(selected.reason)}. ${
+            needsReview(selected) ? 'Flagged for human review.' : 'Not flagged.'
+          }`}
+        </p>
         <div className="rounded-card border border-rule bg-paper-raised p-6">
           <div className="flex flex-wrap items-baseline justify-between gap-4">
             <div>
@@ -174,13 +181,13 @@ export function CallIntelligence() {
                       <span
                         className={cn(
                           'font-mono text-caption tabular-nums',
-                          low ? 'text-boundary' : 'text-plane-public',
+                          low ? 'text-boundary-ink' : 'text-plane-public',
                         )}
                       >
                         {Math.round(c.confidence * 100)}%
                       </span>
                       {low ? (
-                        <span className="ml-3 font-mono text-mono-eyebrow uppercase text-boundary">
+                        <span className="ml-3 font-mono text-mono-eyebrow uppercase text-boundary-ink">
                           Below {Math.round(REVIEW_THRESHOLD * 100)}% · review
                         </span>
                       ) : null}

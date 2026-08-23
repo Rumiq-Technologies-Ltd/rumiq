@@ -10,10 +10,16 @@ import { cn } from '@/lib/utils';
  */
 export type FreshnessState = 'ok' | 'stale' | 'failed';
 
-const dot: Record<FreshnessState, string> = {
-  ok: 'bg-plane-public',
-  stale: 'bg-boundary',
-  failed: 'bg-signal-red',
+/**
+ * WCAG 2.2 AA, 1.4.1: the dot is never the only carrier of the state — the label
+ * beside it is rendered on screen, not sr-only. 1.4.11: on a light surface the
+ * amber dot uses the light form of the boundary token, since amber itself only
+ * reaches 2.5:1 against paper.
+ */
+const dot: Record<FreshnessState, { light: string; inverted: string }> = {
+  ok: { light: 'bg-plane-public', inverted: 'bg-plane-public' },
+  stale: { light: 'bg-boundary-ink', inverted: 'bg-boundary' },
+  failed: { light: 'bg-signal-red', inverted: 'bg-signal-red' },
 };
 
 const stateLabel: Record<FreshnessState, string> = {
@@ -45,8 +51,12 @@ export function DataFreshness({
         className,
       )}
     >
-      <span aria-hidden className={cn('h-2 w-2 rounded-full', dot[state])} />
-      <span className="sr-only">{stateLabel[state]}.</span>
+      <span
+        aria-hidden
+        className={cn('h-2 w-2 rounded-full', dot[state][inverted ? 'inverted' : 'light'])}
+      />
+      <span className={inverted ? 'text-paper' : 'text-ink'}>{stateLabel[state]}</span>
+      <span aria-hidden>·</span>
       {source}
       <span aria-hidden>·</span>
       updated {updated}

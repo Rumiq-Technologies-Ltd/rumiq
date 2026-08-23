@@ -12,6 +12,10 @@ const previewHost = (() => {
 
 const nextConfig = {
   output: 'standalone',
+  // Section 8.13 \u2014 /insights article bodies are MDX modules imported through the
+  // registry in content/insights/index.ts. MDX pages are not used, so
+  // pageExtensions is left alone.
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -61,4 +65,24 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+/*
+ * Section 8.13 — MDX for /insights article bodies.
+ *
+ * The classic pragma is deliberate. With the automatic runtime the compiled MDX
+ * imports react/jsx-runtime, and inside the RSC layer that resolves to React's
+ * react-server variant while the module's own `react` does not, which fails at
+ * render with "cannot read properties of undefined (reading
+ * recentlyCreatedOwnerStacks)". Compiling to React.createElement removes the
+ * second resolution entirely.
+ */
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/,
+  options: {
+    jsxRuntime: 'classic',
+    pragma: 'React.createElement',
+    pragmaFrag: 'React.Fragment',
+    pragmaImportSource: 'react',
+  },
+});
+
+module.exports = withMDX(nextConfig);

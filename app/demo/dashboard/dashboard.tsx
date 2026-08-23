@@ -230,9 +230,9 @@ export function GrowthDashboard() {
                   className={cn('border-b border-rule', row.unmapped && 'bg-boundary/5')}
                 >
                   <th scope="row" className="py-3 pr-6 text-caption font-medium">
-                    <span className={row.unmapped ? 'text-boundary' : undefined}>{row.source}</span>
+                    <span className={row.unmapped ? 'text-boundary-ink' : undefined}>{row.source}</span>
                     {row.unmapped ? (
-                      <span className="mt-1 block font-mono text-mono-eyebrow uppercase text-boundary">
+                      <span className="mt-1 block font-mono text-mono-eyebrow uppercase text-boundary-ink">
                         Data quality warning · {unmappedShare}% of enquiries
                       </span>
                     ) : null}
@@ -297,7 +297,7 @@ export function GrowthDashboard() {
                         <span
                           className={cn(
                             'inline-flex min-w-[72px] items-center justify-between gap-2 rounded-sm border px-2 py-1 font-mono text-caption tabular-nums',
-                            over && 'border-boundary bg-boundary/10 text-boundary',
+                            over && 'border-boundary-ink bg-boundary/10 text-boundary-ink',
                             under && 'border-plane-public/40 bg-plane-public/5 text-plane-public',
                             !over && !under && 'border-rule text-ink',
                           )}
@@ -313,7 +313,7 @@ export function GrowthDashboard() {
           </table>
         </div>
         <p className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-mono text-mono-eyebrow uppercase text-muted">
-          <span className="text-boundary">Over 100% — over-committed</span>
+          <span className="text-boundary-ink">Over 100% — over-committed</span>
           <span className="text-plane-public">Under 60% — under-used</span>
         </p>
       </section>
@@ -358,7 +358,7 @@ export function GrowthDashboard() {
             </li>
           ))}
         </ul>
-        <p className="mt-6 max-w-measure text-caption text-boundary">
+        <p className="mt-6 max-w-measure text-caption text-boundary-ink">
           {unmappedShare}% of enquiries in this view have no attributable source. Figures below the
           funnel are complete; attribution above it is not.
         </p>

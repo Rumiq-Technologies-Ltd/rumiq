@@ -48,8 +48,8 @@ type LedgerEntry = {
 
 const stateStyle: Record<FieldState, string> = {
   allowed: 'text-plane-public',
-  redacted: 'text-boundary',
-  blocked: 'text-boundary',
+  redacted: 'text-boundary-ink',
+  blocked: 'text-boundary-ink',
   absent: 'text-muted',
 };
 
@@ -188,7 +188,7 @@ export function PolicySandbox({ compact = false }: { compact?: boolean }) {
           <span
             className={cn(
               'font-medium',
-              evaluation.decision === 'ALLOW' ? 'text-plane-public' : 'text-boundary',
+              evaluation.decision === 'ALLOW' ? 'text-plane-public' : 'text-boundary-ink',
             )}
           >
             {evaluation.decision}
@@ -273,13 +273,13 @@ export function PolicySandbox({ compact = false }: { compact?: boolean }) {
                 </td>
                 <td className="py-3 pr-4 font-mono text-caption">
                   {field.state === 'blocked' ? (
-                    <span className="text-boundary line-through decoration-boundary">
+                    <span className="text-boundary-ink line-through decoration-boundary-ink">
                       {field.original}
                     </span>
                   ) : field.state === 'absent' ? (
                     <span className="text-muted">—</span>
                   ) : (
-                    <span className={field.state === 'redacted' ? 'text-boundary' : undefined}>
+                    <span className={field.state === 'redacted' ? 'text-boundary-ink' : undefined}>
                       {field.value}
                     </span>
                   )}

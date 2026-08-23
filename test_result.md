@@ -29,6 +29,116 @@
 ##         -comment: "Detailed comment about status"
 ##
 ## frontend:
+  - task: "Section 8.11 /approach with the phase table rendered directly"
+    implemented: true
+    working: true
+    file: "app/approach/page.tsx, content/approach.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "200. Hero, four operating principles, then the six-phase table as a real <table> (sr-only caption, th scope=col, th scope=row per phase, plane-coloured left border per row) inside a focusable scroll region so it can be panned from the keyboard on a narrow viewport. Then what-this-is-not as an inverted points list, an amber stop-point policy callout, the FAQ slot and the CTA band. Verified by screenshot at 1920x1000. Copy is authored to the Section 8.11 structure and needs sign-off against the literal spec text."
+  - task: "/demo with all three demos stacked under an illustrative-data banner"
+    implemented: true
+    working: true
+    file: "app/demo/page.tsx, content/demo.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "200. Banner is the first thing after the H1, on-screen text, above every figure. Browser check: 13 radios (sandbox), 4 selects (dashboard + call correction), 4 illustrative-data labels, exactly one H1, all three anchor targets present (#policy-sandbox, #dashboard, #call-review) with scroll-mt so the sticky header does not cover the heading. The three standalone demo pages still work."
+  - task: "Section 8.14 /about with both pilots and what each proves"
+    implemented: true
+    working: true
+    file: "app/about/page.tsx, content/about.ts"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "200. Two pilot cards (Florida dental group, NEMT operator) each with runs-on, the problem, a what-it-proves list and an explicit 'not named publicly until written client approval' status. Entity facts list states Certifications: None claimed. No headcount, funding, award or customer count anywhere. Careers section says there are no open roles rather than inventing any."
+  - task: "Section 8.15 /contact - working session, never 'book a demo'"
+    implemented: true
+    working: true
+    file: "app/contact/page.tsx, content/contact.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "200. Form is high on the page with the agenda beside it. No shared CTA band on this page (Section 7.3). Browser-verified: submitting empty produces a role=alert error summary listing every field with its own message and 7 controls marked aria-invalid; a valid submission returns 200 and the success panel replaces the form in place with no redirect. Grep confirms the phrase 'book a demo' appears nowhere except in comments explaining that it must not."
+  - task: "Section 8.13 /insights MDX index plus slug route"
+    implemented: true
+    working: true
+    file: "app/insights/page.tsx, app/insights/[slug]/page.tsx, content/insights/*.mdx, mdx-components.tsx, next.config.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Index 200 with three pieces, each with plane tag, topic, date, reading time and intended reader; all three slugs 200; an unknown slug 404s. Article bodies are MDX compiled by @next/mdx and styled once in /mdx-components.tsx. One real trap: with the automatic JSX runtime the compiled MDX imports react/jsx-runtime, which resolves to React's react-server variant inside the RSC layer while the module's own react does not, and every article threw 'cannot read properties of undefined (reading recentlyCreatedOwnerStacks)'. Fixed by compiling MDX with the classic pragma (React.createElement) in next.config.js; @mdx-js prints a deprecation notice for that option, which is noise, not a fault. Article copy is authored and needs editorial sign-off."
+  - task: "/privacy /cookies /terms legal scaffolds"
+    implemented: true
+    working: true
+    file: "app/privacy/page.tsx, app/cookies/page.tsx, app/terms/page.tsx, content/legal.ts, components/rumiq/legal-scaffold.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "All three 200, so the footer legal links no longer 404. One shared component, so the AWAITING LEGAL REVIEW banner cannot be present on two pages and missing from the third. Each page states only facts that are true of this build and checkable in the source, then lists the sections counsel still has to write, numbered, so the gaps are visible rather than implied."
+  - task: "Section 10 /scorecard page (was missing from the previous prompt)"
+    implemented: true
+    working: true
+    file: "app/scorecard/page.tsx, app/scorecard/scorecard.tsx, content/scorecard.ts, lib/scorecard.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Browser-verified end to end: start, answer all ten as radio groups (arrow keys work natively), progress bar with role=progressbar and a live announcement per question, gate appears only AFTER question ten, 'Show results without emailing them' walks around the gate, results show total out of 30, the band and the five weakest areas worst-first with observation, likely cost and first fix. Progress is held in React state plus one localStorage key (rumiq.scorecard.v1) and resumes on return. The email is POSTed in the body and never enters the URL."
+  - task: "Section 13 SEO: titles, descriptions, canonicals, OG images, JSON-LD, sitemap, robots, noindex"
+    implemented: true
+    working: true
+    file: "lib/seo.ts, app/robots.ts, app/sitemap.ts, proxy.ts, app/opengraph-image.tsx, lib/og.tsx, components/rumiq/json-ld.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Audited all 31 routes programmatically: every one has a unique title, a unique description, a self-referencing canonical and an og:image; no duplicates. JSON-LD: Organization and WebSite once site-wide, WebPage plus BreadcrumbList per page, Article on insight pages, CollectionPage on the index, and FAQPage only when Document 05 entries exist (so no empty node is emitted today). OG cards are generated in-process by next/og with no remote font or image; satori cannot read woff2 and every vendored face is woff2, so the cards use the renderer's bundled face and are not yet brand-exact. noindex is enforced three ways while NOINDEX is true: meta robots on every route, robots.txt disallowing everything, and an X-Robots-Tag header from proxy.ts (renamed from middleware.ts, which Next 16 deprecates). One gotcha fixed: Next only merges a file-based OG image into pages that do not declare their own openGraph object, and every page here does, so lib/seo.ts names the image route explicitly."
+  - task: "WCAG 2.2 AA pass: contrast, keyboard, announcements"
+    implemented: true
+    working: true
+    file: "tests/contrast.mjs, app/globals.css, tailwind.config.js, components/rumiq/form.tsx, components/rumiq/data-freshness.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "tests/contrast.mjs measures every token pair the site actually renders, reading hexes from lib/design-tokens.ts so it cannot drift. It now passes. Three real failures were found and fixed: (1) amber text on paper is 2.5:1, and amber text was used on light surfaces in all three demos, /platform and the solutions template - added --boundary-ink (#9C6200, 4.6:1 on paper) as the light-surface form of the boundary token and switched every light-surface use to it, keeping --boundary for fills, rules and dark surfaces; (2) form control borders used --rule at 1.4:1, below the 3:1 that 1.4.11 requires for an input's own boundary - now ink at 60% (4.5:1); (3) DataFreshness conveyed state by dot colour alone with an sr-only label, which fails 1.4.1 for sighted users - the state label is now rendered on screen. Called-out pairs: --muted on --paper is 5.06:1 PASS, amber on --paper-dark is 6.68:1 PASS. Keyboard: sandbox is radio fieldsets with a peer-focus-visible ring, dashboard and call correction are native selects inside labels, the call list is real buttons with aria-current, sector toggle uses a roving tabindex. Each demo has an aria-live region; the one that was missing (selecting a call silently replaced the whole detail column) now announces the selected call. Not yet done: no narrow-viewport (320-360px) pass and no reduced-motion pass - the screenshot harness pins the viewport wide."
+  - task: "FAQ accordions on Home, /platform, /trust, /approach, /contact and all five solutions pages"
+    implemented: true
+    working: true
+    file: "content/faq.ts, components/rumiq/faq-section.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "One <FaqSection page=...> on all ten pages, reading content/faq.ts. faqEntries is deliberately EMPTY and the placement map has an empty array per page, so every accordion renders nothing but a build note until Document 05 arrives. No placeholder FAQ copy exists anywhere. faqFor() drops any entry tagged pricing while SHOW_PRICING is false, and faqJsonLd() returns null on an empty list so no empty FAQPage node is emitted."
 ##   - task: "Task name"
 ##     implemented: true
 ##     working: true  # or false or "NA"
@@ -122,6 +232,34 @@ backend:
         - working: true
           agent: "testing"
           comment: "EXHAUSTIVE VERIFICATION COMPLETE - ALL TESTS PASSED (15/15). Verified GET /api/policy-sandbox/verify against Section 9.1 specification through both https://build-guide-127.preview.emergentagent.com/api/policy-sandbox/verify and http://localhost:3000/api/policy-sandbox/verify. Response structure correct: 72 evaluations (6 page types x 4 destinations x 3 consent states), correct field order (event_name, timestamp, page_url, page_class, utm_source, utm_campaign, gclid, service_interest, form_free_text, email, phone). A) CONSENT RULE VERIFIED: For consent denied/not_set with google_ads, meta, ga4: ALL 36 evaluations correctly BLOCK with sent=0, all present fields blocked, correct reasons (consent_denied/consent_not_recorded). This holds for ALL page types including homepage and blog_article. For internal destination: consent state does NOT affect outcome - decision, sent, redacted, blocked, and per-field states are byte-identical across granted/denied/not_set for all 6 page types. B) WITH CONSENT GRANTED VERIFIED: (1) homepage & blog_article to ads/ga4/internal: decision=ALLOW, 7 fields sent (event_name, timestamp, page_url, page_class, utm_source, utm_campaign, gclid), 0 redacted, 0 blocked, service_interest/form_free_text/email/phone absent. (2) service_page: to ads - service_interest and page_url redacted (not original 'dental_implants'), decision=REDACT; to ga4 - service_interest generalised, decision=REDACT; to internal - decision=ALLOW, no redactions. (3) appointment_form: to ads/ga4 - service_interest, form_free_text, email, phone ALL blocked, campaign fields pass for conversion attribution; to internal - all 11 fields allowed (sent=11, decision=ALLOW). (4) portal_login & (5) medical_intake: to ads/ga4 - fully blocked (sent=0, decision=BLOCK, reason=default_deny_class); to internal - allowed. C) INTEGRITY CHECKS VERIFIED: total always 11, sent+redacted counting coherent (allowed+redacted=sent, allowed+redacted+blocked+absent=11), decision=BLOCK iff sent=0, decision=REDACT only when redacted>0 and sent>0, no blocked field has non-null value. CRITICAL SECURITY ASSERTION VERIFIED: NO evaluation sends email, phone, or form_free_text to google_ads, meta, or ga4 under ANY page type or consent state (checked all 72 evaluations). Engine implementation is specification-compliant."
+  - task: "Section 11 form submission endpoint (POST /api/forms/[form])"
+    implemented: true
+    working: true
+    file: "app/api/forms/[form]/route.ts, lib/forms/schemas.ts, content/forms.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "POST only. Handles two of the three Section 11 forms: form ids working-session and insights (the third, scorecard, has its own route because it also computes a result). Order of checks is deliberate: (1) honeypot field organisation_website must be empty, (2) timing - Date.now() minus startedAt must be at least 2000ms and at most 12h, (3) Zod validation using the same schema object the browser used. Honeypot failure returns 400 with a deliberately generic message; timing failures return 422; validation failures return 400 with a per-field errors map. Unknown form id returns 404. Delivery goes to FORM_WEBHOOK_URL if set; it is NOT set in this environment, so a valid submission must return {ok:true, delivered:false} and persist nothing. No CAPTCHA anywhere by design. Needs testing."
+        - working: true
+          agent: "testing"
+          comment: "COMPREHENSIVE TESTING COMPLETE - ALL 16 TESTS PASSED. Tested POST /api/forms/[form] for both working-session and insights forms through http://localhost:3000 and https://build-guide-127.preview.emergentagent.com. VERIFIED: (1) Unknown form ID returns 404 with ok:false. (2) Malformed JSON returns 400 (not 500). (3) Honeypot: non-empty organisation_website returns 400 with generic message that does NOT leak the honeypot reason. (4) Timing gates work correctly: missing startedAt returns 422, < 2000ms returns 422 with 'too fast' message, > 12 hours returns 422 with expiry message. (5) Zod validation returns 400 with field-level errors map for: missing email (errors.email), malformed email 'notanemail' (errors.email), message < 20 chars (errors.message), consent:false (errors.consent), empty body (returns 422 as timing check runs first). (6) Valid submissions for both working-session and insights return 200 with {ok:true, delivered:false} as FORM_WEBHOOK_URL is unset. (7) GET/PUT/DELETE methods correctly return 405 (method not allowed). (8) External URL happy path verified: working-session form with realistic data returns 200 correctly. Order of checks (honeypot → timing → validation) is specification-compliant. No data persistence occurs when webhook is unset. All requirements met."
+  - task: "Section 10 scorecard endpoint (POST /api/scorecard)"
+    implemented: true
+    working: true
+    file: "app/api/scorecard/route.ts, lib/scorecard.ts, content/scorecard.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "POST only so the email address can never appear in a URL, query string or referrer. Body: {email, consent:true, answers:[10 ints 0-3], startedAt, organisation_website}. Same honeypot and timing gates as the forms route, then Zod, then the score is computed SERVER-SIDE from the answers (never trusted from the client) and returned as {ok:true, delivered:false, result:{total, max:30, band:{id,label,body}, weakest:[5 areas worst-first]}}. Scoring rules: total is the sum of the ten answers (0-30); bands are severe 0-9, partial 10-17, solid 18-24, strong 25-30; weakest is the five lowest-scoring questions, ties broken by question order, each with id, area and score. GET must not be allowed. Needs testing."
+        - working: true
+          agent: "testing"
+          comment: "COMPREHENSIVE TESTING COMPLETE - ALL 24 TESTS PASSED. Tested POST /api/scorecard through http://localhost:3000 and https://build-guide-127.preview.emergentagent.com. VERIFIED: (1) Honeypot and timing gates work identically to forms route: non-empty organisation_website returns 400, < 2000ms returns 422. (2) Zod validation returns 400 with field-level errors for: answers array length 9 or 11 (errors.answers), answer values 4 or -1 out of range (errors.answers), missing answers (errors.answers), consent:false (errors.consent), malformed email (errors.email). (3) GET method returns 405 (not allowed), including GET with email in query string - email can never appear in URL. (4) SERVER-SIDE SCORING VERIFIED: All 8 band boundary test cases correct: total=0 → severe, total=9 → severe (boundary), total=10 → partial (boundary), total=17 → partial (boundary), total=18 → solid (boundary), total=24 → solid (boundary), total=25 → strong (boundary), total=30 → strong. max is always 30. (5) Weakest 5 ordering verified with crafted test case [3,3,3,3,3,0,1,2,0,1]: returns [consent(0), discovery(0), pages(1), voice(1), ledger(2)] - ties correctly broken by question order (index). (6) Question IDs match content/scorecard.ts specification: calls, reason, attendance, capacity, attribution, consent, pages, ledger, discovery, voice. (7) Response structure correct: {ok:true, delivered:false, result:{total, max, band:{id,label,body}, weakest:[5 items with id/area/score]}}. (8) CRITICAL SECURITY ASSERTION: email address is NEVER reflected in response body - verified across all test cases. (9) External URL happy path verified: scorecard with total=15 correctly returns band 'partial'. All scoring is server-side, client cannot manipulate results. All requirements met."
   - task: "No backend work in Prompt 1"
     implemented: false
     working: "NA"
@@ -448,7 +586,9 @@ metadata:
   run_ui: true
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Section 11 form submission endpoint (POST /api/forms/[form])"
+    - "Section 10 scorecard endpoint (POST /api/scorecard)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -491,3 +631,12 @@ agent_communication:
 
     - agent: "main"
       message: "Prompt 9 complete: Trust Center with all eight sections and the region pages. No backend change. Frontend testing agent NOT invoked - awaiting user permission. Outstanding: narrow-viewport and reduced-motion passes."
+
+    - agent: "main"
+      message: "Prompt 12 (finish the site) complete in code: /approach with the phase table rendered directly, /demo with all three demos stacked under an illustrative-data banner, /about with both pilots and what each proves, /contact as a working-session request (never 'book a demo'), /insights as an MDX index plus a slug route, and /privacy /cookies /terms as scaffolds behind an AWAITING LEGAL REVIEW banner. Also the missing /scorecard page from the previous prompt. Three Section 11 forms now share one client runner and one Zod schema module, with a honeypot, a timing check and no CAPTCHA. SEO per Section 13: unique titles and descriptions, canonicals, OG images generated in-process, JSON-LD, sitemap, robots.txt, and noindex enforced three ways while NOINDEX is true. Accessibility: tests/contrast.mjs audits every token pair actually rendered and now passes; one new token (--boundary-ink) was needed because amber text on paper is 2.5:1. PLEASE TEST the two backend routes only: POST /api/forms/[form] and POST /api/scorecard. Both are in current_focus with the exact expected behaviour, including the honeypot, the timing gate, the field-level error maps and the server-side scoring. FORM_WEBHOOK_URL is intentionally unset, so a valid submission must answer delivered:false. Do not test the frontend - the user has not authorised a frontend run."
+
+    - agent: "testing"
+      message: "BACKEND TESTING COMPLETE - ALL 40 TESTS PASSED (100% success rate). Created comprehensive test script /app/test_forms_scorecard.py covering both routes. ROUTE 1 (POST /api/forms/[form]): 16 tests passed - unknown form ID returns 404, malformed JSON returns 400, honeypot detection works without leaking reason, timing gates (too fast/expired/missing) return 422, Zod validation returns 400 with field-level errors map for all invalid cases (missing email, malformed email, short message, consent false, empty body), valid submissions for both working-session and insights return 200 with {ok:true, delivered:false}, GET/PUT/DELETE methods correctly rejected with 405, external URL happy path verified. ROUTE 2 (POST /api/scorecard): 24 tests passed - honeypot and timing gates work correctly, validation returns 400 with errors for wrong array lengths (9/11), out-of-range values (4/-1), missing answers, consent false, bad email, GET method rejected including with query string (email never in URL), all 8 band boundary cases correct (0→severe, 9→severe, 10→partial, 17→partial, 18→solid, 24→solid, 25→strong, 30→strong), weakest 5 ordering correct with tie-breaking by question order verified with crafted test case, question IDs match specification (calls, reason, attendance, capacity, attribution, consent, pages, ledger, discovery, voice), email never reflected in response, external URL happy path verified. REGRESSION CHECK: GET /api/policy-sandbox/verify still returns 200 with 72 evaluations. Both routes are specification-compliant with no issues found."
+
+    - agent: "main"
+      message: "Backend testing returned 40/40 passing on both new routes, plus the policy-sandbox regression. Frontend NOT run through the testing agent - the user has not authorised it. I did verify the three highest-risk flows myself in a real browser: the scorecard end to end (ten questions, gate after the last one, skip-the-gate path, results), the working-session form (empty submit produces an error summary and 7 aria-invalid controls; valid submit replaces the form in place), and /demo (all three demos mount together, banner first, three anchors). Remaining gaps, both pre-existing: no 320-360px narrow-viewport pass and no prefers-reduced-motion pass."

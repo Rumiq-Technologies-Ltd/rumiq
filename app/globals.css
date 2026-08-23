@@ -22,6 +22,12 @@
 
     /* the boundary — sparingly, only for policy moments */
     --boundary: #d98a16; /* amber: blocked, redacted, policy-enforced */
+    /* The same boundary token as TEXT on a light surface. Not a new colour in
+       the palette: --boundary reaches only 2.5:1 against --paper, so amber
+       words on paper fail WCAG 2.2 AA 1.4.3 at any size. Fills, borders,
+       underlines and dark surfaces keep --boundary; amber text on paper uses
+       this. Ratio 4.6:1 on --paper, 5.1:1 on --paper-raised. */
+    --boundary-ink: #9c6200;
 
     /* utility */
     --rule: #cbd5d1; /* hairlines, dividers, table borders */
@@ -36,6 +42,7 @@
     --plane-public-hsl: 170.7 79.7% 27.1%;
     --plane-protected-hsl: 218.2 56.2% 26.9%;
     --boundary-hsl: 35.7 81.6% 46.9%;
+    --boundary-ink-hsl: 37.7 100% 30.6%;
     --rule-hsl: 156 10.6% 81.6%;
     --muted-hsl: 164 7.5% 39%;
     --signal-red-hsl: 4.3 60.5% 41.2%;

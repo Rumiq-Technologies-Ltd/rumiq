@@ -5,9 +5,11 @@ import {
   Card,
   CTABand,
   Eyebrow,
+  FaqSection,
   FunnelTrack,
   Hero,
   IllustrativeBadge,
+  JsonLd,
   PlaneDiagram,
   PlaneTag,
   ProofSlot,
@@ -15,7 +17,9 @@ import {
 } from '@/components/rumiq';
 import { PolicySandboxEmbed } from '@/components/demo/policy-sandbox-embed';
 import { home } from '@/content/home';
+import { faqFor } from '@/content/faq';
 import { clinicalFunnel } from '@/content/funnels';
+import { breadcrumbJsonLd, faqJsonLd, pageMetadata, webPageJsonLd } from '@/lib/seo';
 
 /*
  * Homepage — Specification Section 8.1.
@@ -23,14 +27,30 @@ import { clinicalFunnel } from '@/content/funnels';
  * content/home.ts; this file is composition only.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  title: 'Healthcare growth, measured through to delivered care',
   description:
     'Rumiq connects marketing, patient access and operational data into one governed view of growth, from first search to delivered care.',
-};
+  path: '/',
+});
 
 export default function HomePage() {
+  const faqs = faqFor('home');
+
   return (
     <main id="main">
+      <JsonLd
+        data={[
+          webPageJsonLd({
+            title: 'Rumiq — healthcare growth operating system',
+            description:
+              'Rumiq connects marketing, patient access and operational data into one governed view of growth, from first search to delivered care.',
+            path: '/',
+          }),
+          breadcrumbJsonLd([{ name: 'Home', path: '/' }]),
+          faqJsonLd(faqs),
+        ]}
+      />
       {/* 1 — Hero. Neutral defaults; solutions pages override the props. */}
       <Hero primary={home.hero.primary} secondary={home.hero.secondary} assurances={home.hero.assurances}>
         <PolicySandboxEmbed />
@@ -203,18 +223,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 10 — FAQ. Section 15: copy comes from Document 05 only. */}
-      <section data-plane="boundary" className="border-b border-rule">
-        <div className="mx-auto max-w-content px-6 py-section-mobile lg:py-section lg:pl-gutter">
-          <SectionHeader eyebrow={home.faq.eyebrow} headline={home.faq.headline} />
-          {/* TODO: place the Document 05 entries here, verbatim, per its
-              placement map. No FAQ copy is authored in this codebase. */}
-          <div className="mt-12 rounded-card border border-dashed border-rule p-6">
-            <Eyebrow>Awaiting Document 05</Eyebrow>
-            <p className="mt-4 max-w-measure text-caption text-muted">{home.faq.pending}</p>
-          </div>
-        </div>
-      </section>
+      {/* 10 — FAQ. Section 15: copy comes from Document 05 only, placed by its
+          placement map. <FaqSection> renders nothing until it is supplied. */}
+      <FaqSection page="home" eyebrow={home.faq.eyebrow} headline={home.faq.headline} />
 
       {/* 11 — CTA band */}
       <CTABand />

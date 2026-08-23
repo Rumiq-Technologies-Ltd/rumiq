@@ -170,7 +170,7 @@ export default function StyleguidePage() {
                           <p className="mt-1 font-mono text-caption uppercase text-muted">{t.hex}</p>
                           <p className="mt-2 text-caption text-muted">{t.usage}</p>
                           {t.semantic ? (
-                            <p className="mt-2 font-mono text-mono-eyebrow uppercase text-boundary">
+                            <p className="mt-2 font-mono text-mono-eyebrow uppercase text-boundary-ink">
                               Semantic · never decorative
                             </p>
                           ) : null}

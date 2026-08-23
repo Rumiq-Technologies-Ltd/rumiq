@@ -1,13 +1,14 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CTABand, Card, SectionHeader } from '@/components/rumiq';
 import { sectors } from '@/lib/sectors';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Solutions',
   description:
     'One governed layer across very different operations, from an independent single-site provider to a health system.',
-};
+  path: '/solutions',
+});
 
 export default function SolutionsIndexPage() {
   return (

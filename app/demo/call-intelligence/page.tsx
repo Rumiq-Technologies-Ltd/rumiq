@@ -1,12 +1,13 @@
-import type { Metadata } from 'next';
 import { CTABand, SectionHeader } from '@/components/rumiq';
 import { CallIntelligence } from './calls';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Call review',
   description:
     'Twelve synthetic calls, classified with confidence scores, with every machine label open to human correction.',
-};
+  path: '/demo/call-intelligence',
+});
 
 export default function CallIntelligenceDemoPage() {
   return (

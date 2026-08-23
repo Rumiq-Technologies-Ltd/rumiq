@@ -1,16 +1,17 @@
-import type { Metadata } from 'next';
 import { CTABand, DataFreshness, Hero, PolicyCallout, StepSection } from '@/components/rumiq';
 import { connectorsPage as copy } from '@/content/platform-pages';
 import { dashboardSectors } from '@/lib/sectors';
+import { pageMetadata } from '@/lib/seo';
 
 /* Section 8.6 — the two-pilot argument. Curve Dental is named; nothing on the
  * transport side is: no dispatch platform, no broker, no integration claim. */
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Knowledge Graph and Connectors',
   description:
     'Read the systems you already run, map each source into one canonical model, and state what every source cannot tell you.',
-};
+  path: '/platform/connectors',
+});
 
 export default function ConnectorsPage() {
   return (

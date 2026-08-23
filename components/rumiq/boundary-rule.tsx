@@ -88,7 +88,7 @@ export function BoundaryRule() {
           'absolute left-3 hidden -translate-y-1/2 whitespace-nowrap font-mono text-mono-eyebrow uppercase transition-[color,top] duration-600 ease-instrument motion-reduce:transition-none lg:block',
           '[writing-mode:vertical-rl]',
           plane === 'public' && 'text-plane-public',
-          plane === 'boundary' && 'text-boundary',
+          plane === 'boundary' && 'text-boundary-ink',
           plane === 'protected' && 'text-plane-protected',
         )}
       >

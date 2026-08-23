@@ -1,12 +1,13 @@
-import type { Metadata } from 'next';
 import { CTABand, SectionHeader } from '@/components/rumiq';
 import { GrowthDashboard } from './dashboard';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Growth Intelligence dashboard',
   description:
     'A working dashboard on synthetic data: funnel, source performance, capacity and the next best action, for two very different operations.',
-};
+  path: '/demo/dashboard',
+});
 
 export default function DashboardDemoPage() {
   return (

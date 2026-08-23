@@ -22,8 +22,8 @@ import {
  */
 const stateStyle: Record<FieldState, string> = {
   allowed: 'text-plane-public',
-  redacted: 'text-boundary',
-  blocked: 'text-boundary',
+  redacted: 'text-boundary-ink',
+  blocked: 'text-boundary-ink',
   absent: 'text-muted',
 };
 

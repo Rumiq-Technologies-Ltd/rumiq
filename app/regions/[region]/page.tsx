@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CTABand, Hero, PolicyCallout, TrustTable } from '@/components/rumiq';
 import { regions } from '@/content/trust';
+import { pageMetadata } from '@/lib/seo';
 
 /* Section 8.9 — the two region pages, from one template. */
 
@@ -19,7 +20,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { region: slug } = await params;
   const region = find(slug);
   if (!region) return { title: 'Not found' };
-  return { title: region.hero.headline, description: region.hero.subhead };
+  return pageMetadata({
+    title: region.hero.headline,
+    description: region.hero.subhead,
+    path: `/regions/${slug}`,
+  });
 }
 
 export default async function RegionPage({ params }: Params) {

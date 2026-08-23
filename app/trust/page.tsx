@@ -1,19 +1,36 @@
-import type { Metadata } from 'next';
-import { CTABand, Hero, PointsSection, TrustTable } from '@/components/rumiq';
+import { CTABand, FaqSection, Hero, JsonLd, PointsSection, TrustTable } from '@/components/rumiq';
 import { trust } from '@/content/trust';
+import { faqFor } from '@/content/faq';
+import { breadcrumbJsonLd, faqJsonLd, pageMetadata, webPageJsonLd } from '@/lib/seo';
 
 /* Section 8.10 — eight sections. Primary reader: compliance, IT, DPO.
  * Density over flourish; tables where the content is tabular. */
 
-export const metadata: Metadata = {
+const seo = {
   title: 'Trust Center',
   description:
     'Architecture, data handling, access control, consent, the assurance roadmap, subprocessors, incident response, and what Rumiq does not claim.',
+  path: '/trust',
 };
 
+export const metadata = pageMetadata(seo);
+
 export default function TrustPage() {
+  const faqs = faqFor('trust');
+
   return (
     <main id="main">
+      <JsonLd
+        data={[
+          webPageJsonLd({ title: seo.title, description: seo.description, path: seo.path }),
+          breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Trust Center', path: seo.path },
+          ]),
+          faqJsonLd(faqs),
+        ]}
+      />
+
       <Hero
         eyebrow={trust.hero.eyebrow}
         headline={trust.hero.headline}
@@ -110,6 +127,8 @@ export default function TrustPage() {
         points={trust.notClaimed.points}
         inverted
       />
+
+      <FaqSection page="trust" />
 
       <CTABand />
     </main>

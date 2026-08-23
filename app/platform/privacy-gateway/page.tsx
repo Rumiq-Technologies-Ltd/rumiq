@@ -1,16 +1,17 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CTABand, Hero, PolicyCallout, PointsSection, StepSection } from '@/components/rumiq';
 import { PolicySandboxEmbed } from '@/components/demo/policy-sandbox-embed';
 import { privacyGatewayPage as copy } from '@/content/platform-pages';
+import { pageMetadata } from '@/lib/seo';
 
 /* Section 8.3 — the flagship page. Primary reader: compliance and IT. */
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Privacy and Data Gateway',
   description:
     'Every event classified before it routes anywhere, default deny on sensitive page classes, and a disclosure ledger that records the policy version behind each decision.',
-};
+  path: '/platform/privacy-gateway',
+});
 
 export default function PrivacyGatewayPage() {
   return (

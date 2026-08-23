@@ -1,15 +1,16 @@
-import type { Metadata } from 'next';
 import { CTABand, Hero, PolicyCallout, StepSection } from '@/components/rumiq';
 import { CallIntelligence } from '@/app/demo/call-intelligence/calls';
 import { patientAccessPage as copy } from '@/content/platform-pages';
+import { pageMetadata } from '@/lib/seo';
 
 /* Section 8.4 */
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Patient Access Intelligence',
   description:
     'Calls, forms, chat and text measured against what happened next, including the reason a booking did not happen.',
-};
+  path: '/platform/patient-access',
+});
 
 export default function PatientAccessPage() {
   return (

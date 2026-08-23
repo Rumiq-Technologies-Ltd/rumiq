@@ -1,14 +1,15 @@
-import type { Metadata } from 'next';
 import { CTABand, Eyebrow, Hero, PolicyCallout, SectionHeader, StepSection } from '@/components/rumiq';
 import { contentPage as copy } from '@/content/platform-pages';
+import { pageMetadata } from '@/lib/seo';
 
 /* Section 8.7 — no demo. The content grader criteria are the central visual. */
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Content and Discovery',
   description:
     'Healthcare content as an operational asset: reviewed, structured, multilingual, and measured on whether it produced patients.',
-};
+  path: '/platform/content',
+});
 
 export default function ContentPage() {
   return (
