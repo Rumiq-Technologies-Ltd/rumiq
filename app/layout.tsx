@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { fontVariables } from '@/lib/fonts';
 import { NOINDEX } from '@/lib/flags';
+import { BoundaryRule, ConsentBanner, Footer, Header } from '@/components/rumiq';
 
 export const metadata: Metadata = {
   title: {
@@ -30,7 +31,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <BoundaryRule />
+        <Header />
         {children}
+        <Footer />
+        <ConsentBanner />
       </body>
     </html>
   );

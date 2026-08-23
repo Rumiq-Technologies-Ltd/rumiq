@@ -177,6 +177,98 @@ frontend:
           agent: "main"
           comment: "Renders every colour token with hex and usage rule, semantic warnings on teal/blue/amber, measured WCAG contrast for every pair in use, all eight type scale steps with the three face specimens, layout and radius rules, the 12-col grid, the motion table, the flag panel, and a dashed placeholder for each of the 17 Section 5.6 components marked NOT BUILT. Verified by screenshot at 1920x800 across four scroll positions."
 
+  - task: "Section 5.6 component library"
+    implemented: true
+    working: true
+    file: "components/rumiq/*.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "All seventeen built and exported from components/rumiq/index.ts: Eyebrow, SectionHeader, Button (primary/secondary/ghost, three sizes, inverted set), Card, ModuleCard, PlaneTag, StatusChip, StatBlock, ProofSlot, FAQAccordion, CTABand, AuditLine, DataFreshness, BoundaryRule, IllustrativeBadge, SectorToggle, FunnelTrack. No component holds copy: everything arrives as props or from content/. FAQAccordion rebuilt directly on the Radix primitive because the template shadcn accordion.jsx has no usable prop types under TS strict."
+  - task: "StatusChip hidden behind SHOW_MODULE_STATUS"
+    implemented: true
+    working: true
+    file: "components/rumiq/status-chip.tsx, components/rumiq/module-card.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Four variants built (Live, Build, Design, Road), each deliberately avoiding teal, blue and amber since those carry plane and policy meaning. Returns null unless SHOW_MODULE_STATUS is true. Verified in the DOM: a ModuleCard passed status=live renders no chip. The styleguide is the only caller of the forceVisible documentation escape hatch."
+  - task: "FunnelTrack with arbitrary stage arrays"
+    implemented: true
+    working: true
+    file: "components/rumiq/funnel-track.tsx, content/funnels.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Renders any length. Verified with the 17-stage clinical array and the 7-stage transport array from content/funnels.ts. Vertical stack below md, horizontal snap track above it, plane accent per stage, focusable container for keyboard scrolling. Transport stages kept generic per Sections 4.5 and 8.8."
+  - task: "Global layout: header with mega-menus, footer, CTA band"
+    implemented: true
+    working: true
+    file: "components/rumiq/header.tsx, footer.tsx, cta-band.tsx, app/layout.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Header sticky 72px compressing to 56px past 400px, paper/92 with backdrop blur and bottom hairline. Platform mega-menu is the three-plane diagram with hover/focus dimming; Solutions mega-menu lists the five live sectors. Verified both open by click and close on Escape through the preview URL. Mobile overlay is plane-grouped with a focus trap and closes on route change (code-verified; not screenshot-verified because the screenshot harness pins the viewport at 1920). Footer has the four Section 7.2 columns plus the base bar with the disclaimer. CTA band is inverted and declares data-plane=boundary so the rule continues through it in amber."
+  - task: "BoundaryRule scroll-linked signature element"
+    implemented: true
+    working: true
+    file: "components/rumiq/boundary-rule.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Sections declare data-plane and the rule tracks the section crossing 40% of the viewport, so no registration API is needed. Verified through the preview URL: label reads PUBLIC PLANE on the intro, PROTECTED PLANE over the component section, BOUNDARY with computed colour rgb(217,138,22) over the global-layout section. rAF-throttled scroll listener, 600ms colour transition, aria-hidden because every meaningful section also carries a PlaneTag."
+  - task: "Consent banner and consent gate"
+    implemented: true
+    working: true
+    file: "components/rumiq/consent-banner.tsx, lib/consent.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Verified end to end through the preview URL: banner appears when no choice is recorded, Manage preferences expands in place, Necessary is locked, toggling Analytics and saving writes rumiq_consent={necessary:true,analytics:true,marketing:false,decidedAt,version:1} as a first-party SameSite=Lax cookie, the banner hides, and Cookie preferences in the footer reopens it. Accept all and Reject all are the same variant at the same size. No tracking script exists in the build; lib/consent.ts whenConsented() is the only gate and refuses until a choice is recorded."
+  - task: "Preview-URL hydration fix (infrastructure)"
+    implemented: true
+    working: true
+    file: "next.config.js, package.json"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "main"
+          comment: "Every client component rendered but never hydrated when loaded through the preview URL, while localhost:3000 was fine. No console errors, no failed requests. Two independent causes found."
+        - working: true
+          agent: "main"
+          comment: "Cause 1: Next 16 dev passes a React debug channel that rides the HMR websocket, and the preview proxy cannot upgrade that socket (502), so the initial Flight stream never resolved and hydration never ran. Fixed with experimental.reactDebugChannel=false. Cause 2: Turbopack dev emits crossorigin on client chunk scripts, and the edge returns 403 for any Origin-bearing request to a path containing _next/static/chunks. Fixed by running dev with --webpack, which emits no crossorigin attribute. Also added allowedDevOrigins derived from NEXT_PUBLIC_BASE_URL (no hardcoded URL). Verified: React fibers present and all interactions work through the preview URL. A production build hydrates correctly either way."
+  - task: "tailwind-merge taught the custom theme"
+    implemented: true
+    working: true
+    file: "lib/utils.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Real bug caught by screenshot: the header primary CTA rendered as an empty dark block. tailwind-merge could not tell text-caption (font size) from text-paper (colour), treated them as one group and dropped the colour, giving ink text on ink. Replaced lib/utils.js with a typed lib/utils.ts using extendTailwindMerge registering the Section 5.3 scale and the 5.2 palette for font-size, text-color, bg-color and rounded. Verified both classes now survive in the rendered markup."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
@@ -185,7 +277,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "/styleguide route"
+    - "Section 5.6 component library"
+    - "Consent banner and consent gate"
+    - "BoundaryRule scroll-linked signature element"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -193,3 +287,6 @@ test_plan:
 agent_communication:
     - agent: "main"
       message: "Prompt 1 complete: design system, fonts, flags, styleguide. No backend change, so no backend testing required. Frontend testing not invoked -- awaiting user permission. Next prompt expected to cover the Section 5.6 component library."
+
+    - agent: "main"
+      message: "Prompt 2 complete: all seventeen Section 5.6 components, the Section 7 global layout, the boundary rule and the consent banner, all demonstrated live on /styleguide. Two infrastructure problems fixed along the way: client components never hydrated through the preview URL (Next 16 dev React debug channel on a websocket the proxy cannot upgrade, plus Turbopack crossorigin chunks the edge 403s), and tailwind-merge was silently dropping custom colour classes. No backend change, so no backend testing. Frontend testing agent NOT invoked - awaiting user permission. Mobile behaviour at 320-360px is code-complete but not screenshot-verified: the screenshot harness pins the viewport at 1920, so the mobile overlay, the 3px edge indicator and the vertical funnel stack still need a real narrow-viewport pass."

@@ -102,6 +102,8 @@ module.exports = {
       },
 
       spacing: {
+        18: '72px',
+        13: '52px',
         gutter: '64px',
         section: '120px',
         'section-mobile': '72px',
@@ -135,11 +137,21 @@ module.exports = {
           from: { opacity: '0.08' },
           to: { opacity: '1' },
         },
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
       },
 
       animation: {
         'rise-in': 'rise-in 400ms cubic-bezier(0.16, 1, 0.3, 1) both',
         'reveal-in': 'reveal-in 300ms linear both',
+        'accordion-down': 'accordion-down 200ms ease-out',
+        'accordion-up': 'accordion-up 200ms ease-out',
       },
     },
   },

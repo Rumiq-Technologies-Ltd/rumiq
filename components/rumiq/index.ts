@@ -1,0 +1,23 @@
+/** Section 5.6 component inventory. Import from '@/components/rumiq'. */
+
+export { AuditLine, type AuditDecision, type AuditFields } from './audit-line';
+export { BoundaryRule } from './boundary-rule';
+export { Button, buttonVariants, type ButtonProps } from './button';
+export { Card } from './card';
+export { ConsentBanner } from './consent-banner';
+export { CookiePreferencesButton } from './cookie-preferences-button';
+export { CTABand } from './cta-band';
+export { DataFreshness, type FreshnessState } from './data-freshness';
+export { Eyebrow } from './eyebrow';
+export { FAQAccordion, type FaqEntry } from './faq-accordion';
+export { Footer } from './footer';
+export { FunnelTrack, type FunnelStage } from './funnel-track';
+export { Header } from './header';
+export { IllustrativeBadge } from './illustrative-badge';
+export { ModuleCard } from './module-card';
+export { PlaneTag } from './plane-tag';
+export { ProofSlot } from './proof-slot';
+export { SectionHeader } from './section-header';
+export { SectorToggle, type SectorOption } from './sector-toggle';
+export { StatBlock } from './stat-block';
+export { StatusChip, moduleStatuses, type ModuleStatus } from './status-chip';

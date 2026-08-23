@@ -1,3 +1,15 @@
+// Dev-only. Next 16 rejects cross-origin requests for /_next assets with a 403
+// unless the origin is allowed, and the preview proxy serves the app on a
+// different host than the dev server binds to. Derived from the environment, so
+// no URL is hardcoded.
+const previewHost = (() => {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_BASE_URL || '').hostname || null;
+  } catch {
+    return null;
+  }
+})();
+
 const nextConfig = {
   output: 'standalone',
   images: {
@@ -8,9 +20,26 @@ const nextConfig = {
   },
   // Renamed from experimental.serverComponentsExternalPackages in Next 15
   serverExternalPackages: ['mongodb'],
+
+  experimental: {
+    // The preview proxy cannot upgrade the dev HMR websocket (502), and React's
+    // dev debug channel rides on that socket. With it enabled the initial Flight
+    // stream never resolves through the proxy, so the page renders but never
+    // hydrates. Off means dev behaves like production for hydration.
+    reactDebugChannel: false,
+  },
   // Next 16 runs Turbopack by default. An empty config is enough here: the
   // previous webpack watchOptions tuning has no Turbopack equivalent and is not needed.
   turbopack: {},
+
+  // Dev-only: the preview proxy serves the app on a different host than the
+  // dev server binds to. Has no effect on production.
+  allowedDevOrigins: [
+    previewHost,
+    '*.preview.emergentagent.com',
+    '*.emergentcf.cloud',
+    '*.emergentagent.net',
+  ].filter(Boolean),
 
   onDemandEntries: {
     maxInactiveAge: 10000,
