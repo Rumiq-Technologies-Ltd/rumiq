@@ -405,6 +405,18 @@ frontend:
           agent: "main"
           comment: "Twelve synthetic calls verified in the DOM, eight-item reason taxonomy, two calls below the 70% threshold flagged for human review with amber confidence values. Verified the full correction flow: selecting c-1046, changing the label and pressing Correct this updated the list item, the detail heading and the classification row (now 100%, human), announced the change via aria-live, and appended an audit line reading tenant=demo actor=human call=c-1046 field=reason_not_booked from=Coverage not confirmed to=No suitable time offered decision=ALLOW source=manual_correction. Transcripts are generic summaries with no clinical content. Homepage demo teaser now links all three demo surfaces."
 
+  - task: "Platform deep pages (Sections 8.3 to 8.7)"
+    implemented: true
+    working: true
+    file: "app/platform/*/page.tsx, content/platform-pages.ts, components/rumiq/deep-page.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "All five built and returning 200: privacy-gateway (Policy Sandbox at full size, verified interactive with 6 page-type radios), patient-access (call review demo, 12 calls in the hero band), growth-intelligence (dashboard demo), connectors (two-pilot argument, Curve Dental named, verified no transport system/broker named anywhere outside prohibition comments), content (no demo; the eight grader criteria as the central visual, labelled criteria not scores). Section 8.4 recording-and-jurisdiction callout present verbatim and rendered as an amber policy callout. All copy in content/platform-pages.ts. Shared StepSection / PolicyCallout / PointsSection blocks so five pages are composition rather than five copies. DEVIATION worth noting: the demos render full width inside the hero band via a new Hero demo prop, not inside the hero right column - the dashboard and call review are unusable at 600px, and the hero copy keeps its measure this way. Also confirmed the five module cards on /platform no longer 404."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
@@ -446,3 +458,6 @@ agent_communication:
 
     - agent: "main"
       message: "Prompt 6 complete: sector registry with dental and transport configs, the Section 9.2 dashboard (five panels, filters that really filter, unmapped-source row) and the Section 9.3 call review with working human correction and audit trail. No new API routes, so no backend testing. Frontend testing agent NOT invoked - awaiting user permission. Still outstanding: narrow-viewport and reduced-motion passes across all pages."
+
+    - agent: "main"
+      message: "Prompt 7 complete: five platform deep pages with their demos embedded, all copy in content files. No backend change. Frontend testing agent NOT invoked - awaiting user permission. Outstanding: narrow-viewport and reduced-motion passes."

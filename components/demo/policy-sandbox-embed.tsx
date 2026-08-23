@@ -14,16 +14,16 @@ import { PolicySandboxStaticFrame } from '@/app/demo/policy-sandbox/static-frame
  */
 const InteractiveSandbox = dynamic(
   () => import('@/app/demo/policy-sandbox/sandbox').then((mod) => mod.PolicySandbox),
-  { ssr: false, loading: () => <PolicySandboxStaticFrame compact /> },
+  { ssr: false, loading: () => <PolicySandboxStaticFrame /> },
 );
 
-export function PolicySandboxEmbed() {
+export function PolicySandboxEmbed({ compact = true }: { compact?: boolean }) {
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return <PolicySandboxStaticFrame compact />;
-  return <InteractiveSandbox compact />;
+  if (!mounted) return <PolicySandboxStaticFrame compact={compact} />;
+  return <InteractiveSandbox compact={compact} />;
 }

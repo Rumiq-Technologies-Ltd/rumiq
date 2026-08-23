@@ -20,6 +20,7 @@ export function Hero({
   secondary,
   assurances,
   children,
+  demo,
   className,
 }: {
   headline?: string;
@@ -30,6 +31,9 @@ export function Hero({
   /** Monospace strip under the buttons. */
   assurances?: readonly string[];
   children?: React.ReactNode;
+  /** Rendered full width beneath the copy, inside the hero band. Used by the
+   *  platform deep pages, where the demo is too wide for a hero column. */
+  demo?: React.ReactNode;
   className?: string;
 }) {
   return (
@@ -85,6 +89,12 @@ export function Hero({
 
         {children ? <div className="min-w-0">{children}</div> : null}
       </div>
+
+      {demo ? (
+        <div className="mx-auto max-w-bleed px-6 pb-section-mobile lg:pb-section lg:pl-gutter">
+          {demo}
+        </div>
+      ) : null}
     </section>
   );
 }

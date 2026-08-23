@@ -8,6 +8,7 @@ export { ConsentBanner } from './consent-banner';
 export { CookiePreferencesButton } from './cookie-preferences-button';
 export { CTABand } from './cta-band';
 export { DataFreshness, type FreshnessState } from './data-freshness';
+export { PointsSection, PolicyCallout, StepSection } from './deep-page';
 export { Eyebrow } from './eyebrow';
 export { FAQAccordion, type FaqEntry } from './faq-accordion';
 export { Footer } from './footer';
