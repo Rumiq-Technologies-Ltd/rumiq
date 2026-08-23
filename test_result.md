@@ -108,6 +108,20 @@ user_problem_statement: |
   lib/flags.ts, and a /styleguide route. Build nothing else.
 
 backend:
+  - task: "Policy Sandbox decision matrix verification endpoint"
+    implemented: true
+    working: true
+    file: "app/api/policy-sandbox/verify/route.ts, lib/demo/policy-sandbox.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/policy-sandbox/verify returns all 72 combinations (6 page types x 4 destinations x 3 consent states) from the pure engine in lib/demo/policy-sandbox.ts, each with per-field state, decision, reason and counts. Exists so the Section 9.1 matrix can be verified exhaustively rather than eyeballed. Read-only, synthetic data, no database. Needs testing against the specification table."
+        - working: true
+          agent: "testing"
+          comment: "EXHAUSTIVE VERIFICATION COMPLETE - ALL TESTS PASSED (15/15). Verified GET /api/policy-sandbox/verify against Section 9.1 specification through both https://build-guide-127.preview.emergentagent.com/api/policy-sandbox/verify and http://localhost:3000/api/policy-sandbox/verify. Response structure correct: 72 evaluations (6 page types x 4 destinations x 3 consent states), correct field order (event_name, timestamp, page_url, page_class, utm_source, utm_campaign, gclid, service_interest, form_free_text, email, phone). A) CONSENT RULE VERIFIED: For consent denied/not_set with google_ads, meta, ga4: ALL 36 evaluations correctly BLOCK with sent=0, all present fields blocked, correct reasons (consent_denied/consent_not_recorded). This holds for ALL page types including homepage and blog_article. For internal destination: consent state does NOT affect outcome - decision, sent, redacted, blocked, and per-field states are byte-identical across granted/denied/not_set for all 6 page types. B) WITH CONSENT GRANTED VERIFIED: (1) homepage & blog_article to ads/ga4/internal: decision=ALLOW, 7 fields sent (event_name, timestamp, page_url, page_class, utm_source, utm_campaign, gclid), 0 redacted, 0 blocked, service_interest/form_free_text/email/phone absent. (2) service_page: to ads - service_interest and page_url redacted (not original 'dental_implants'), decision=REDACT; to ga4 - service_interest generalised, decision=REDACT; to internal - decision=ALLOW, no redactions. (3) appointment_form: to ads/ga4 - service_interest, form_free_text, email, phone ALL blocked, campaign fields pass for conversion attribution; to internal - all 11 fields allowed (sent=11, decision=ALLOW). (4) portal_login & (5) medical_intake: to ads/ga4 - fully blocked (sent=0, decision=BLOCK, reason=default_deny_class); to internal - allowed. C) INTEGRITY CHECKS VERIFIED: total always 11, sent+redacted counting coherent (allowed+redacted=sent, allowed+redacted+blocked+absent=11), decision=BLOCK iff sent=0, decision=REDACT only when redacted>0 and sent>0, no blocked field has non-null value. CRITICAL SECURITY ASSERTION VERIFIED: NO evaluation sends email, phone, or form_free_text to google_ads, meta, or ga4 under ANY page type or consent state (checked all 72 evaluations). Engine implementation is specification-compliant."
   - task: "No backend work in Prompt 1"
     implemented: false
     working: "NA"
@@ -285,10 +299,7 @@ metadata:
   run_ui: true
 
 test_plan:
-  current_focus:
-    - "BoundaryRule scroll-linked signature element"
-    - "Consent banner and consent gate"
-    - "Global layout: header with mega-menus, footer, CTA band"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -306,3 +317,10 @@ agent_communication:
 
     - agent: "testing"
       message: "Verification testing complete for three specific behaviors on /styleguide at viewport 1440x900. TEST 1 (Boundary Rule): PASS - Rule correctly changes color based on scroll position: teal rgb(14,124,107) at top (PUBLIC PLANE), amber rgb(217,138,22) at #layout (BOUNDARY), blue rgb(30,58,107) at #components (PROTECTED PLANE), teal again at #funnel (PUBLIC PLANE). Label text matches expected values at all positions. Label vertical position changes at each scroll state (4 unique positions: 339.1px, 418.2px, 390.3px, 402.2px), confirming the label travels as specified. Rule is 1px wide at desktop. CSS transition present with 600ms duration. TEST 2 (Consent Banner): PASS - Accept all and Reject all buttons have identical visual weight. All computed properties match: backgroundColor rgba(0,0,0,0), color rgb(15,31,28), borderColor rgba(15,31,28,0.25), borderWidth 1px, fontSize 16px, fontWeight 500, height 44px, padding 20px, textDecoration none, opacity 1. Both use identical className (secondary variant). Only width differs due to text length (119px vs 113px). Manage preferences is correctly distinct with ghost variant (underlined, no border). TEST 3 (Header Keyboard): PASS - Tab order is correct: (1) Skip to content, (2) rumiq wordmark, (3) Platform button, (4) Solutions button, (5) Trust link, (6) Approach link, (7) Insights link, (8) Growth Leak Scorecard link, (9) Book a working session link. All focused elements have visible focus indicators via box-shadow (2px ring with 2px offset). Skip link is visible when focused (fixed position, 151px x 30px at top-left). Platform button opens megamenu with Enter key (aria-expanded changes from false to true). Escape closes megamenu without trapping focus. All three behaviors verified and working as specified. Actual window.innerWidth confirmed at 1440px."
+
+    - agent: "main"
+      message: "Prompt 3: built the Policy Sandbox at /demo/policy-sandbox. Decision logic is a pure module (lib/demo/policy-sandbox.ts) and GET /api/policy-sandbox/verify exposes all 72 combinations for exhaustive checking. Please test that endpoint against the Section 9.1 matrix as written in the task instructions. UI behaviour already self-checked through the preview URL: idle preset cycle advances every 6s, any interaction stops it permanently, aria-live summary updates, ledger appends in the Section 9.1 format, blocked fields render struck through."
+
+
+    - agent: "testing"
+      message: "Policy Sandbox verification COMPLETE - ALL TESTS PASSED. Exhaustively tested GET /api/policy-sandbox/verify against Section 9.1 specification. Created comprehensive Python test script (/app/backend_test.py) that verifies all 72 combinations programmatically. Verified through both external URL (https://build-guide-127.preview.emergentagent.com/api/policy-sandbox/verify) and localhost (http://localhost:3000/api/policy-sandbox/verify). All 15 test sections passed: (1) Basic structure - 72 evaluations with correct field order, (2) Consent rule for non-essential destinations - all 36 evaluations with denied/not_set consent correctly BLOCK with sent=0, (3) Consent rule for internal - consent-independent across all 6 page types, (4) Marketing pages with consent - all allowed to all destinations, (5-7) Service page with consent - correct redaction/generalisation per destination, (8-9) Appointment form with consent - sensitive fields blocked to ads/ga4, all allowed to internal, (10) Protected pages with consent - fully blocked to ads/ga4, allowed to internal, (11) Integrity checks - all 72 evaluations have correct counts and decision logic, (12) Critical security assertion - NO email, phone, or form_free_text sent to google_ads, meta, or ga4 under ANY circumstances. The engine is fully specification-compliant. No issues found."

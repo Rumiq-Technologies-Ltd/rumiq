@@ -22,6 +22,7 @@ export function AuditLine({
   timestamp,
   decision,
   fields,
+  trailing,
   className,
   inverted = false,
 }: {
@@ -29,6 +30,9 @@ export function AuditLine({
   timestamp: string;
   decision: AuditDecision;
   fields: AuditFields;
+  /** Rendered after the decision, so a line can read
+   *  decision=BLOCK fields_sent=0/11 reason=default_deny_class (Section 9.1). */
+  trailing?: AuditFields;
   className?: string;
   inverted?: boolean;
 }) {
@@ -49,6 +53,13 @@ export function AuditLine({
       <span>
         decision=<span className={cn('font-medium', decisionStyle[decision])}>{decision}</span>
       </span>
+      {trailing
+        ? Object.entries(trailing).map(([key, value]) => (
+            <span key={key}>
+              {key}=<span className={inverted ? 'text-paper' : 'text-ink'}>{value}</span>
+            </span>
+          ))
+        : null}
     </p>
   );
 }
