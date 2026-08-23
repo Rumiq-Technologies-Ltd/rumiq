@@ -417,6 +417,18 @@ frontend:
           agent: "main"
           comment: "All five built and returning 200: privacy-gateway (Policy Sandbox at full size, verified interactive with 6 page-type radios), patient-access (call review demo, 12 calls in the hero band), growth-intelligence (dashboard demo), connectors (two-pilot argument, Curve Dental named, verified no transport system/broker named anywhere outside prohibition comments), content (no demo; the eight grader criteria as the central visual, labelled criteria not scores). Section 8.4 recording-and-jurisdiction callout present verbatim and rendered as an amber policy callout. All copy in content/platform-pages.ts. Shared StepSection / PolicyCallout / PointsSection blocks so five pages are composition rather than five copies. DEVIATION worth noting: the demos render full width inside the hero band via a new Hero demo prop, not inside the hero right column - the dashboard and call review are unusable at 600px, and the hero copy keeps its measure this way. Also confirmed the five module cards on /platform no longer 404."
 
+  - task: "Solutions pages from one template (Section 8.8)"
+    implemented: true
+    working: true
+    file: "app/solutions/[sector]/page.tsx, app/solutions/page.tsx, lib/sectors/*.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "One template at app/solutions/[sector]/page.tsx driven entirely by the sector config. Verified: /solutions/{independent,dental,multi-site,transport,health-systems} return 200 and /solutions/{behavioral,rehab,aesthetics,home-health,urgent-care} return 404, because findSectorBySlug returns undefined and the route calls notFound(). SectorConfig extended with a page block (problem, three failure modes with costs, module order, first 90 days, regulatory notes, proof slots, optional funnel) and dashboard made optional, so the three new sectors need no demo dataset; dashboardSectors is a narrowed type so the dashboard needs no guards. Independent page is written as its own problem (no analyst, no agency, nobody doing the work) rather than a downgraded enterprise pitch, and is first in the registry. Transport page renders its own seven-stage funnel and uses operator vocabulary throughout - 57 uses of journey, 25 booking, 10 referral source, 0 uses of patient/treatment/care-delivered in page copy; the Patient Access Intelligence module was renamed to Enquiry and booking intelligence for that page. The phrase still appears in the global footer module list, which is site chrome. Every page carries ProofSlot placeholders, an awaiting-Document-05 FAQ block and the CTA band."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
@@ -461,3 +473,6 @@ agent_communication:
 
     - agent: "main"
       message: "Prompt 7 complete: five platform deep pages with their demos embedded, all copy in content files. No backend change. Frontend testing agent NOT invoked - awaiting user permission. Outstanding: narrow-viewport and reduced-motion passes."
+
+    - agent: "main"
+      message: "Prompt 8 complete: five live solutions pages from one template plus a /solutions index, five scaffolded sectors 404ing by design. No backend change. Frontend testing agent NOT invoked - awaiting user permission. Outstanding: narrow-viewport and reduced-motion passes."

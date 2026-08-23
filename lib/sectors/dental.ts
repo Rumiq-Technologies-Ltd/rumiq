@@ -31,6 +31,65 @@ export const dental: SectorConfig = {
       'Every disclosure logged with its policy version',
     ],
   },
+  page: {
+    problem: {
+      eyebrow: 'THE PROBLEM',
+      headline: 'A busy phone is not the same thing as a growing practice.',
+      body: 'Call volume holds up, the diary looks full, and new patient numbers are flat. The three places that happens are all invisible to the marketing reporting you have today.',
+    },
+    failureModes: [
+      {
+        title: 'The phone answers, but nobody books',
+        body: 'Enquiries arrive and end without an appointment, for reasons nobody records. Price, coverage, no suitable time, wrong service. Each one has a different fix.',
+        cost: 'Paid-for demand lost after you already paid for it',
+      },
+      {
+        title: 'Treatment plans presented, not accepted',
+        body: 'Marketing optimises to the booking. The practice earns on the plan that gets accepted. Nothing connects the two, so cheap leads look like good leads.',
+        cost: 'Spend pushed toward the services with the worst acceptance',
+      },
+      {
+        title: 'Two locations, one budget, no capacity view',
+        body: 'Spend spreads evenly while one location runs a waiting list and the other has open chairs.',
+        cost: 'Money spent creating demand you cannot serve',
+      },
+    ],
+    modules: {
+      eyebrow: 'WHICH MODULES, IN WHAT ORDER',
+      headline: 'Access first. Attribution second. Acquisition last.',
+      steps: [
+        { name: 'Patient Access Intelligence', why: 'Measure the phone before spending another pound on demand.' },
+        { name: 'Healthcare Connector Layer', why: 'Read Curve Dental so attendance and treatment start are visible.' },
+        { name: 'Privacy and Data Gateway', why: 'Get the measurement in place without exposing patient detail.' },
+        { name: 'Growth Intelligence', why: 'Cost per attended patient by service and location.' },
+        { name: 'Paid Media and Patient Acquisition', why: 'Only once the outcomes are trustworthy enough to optimise against.' },
+      ],
+    },
+    first90: {
+      eyebrow: 'THE FIRST 90 DAYS',
+      headline: 'Nothing is switched on at signature.',
+      phases: [
+        { label: 'Days 1 to 30', body: 'BAA executed. Read-only connection to the practice management system and the phone platform. Baseline measured, including the demand nobody can currently attribute.' },
+        { label: 'Days 31 to 60', body: 'Reason taxonomy applied to calls and reviewed with the front desk. Page classification and the gateway policy configured and tested in the sandbox.' },
+        { label: 'Days 61 to 90', body: 'Cost per attended patient by service and location. First reallocation decision made against capacity rather than lead volume.' },
+      ],
+    },
+    regulatory: {
+      eyebrow: 'REGULATORY NOTES',
+      headline: 'What applies, and what we are not saying.',
+      notes: [
+        'A BAA is executed before any PHI is processed. PHI handling is enabled in phases against named HIPAA Security Rule control domains.',
+        'Call recording and transcription obligations differ by jurisdiction and by US state. Those decisions are yours to make with counsel.',
+        'No certification is claimed. No SOC 2, no HITRUST, no approval from any authority.',
+        'Nothing here is legal or clinical advice.',
+      ],
+    },
+    proofSlots: [
+      'Dental pilot reference. Requires written client approval before naming.',
+      'Before and after access figures, once the pilot permits publication.',
+    ],
+  },
+
   dashboard: {
     funnelStages: [
       { label: 'Enquiries', plane: 'boundary' },

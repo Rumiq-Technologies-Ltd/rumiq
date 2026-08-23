@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { CTABand, DataFreshness, Hero, PolicyCallout, StepSection } from '@/components/rumiq';
 import { connectorsPage as copy } from '@/content/platform-pages';
-import { sectors } from '@/lib/sectors';
+import { dashboardSectors } from '@/lib/sectors';
 
 /* Section 8.6 — the two-pilot argument. Curve Dental is named; nothing on the
  * transport side is: no dispatch platform, no broker, no integration claim. */
@@ -49,7 +49,7 @@ export default function ConnectorsPage() {
           </div>
 
           <div className="mt-12 grid gap-10 lg:grid-cols-2">
-            {sectors.map((sector) => (
+            {dashboardSectors.map((sector) => (
               <div key={sector.id}>
                 <p className="font-mono text-mono-eyebrow uppercase text-muted">
                   {sector.label} · illustrative connector state

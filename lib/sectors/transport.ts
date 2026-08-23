@@ -1,3 +1,4 @@
+import { transportFunnel } from '@/content/funnels';
 import type { SectorConfig } from './types';
 
 /**
@@ -35,6 +36,68 @@ export const transport: SectorConfig = {
       'Every disclosure logged with its policy version',
     ],
   },
+  page: {
+    problem: {
+      eyebrow: 'THE PROBLEM',
+      headline: 'You know how many journeys you completed. You do not know which relationships produced them.',
+      body: 'Completed journeys and revenue are visible at the end of the month. Where the work came from, and where requests fell out of the chain before dispatch ever saw them, is not.',
+    },
+    failureModes: [
+      {
+        title: 'Enquiries that never become requests',
+        body: 'A call or a form arrives, and no booking follows. Nobody records whether it was capacity, timing, coverage or a service you do not run.',
+        cost: 'Demand lost before dispatch is even involved',
+      },
+      {
+        title: 'Referral sources that quietly stop',
+        body: 'A relationship that used to send regular work sends less, and the drift is only noticed when a quarter is already down.',
+        cost: 'Months of decline before anyone can name it',
+      },
+      {
+        title: 'Growth sold into full vehicles',
+        body: 'New work is chased in the areas and journey types already at capacity, while quieter capacity goes unsold.',
+        cost: 'Reliability spent on journeys you could not comfortably take',
+      },
+    ],
+    modules: {
+      eyebrow: 'WHICH MODULES, IN WHAT ORDER',
+      headline: 'Booking chain first. Relationships second.',
+      steps: [
+        { name: 'Healthcare Connector Layer', why: 'Read the booking and scheduling record you already keep, whatever it runs on.' },
+        // Sector-facing name for Patient Access Intelligence. This page uses the
+        // operator's vocabulary, not clinical vocabulary (Section 8.8).
+        { name: 'Enquiry and booking intelligence', why: 'Measure enquiries and requests against completed journeys.' },
+        { name: 'Privacy and Data Gateway', why: 'Keep passenger detail inside the operation while measurement happens.' },
+        { name: 'Growth Intelligence', why: 'Completed journeys by area, journey type and referral source.' },
+        { name: 'Search, Local and AI Discovery', why: 'Only once you know which work is worth attracting.' },
+      ],
+    },
+    first90: {
+      eyebrow: 'THE FIRST 90 DAYS',
+      headline: 'Read-only first, and slowly.',
+      phases: [
+        { label: 'Days 1 to 30', body: 'Agreements in place. Read-only view of enquiries, bookings and completed journeys. Baseline measured, including the requests with no traceable source.' },
+        { label: 'Days 31 to 60', body: 'Enquiry reasons captured consistently at the point of contact, reviewed with the booking team rather than imposed on them.' },
+        { label: 'Days 61 to 90', body: 'Completed journeys by area, journey type and referral source, with capacity shown alongside. First relationship review run on evidence.' },
+      ],
+    },
+    regulatory: {
+      eyebrow: 'REGULATORY NOTES',
+      headline: 'Deliberately unspecific, because the work has not been done.',
+      notes: [
+        'This engagement is at pilot stage. The architecture work has not started, so no integration, system or partner is named here.',
+        'Where passenger information is involved, agreements are executed before any of it is processed.',
+        'No certification or approval from any authority is claimed.',
+        'Nothing here is legal advice. Validate your obligations with counsel.',
+      ],
+    },
+    proofSlots: [
+      'Transport pilot reference. Requires written client approval before naming.',
+      'Booking chain figures, once the pilot permits publication.',
+    ],
+    funnel: { label: 'The journey, seven stages', stages: transportFunnel },
+  },
+
   dashboard: {
     funnelStages: [
       { label: 'Enquiries', plane: 'boundary' },

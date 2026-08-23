@@ -1,4 +1,5 @@
 import type { Plane } from '@/lib/planes';
+import type { FunnelStage } from '@/components/rumiq';
 
 /**
  * SectorConfig — Specification Section 9.2.
@@ -82,6 +83,22 @@ export type ConnectorHealth = {
   note: string;
 };
 
+export type FailureMode = { title: string; body: string; cost: string };
+export type ModuleStep = { name: string; why: string };
+export type Phase = { label: string; body: string };
+
+/** Solutions page content — Section 8.8. One template, driven by this. */
+export type SectorPage = {
+  problem: { eyebrow: string; headline: string; body: string };
+  failureModes: FailureMode[];
+  modules: { eyebrow: string; headline: string; steps: ModuleStep[] };
+  first90: { eyebrow: string; headline: string; phases: Phase[] };
+  regulatory: { eyebrow: string; headline: string; notes: string[] };
+  proofSlots: string[];
+  /** Optional funnel for sectors whose journey differs from the clinical one. */
+  funnel?: { label: string; stages: FunnelStage[] };
+};
+
 export type SectorConfig = {
   id: SectorId;
   label: string;
@@ -89,7 +106,10 @@ export type SectorConfig = {
   href: string;
   vocabulary: SectorVocabulary;
   hero: SectorHero;
-  dashboard: {
+  page: SectorPage;
+  /** Present only for sectors with a demo dataset. Sectors without one still
+   *  get a solutions page; they simply do not appear in the dashboard toggle. */
+  dashboard?: {
     /** Stage labels, in the sector's own words. Length drives the funnel panel. */
     funnelStages: { label: string; plane: Plane }[];
     dateRanges: { id: string; label: string; multiplier: number }[];
