@@ -45,7 +45,7 @@
 ##   created_by: "main_agent"
 ##   version: "1.0"
 ##   test_sequence: 0
-##   run_ui: false
+##   run_ui: true
 ##
 ## test_plan:
 ##   current_focus:
@@ -221,6 +221,9 @@ frontend:
         - working: true
           agent: "main"
           comment: "Header sticky 72px compressing to 56px past 400px, paper/92 with backdrop blur and bottom hairline. Platform mega-menu is the three-plane diagram with hover/focus dimming; Solutions mega-menu lists the five live sectors. Verified both open by click and close on Escape through the preview URL. Mobile overlay is plane-grouped with a focus trap and closes on route change (code-verified; not screenshot-verified because the screenshot harness pins the viewport at 1920). Footer has the four Section 7.2 columns plus the base bar with the disclaimer. CTA band is inverted and declares data-plane=boundary so the rule continues through it in amber."
+        - working: true
+          agent: "testing"
+          comment: "Verified Section 13 keyboard navigation requirements. Tab order is correct: (1) Skip to content link, (2) rumiq wordmark home link, (3) Platform button, (4) Solutions button, (5) Trust link, (6) Approach link, (7) Insights link, (8) Growth Leak Scorecard link, (9) Book a working session link. All focused elements have visible focus indicators via box-shadow (rgb(242,244,243) 0px 0px 0px 2px, rgb(15,31,28) 0px 0px 0px 4px) matching globals.css :focus-visible rule (ring-2 ring-ink ring-offset-2). No element has invisible focus (no cases where both outline and box-shadow are none). Skip link is visible when focused (fixed position, 151px x 30px at top-left, className includes focus:not-sr-only). Platform button opens #megamenu-platform with Enter key (aria-expanded changes from false to true). Escape closes megamenu without trapping focus. All Section 13 requirements met."
   - task: "BoundaryRule scroll-linked signature element"
     implemented: true
     working: true
@@ -232,6 +235,9 @@ frontend:
         - working: true
           agent: "main"
           comment: "Sections declare data-plane and the rule tracks the section crossing 40% of the viewport, so no registration API is needed. Verified through the preview URL: label reads PUBLIC PLANE on the intro, PROTECTED PLANE over the component section, BOUNDARY with computed colour rgb(217,138,22) over the global-layout section. rAF-throttled scroll listener, 600ms colour transition, aria-hidden because every meaningful section also carries a PlaneTag."
+        - working: true
+          agent: "testing"
+          comment: "Verified at 1440x900 viewport. Rule correctly changes color at all four scroll positions: teal rgb(14,124,107) at top (PUBLIC PLANE), amber rgb(217,138,22) at #layout (BOUNDARY), blue rgb(30,58,107) at #components (PROTECTED PLANE), teal at #funnel (PUBLIC PLANE). Label text matches expected values. Label position travels (4 unique vertical positions: 339.1px, 418.2px, 390.3px, 402.2px). Rule is 1px wide. CSS transition present with 600ms duration using cubic-bezier(0.16,1,0.3,1) easing. All Section 5.1 requirements met."
   - task: "Consent banner and consent gate"
     implemented: true
     working: true
@@ -243,6 +249,9 @@ frontend:
         - working: true
           agent: "main"
           comment: "Verified end to end through the preview URL: banner appears when no choice is recorded, Manage preferences expands in place, Necessary is locked, toggling Analytics and saving writes rumiq_consent={necessary:true,analytics:true,marketing:false,decidedAt,version:1} as a first-party SameSite=Lax cookie, the banner hides, and Cookie preferences in the footer reopens it. Accept all and Reject all are the same variant at the same size. No tracking script exists in the build; lib/consent.ts whenConsented() is the only gate and refuses until a choice is recorded."
+        - working: true
+          agent: "testing"
+          comment: "Verified Section 4.3 equal visual weight requirement. Accept all and Reject all buttons are identical in all computed properties: backgroundColor rgba(0,0,0,0), color rgb(15,31,28), borderColor rgba(15,31,28,0.25), borderWidth 1px, fontSize 16px, fontWeight 500, fontFamily fontBody, height 44px, paddingLeft/Right 20px, textDecorationLine none, opacity 1. Both use identical className (secondary variant). Only width differs due to text length (119px vs 113px). Manage preferences is correctly distinct with ghost variant (underlined, no border, borderWidth 0px). Neither button is visually de-emphasized. All requirements met."
   - task: "Preview-URL hydration fix (infrastructure)"
     implemented: true
     working: true
@@ -272,14 +281,14 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 0
-  run_ui: false
+  test_sequence: 1
+  run_ui: true
 
 test_plan:
   current_focus:
-    - "Section 5.6 component library"
-    - "Consent banner and consent gate"
     - "BoundaryRule scroll-linked signature element"
+    - "Consent banner and consent gate"
+    - "Global layout: header with mega-menus, footer, CTA band"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -290,3 +299,10 @@ agent_communication:
 
     - agent: "main"
       message: "Prompt 2 complete: all seventeen Section 5.6 components, the Section 7 global layout, the boundary rule and the consent banner, all demonstrated live on /styleguide. Two infrastructure problems fixed along the way: client components never hydrated through the preview URL (Next 16 dev React debug channel on a websocket the proxy cannot upgrade, plus Turbopack crossorigin chunks the edge 403s), and tailwind-merge was silently dropping custom colour classes. No backend change, so no backend testing. Frontend testing agent NOT invoked - awaiting user permission. Mobile behaviour at 320-360px is code-complete but not screenshot-verified: the screenshot harness pins the viewport at 1920, so the mobile overlay, the 3px edge indicator and the vertical funnel stack still need a real narrow-viewport pass."
+
+    - agent: "main"
+      message: "User asked for verification of three specific behaviours on /styleguide. Delegating to the frontend testing agent: (1) the boundary rule tracks scroll and changes colour, (2) Reject all is visually identical in weight to Accept all, (3) keyboard tab order through the header is sane and focus is visible. No code change was made before this run - this is a verification pass on the Prompt 2 build."
+
+
+    - agent: "testing"
+      message: "Verification testing complete for three specific behaviors on /styleguide at viewport 1440x900. TEST 1 (Boundary Rule): PASS - Rule correctly changes color based on scroll position: teal rgb(14,124,107) at top (PUBLIC PLANE), amber rgb(217,138,22) at #layout (BOUNDARY), blue rgb(30,58,107) at #components (PROTECTED PLANE), teal again at #funnel (PUBLIC PLANE). Label text matches expected values at all positions. Label vertical position changes at each scroll state (4 unique positions: 339.1px, 418.2px, 390.3px, 402.2px), confirming the label travels as specified. Rule is 1px wide at desktop. CSS transition present with 600ms duration. TEST 2 (Consent Banner): PASS - Accept all and Reject all buttons have identical visual weight. All computed properties match: backgroundColor rgba(0,0,0,0), color rgb(15,31,28), borderColor rgba(15,31,28,0.25), borderWidth 1px, fontSize 16px, fontWeight 500, height 44px, padding 20px, textDecoration none, opacity 1. Both use identical className (secondary variant). Only width differs due to text length (119px vs 113px). Manage preferences is correctly distinct with ghost variant (underlined, no border). TEST 3 (Header Keyboard): PASS - Tab order is correct: (1) Skip to content, (2) rumiq wordmark, (3) Platform button, (4) Solutions button, (5) Trust link, (6) Approach link, (7) Insights link, (8) Growth Leak Scorecard link, (9) Book a working session link. All focused elements have visible focus indicators via box-shadow (2px ring with 2px offset). Skip link is visible when focused (fixed position, 151px x 30px at top-left). Platform button opens megamenu with Enter key (aria-expanded changes from false to true). Escape closes megamenu without trapping focus. All three behaviors verified and working as specified. Actual window.innerWidth confirmed at 1440px."
