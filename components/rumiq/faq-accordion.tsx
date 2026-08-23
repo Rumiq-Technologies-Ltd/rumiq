@@ -55,12 +55,20 @@ export function FAQAccordion({
               />
             </AccordionPrimitive.Trigger>
           </AccordionPrimitive.Header>
-          <AccordionPrimitive.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+          {/* forceMount, so every answer is in the initial HTML rather than
+              appearing only after a click. A reader with JavaScript off, and any
+              crawler that does not interact, still gets the answer. Closed items
+              are display:none, so assistive technology and tab order treat them
+              as closed. The close animation is given up for that: you cannot
+              animate to display:none. */}
+          <AccordionPrimitive.Content
+            forceMount
+            className="overflow-hidden data-[state=closed]:hidden data-[state=open]:animate-accordion-down"
+          >
+            {/* The Document 05 id is the accordion item's value, so placement
+                stays auditable in the DOM without being shown to a reader. */}
             <div className="pb-8">
               <div className="max-w-measure text-body text-muted">{entry.answer}</div>
-              <p className="mt-4 font-mono text-mono-eyebrow uppercase text-muted">
-                Document 05 · {entry.id}
-              </p>
             </div>
           </AccordionPrimitive.Content>
         </AccordionPrimitive.Item>

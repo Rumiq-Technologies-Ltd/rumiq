@@ -131,14 +131,14 @@
   - task: "FAQ accordions on Home, /platform, /trust, /approach, /contact and all five solutions pages"
     implemented: true
     working: true
-    file: "content/faq.ts, components/rumiq/faq-section.tsx"
+    file: "content/faq.ts, components/rumiq/faq-section.tsx, components/rumiq/faq-accordion.tsx"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
         - working: true
           agent: "main"
-          comment: "One <FaqSection page=...> on all ten pages, reading content/faq.ts. faqEntries is deliberately EMPTY and the placement map has an empty array per page, so every accordion renders nothing but a build note until Document 05 arrives. No placeholder FAQ copy exists anywhere. faqFor() drops any entry tagged pricing while SHOW_PRICING is false, and faqJsonLd() returns null on an empty list so no empty FAQPage node is emitted."
+          comment: "Document 05 received and placed verbatim. Sixteen entries in content/faq.ts, nothing added, nothing rewritten, no number or timeframe attached to an answer that did not already carry one. Verified programmatically across all ten pages: entry count and ORDER match the placement map exactly on every one (home 6, platform 4, trust 5, approach 4, contact 2, independent 5, dental 4, multi-site 4, transport 4, health-systems 5). SHOW_PRICING is false, so cost resolves to cost-no-numbers and cost-with-numbers is built but hidden - grepped the rendered HTML of every page for the dollar figures and found none. No second flag was introduced for the cost pair; both variants read the one SHOW_PRICING flag, so lib/flags.ts still has exactly three. Pilot naming is gated by a content constant (not a flag) defaulting to false with the required TODO, so proof and sectors render the generic variants - confirmed no page renders the Florida naming through the FAQ. Two fixes while wiring it up: the accordion was printing an internal Document 05 id under every answer, which would have shown a buyer build metadata, now removed; and Radix was unmounting closed content, so no answer existed in the initial HTML - the content is now forceMounted and display:none when closed, which puts every answer in the HTML for a no-JS reader and any non-interacting crawler, at the cost of the close animation. FAQPage JSON-LD emits per page with the right question count and plain-text answers with emphasis markers stripped. Browser-verified on /trust: five triggers in order, aria-expanded flips, answer text renders as separate paragraphs, whats-included keeps its two-part bold and shows no asterisks."
 ##   - task: "Task name"
 ##     implemented: true
 ##     working: true  # or false or "NA"
@@ -640,3 +640,6 @@ agent_communication:
 
     - agent: "main"
       message: "Backend testing returned 40/40 passing on both new routes, plus the policy-sandbox regression. Frontend NOT run through the testing agent - the user has not authorised it. I did verify the three highest-risk flows myself in a real browser: the scorecard end to end (ten questions, gate after the last one, skip-the-gate path, results), the working-session form (empty submit produces an error summary and 7 aria-invalid controls; valid submit replaces the form in place), and /demo (all three demos mount together, banner first, three anchors). Remaining gaps, both pre-existing: no 320-360px narrow-viewport pass and no prefers-reduced-motion pass."
+
+    - agent: "main"
+      message: "Document 05 placed. No backend change in this step, so no backend retest needed - the two form routes were already verified 40/40. Frontend still not run through the testing agent (no authorisation); I verified FAQ placement, order, flag gating and pilot-variant gating programmatically across all ten pages, plus a browser pass on /trust. Outstanding, unchanged: narrow-viewport pass, reduced-motion pass, legal copy, real contact addresses, TTF subset for brand-exact OG cards, and sign-off on the --boundary-ink token."

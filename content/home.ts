@@ -199,10 +199,7 @@ export const home = {
   faq: {
     eyebrow: 'QUESTIONS',
     headline: 'The questions buyers actually ask.',
-    /** Section 15: no FAQ entry may exist that is not in Document 05, and
-     *  Document 05 arrives at Prompt 11. The section renders its placeholder
-     *  until then rather than inventing copy. */
-    pending:
-      'FAQ copy comes from Document 05 verbatim, placed by its placement map. Not yet supplied.',
+    /** The entries themselves are Document 05, in content/faq.ts, placed by its
+     *  placement map. Nothing here but the section heading. */
   },
 } as const;
