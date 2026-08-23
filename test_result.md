@@ -337,6 +337,40 @@ frontend:
           agent: "main"
           comment: "Verified through the preview URL: hovering a module dims the other two planes (2 columns measured below opacity 1) and draws an amber hairline across all three planes. Focus does the same, so it works from the keyboard. Dimming is lg-only, so touch gets the static layout; prefers-reduced-motion skips the draw and shows the path at full extent. Two iterations were needed on the path position - at the module mid-line it read as a strikethrough through the labels of other columns, so it now runs in the 8px inter-row gap below the active module, which every column shares."
 
+  - task: "/platform per Section 8.2"
+    implemented: true
+    working: true
+    file: "app/platform/page.tsx, app/platform/module-grid.tsx, content/platform.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Hero, full-width interactive three-plane diagram, three stacked plane sections with ModuleCard grids, and the canonical data model table with privacy-class colour coding (teal public, ink operational, amber policy-controlled, blue protected). Verified through the preview URL: 10 module cards, 0 status chips rendered, 10 data model rows. Five cards link to deep pages (privacy-gateway, patient-access, growth-intelligence, connectors, content) and five open a detail drawer. NOTE: the five deep pages do not exist yet, so those links 404 until their prompts. Also added: Hero collapses to a single column when no right-hand child is passed, so the platform hero does not leave an empty half."
+  - task: "Module detail drawer"
+    implemented: true
+    working: true
+    file: "app/platform/module-grid.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Built on the Radix Dialog primitive. Verified: 5 drawer-opening cards, drawer opens, focus moves inside, Escape closes. Focus return needed two attempts - the trigger is a card rather than a Dialog.Trigger so Radix had nothing to restore to, and calling focus() from onOpenChange was overridden by Radix's own restoration. Fixed with onCloseAutoFocus + preventDefault, and verified focus lands back on the originating card with a visible ring."
+  - task: "Platform mega-menu as a mini three-plane diagram"
+    implemented: true
+    working: true
+    file: "components/rumiq/header.tsx, content/navigation.ts"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "The menu now opens with a plane rail (three coloured plane markers joined by hairlines) above three plane columns; pointing at a plane on the rail or at a column highlights that plane's modules and dims the others, and focusing a module link does the same for keyboard users. content/navigation.ts now derives platformMenu from content/platform.ts, so the mega-menu, the mobile overlay and /platform cannot disagree about what the platform contains. Modules with no deep page point at /platform, where their drawer lives."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
@@ -372,3 +406,6 @@ agent_communication:
 
     - agent: "main"
       message: "Prompt 4 complete: homepage built to Section 8.1 with the Policy Sandbox in the hero right column, server-rendered static first frame for LCP, and the interactive three-plane diagram. No backend change, so no backend testing. Frontend testing agent NOT invoked - awaiting user permission. Outstanding across prompts 2-4: no narrow-viewport pass yet (screenshot harness pins the viewport at 1920), and no reduced-motion pass."
+
+    - agent: "main"
+      message: "Prompt 5 complete: /platform built to Section 8.2 with ten module cards, five deep links and five detail drawers, the canonical data model table with privacy-class colour coding, and the Platform mega-menu rebuilt as a mini three-plane diagram fed from the same module list. No backend change. Frontend testing agent NOT invoked - awaiting user permission. Still outstanding: narrow-viewport and reduced-motion passes."

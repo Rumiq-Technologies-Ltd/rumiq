@@ -34,7 +34,14 @@ export function Hero({
 }) {
   return (
     <section data-plane="public" className={cn('border-b border-rule', className)}>
-      <div className="mx-auto grid max-w-content gap-14 px-6 py-section-mobile lg:grid-cols-2 lg:gap-16 lg:py-section lg:pl-gutter">
+      <div
+        className={cn(
+          'mx-auto grid max-w-content gap-14 px-6 py-section-mobile lg:gap-16 lg:py-section lg:pl-gutter',
+          // Two columns only when something is passed for the right-hand side.
+          // Without it the copy holds the full measure instead of leaving a hole.
+          children ? 'lg:grid-cols-2' : 'lg:grid-cols-1',
+        )}
+      >
         <div>
           {/* Staggered rise-in, 400ms, 60ms per line. Resolves instantly under
               prefers-reduced-motion via globals.css. */}

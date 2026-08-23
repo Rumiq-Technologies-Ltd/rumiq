@@ -13,7 +13,7 @@ import {
   primaryNav,
   solutionsMenu,
 } from '@/content/navigation';
-import { planeBg, planeText, type Plane } from '@/lib/planes';
+import { planeBg, planeShortLabel, planeText, type Plane } from '@/lib/planes';
 import { Button } from './button';
 import { Eyebrow } from './eyebrow';
 
@@ -185,6 +185,27 @@ export function Header() {
           className="absolute inset-x-0 top-full border-b border-rule bg-paper-raised"
         >
           <div className="mx-auto max-w-bleed px-6 py-10 lg:pl-gutter">
+            {/* A small version of the three-plane diagram. Pointing at a plane
+                highlights its modules and dims the rest. */}
+            <div aria-hidden className="mb-8 flex flex-wrap items-center gap-4">
+              {platformMenu.map((group, index) => (
+                <span key={`rail-${group.plane}`} className="flex items-center gap-4">
+                  {index > 0 ? <span className="h-px w-10 bg-rule" /> : null}
+                  <span
+                    onMouseEnter={() => setActivePlane(group.plane)}
+                    onMouseLeave={() => setActivePlane(null)}
+                    className={cn(
+                      'flex items-center gap-2 font-mono text-mono-eyebrow uppercase transition-opacity duration-120',
+                      planeText[group.plane],
+                      activePlane !== null && activePlane !== group.plane ? 'opacity-40' : 'opacity-100',
+                    )}
+                  >
+                    <span className={cn('h-3 w-3 rounded-full', planeBg[group.plane])} />
+                    {planeShortLabel[group.plane]}
+                  </span>
+                </span>
+              ))}
+            </div>
             <div className="grid gap-10 lg:grid-cols-3">
               {platformMenu.map((group) => {
                 const dimmed = activePlane !== null && activePlane !== group.plane;

@@ -1,4 +1,5 @@
 import type { Plane } from '@/lib/planes';
+import { platform } from './platform';
 
 /**
  * Navigation and mega-menu content — Sections 6, 7.1 and 7.2.
@@ -14,37 +15,19 @@ export type MegaMenuPlane = {
   modules: { name: string; href?: string }[];
 };
 
-/** Section 1 — the ten modules, grouped into three planes. */
-export const platformMenu: MegaMenuPlane[] = [
-  {
-    plane: 'public',
-    title: 'Demand and engagement',
-    modules: [
-      { name: 'Search, Local and AI Discovery', href: '/platform/content' },
-      { name: 'Paid Media and Patient Acquisition', href: '/platform/content' },
-      { name: 'Content and Social Orchestration', href: '/platform/content' },
-      { name: 'Website and landing journeys', href: '/platform/content' },
-    ],
-  },
-  {
-    plane: 'boundary',
-    title: 'Rumiq orchestration layer',
-    modules: [
-      { name: 'Healthcare Knowledge Graph', href: '/platform/connectors' },
-      { name: 'Privacy and Data Gateway', href: '/platform/privacy-gateway' },
-      { name: 'Consent and Preference Service', href: '/platform/privacy-gateway' },
-      { name: 'Healthcare Connector Layer', href: '/platform/connectors' },
-    ],
-  },
-  {
-    plane: 'protected',
-    title: 'Operations and outcomes',
-    modules: [
-      { name: 'Patient Access Intelligence', href: '/platform/patient-access' },
-      { name: 'Growth Intelligence and Patient Voice', href: '/platform/growth-intelligence' },
-    ],
-  },
-];
+/**
+ * Section 1 — the ten modules, grouped into three planes. Derived from
+ * content/platform.ts so the mega-menu, the mobile overlay and /platform can
+ * never disagree about what the platform contains. Modules without a deep page
+ * point at /platform, where their detail drawer lives.
+ */
+export const platformMenu: MegaMenuPlane[] = platform.planeSections.map((section) => ({
+  plane: section.plane,
+  title: section.title,
+  modules: platform.modules
+    .filter((module) => module.plane === section.plane)
+    .map((module) => ({ name: module.name, href: module.href ?? '/platform' })),
+}));
 
 /** Section 6 — five live solution pages. The scaffolded five are not listed. */
 export const solutionsMenu: NavLink[] = [
