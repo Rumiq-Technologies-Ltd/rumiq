@@ -23,4 +23,5 @@ export { ProofSlot } from './proof-slot';
 export { SectionHeader } from './section-header';
 export { SectorToggle, type SectorOption } from './sector-toggle';
 export { StatBlock } from './stat-block';
+export { TrustTable } from './trust-table';
 export { StatusChip, moduleStatuses, type ModuleStatus } from './status-chip';

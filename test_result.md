@@ -429,6 +429,18 @@ frontend:
           agent: "main"
           comment: "One template at app/solutions/[sector]/page.tsx driven entirely by the sector config. Verified: /solutions/{independent,dental,multi-site,transport,health-systems} return 200 and /solutions/{behavioral,rehab,aesthetics,home-health,urgent-care} return 404, because findSectorBySlug returns undefined and the route calls notFound(). SectorConfig extended with a page block (problem, three failure modes with costs, module order, first 90 days, regulatory notes, proof slots, optional funnel) and dashboard made optional, so the three new sectors need no demo dataset; dashboardSectors is a narrowed type so the dashboard needs no guards. Independent page is written as its own problem (no analyst, no agency, nobody doing the work) rather than a downgraded enterprise pitch, and is first in the registry. Transport page renders its own seven-stage funnel and uses operator vocabulary throughout - 57 uses of journey, 25 booking, 10 referral source, 0 uses of patient/treatment/care-delivered in page copy; the Patient Access Intelligence module was renamed to Enquiry and booking intelligence for that page. The phrase still appears in the global footer module list, which is site chrome. Every page carries ProofSlot placeholders, an awaiting-Document-05 FAQ block and the CTA band."
 
+  - task: "Trust Center and region pages (8.9, 8.10)"
+    implemented: true
+    working: true
+    file: "app/trust/page.tsx, app/regions/[region]/page.tsx, content/trust.ts, components/rumiq/trust-table.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "/trust 200 with all eight numbered sections and 7 dense tables (architecture, data handling, access control, consent, assurance roadmap, subprocessors, incident response) plus an inverted what-we-do-not-claim section. Assurance roadmap labelled a roadmap with states only (In progress / Planned / Intended / Under consideration) and no dates, and an explicit note that no SOC 2 report or HITRUST certification exists. Subprocessor table is a scaffold: headers rendered, a dashed PENDING LEGAL REVIEW row, a visible TODO note and a code TODO. Region pages from one template: /regions/united-states and /regions/gulf 200, unknown region 404. Gulf has the dedicated WhatsApp-as-primary-channel section (consent per channel, measurement, message content staying in the protected plane, Arabic/RTL, platform terms) and both pages end with an amber validate-with-local-counsel callout. Grepped the codebase: the only occurrence of the phrase HIPAA compliant is the sentence denying it."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
@@ -476,3 +488,6 @@ agent_communication:
 
     - agent: "main"
       message: "Prompt 8 complete: five live solutions pages from one template plus a /solutions index, five scaffolded sectors 404ing by design. No backend change. Frontend testing agent NOT invoked - awaiting user permission. Outstanding: narrow-viewport and reduced-motion passes."
+
+    - agent: "main"
+      message: "Prompt 9 complete: Trust Center with all eight sections and the region pages. No backend change. Frontend testing agent NOT invoked - awaiting user permission. Outstanding: narrow-viewport and reduced-motion passes."
