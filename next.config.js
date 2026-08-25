@@ -11,24 +11,37 @@ const previewHost = (() => {
 })();
 
 const nextConfig = {
-  output: 'standalone',
+  /*
+   * 'standalone' is for the container this app is developed in, which runs the
+   * server itself. Vercel builds its own output and traces its own functions;
+   * asking for standalone as well sends the build looking for trace manifests
+   * (.next/next-server.js.nft.json) that its pipeline never wrote, and it dies
+   * with ENOENT. So: standalone everywhere except Vercel.
+   */
+  output: process.env.VERCEL ? undefined : 'standalone',
+
   /*
    * The only images on this site are the four brand lockups: small PNGs and one
-   * WebP, all first-party. Serving them as-is skips the optimiser entirely,
-   * which keeps the runtime free of a native image dependency and keeps the
-   * network trace to exactly the files in /public/brand.
+   * WebP, all first-party. Serving them as-is skips the optimiser entirely, so
+   * the runtime needs no native image dependency and the network trace is
+   * exactly the files in /public/brand. No remotePatterns: nothing is ever
+   * loaded from another origin.
    */
   images: { unoptimized: true },
+
+  /*
+   * lib/og.tsx reads the reverse lockup off disk to inline it into the social
+   * card, because the wordmark must never be redrawn in type. Files under
+   * /public are served statically but are not automatically bundled into a
+   * serverless function, so the tracer is told to include them.
+   */
+  outputFileTracingIncludes: {
+    '/**': ['./public/brand/**'],
+  },
   // Section 8.13 \u2014 /insights article bodies are MDX modules imported through the
   // registry in content/insights/index.ts. MDX pages are not used, so
   // pageExtensions is left alone.
   pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  images: {
-    unoptimized: true,
-    remotePatterns: [
-      { protocol: 'https', hostname: 'avatars.githubusercontent.com', pathname: '/**' },
-    ],
-  },
   // Renamed from experimental.serverComponentsExternalPackages in Next 15
   serverExternalPackages: ['mongodb'],
 
