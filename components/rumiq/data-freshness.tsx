@@ -17,7 +17,7 @@ export type FreshnessState = 'ok' | 'stale' | 'failed';
  * reaches 2.5:1 against paper.
  */
 const dot: Record<FreshnessState, { light: string; inverted: string }> = {
-  ok: { light: 'bg-plane-public', inverted: 'bg-plane-public' },
+  ok: { light: 'bg-plane-public-ink', inverted: 'bg-plane-public' },
   stale: { light: 'bg-boundary-ink', inverted: 'bg-boundary' },
   failed: { light: 'bg-signal-red', inverted: 'bg-signal-red' },
 };

@@ -47,7 +47,7 @@ type LedgerEntry = {
 };
 
 const stateStyle: Record<FieldState, string> = {
-  allowed: 'text-plane-public',
+  allowed: 'text-plane-public-ink',
   redacted: 'text-boundary-ink',
   blocked: 'text-boundary-ink',
   absent: 'text-muted',
@@ -94,7 +94,7 @@ function ControlGroup<T extends string>({
                   'inline-flex items-center rounded-button border px-3 py-2 text-caption transition-colors duration-120',
                   'peer-focus-visible:ring-2 peer-focus-visible:ring-ink peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-paper',
                   checked
-                    ? 'border-ink bg-ink text-paper'
+                    ? 'border-navy bg-navy text-paper'
                     : 'border-rule bg-paper-raised text-muted hover:border-ink/40 hover:text-ink',
                 )}
               >
@@ -188,7 +188,7 @@ export function PolicySandbox({ compact = false }: { compact?: boolean }) {
           <span
             className={cn(
               'font-medium',
-              evaluation.decision === 'ALLOW' ? 'text-plane-public' : 'text-boundary-ink',
+              evaluation.decision === 'ALLOW' ? 'text-plane-public-ink' : 'text-boundary-ink',
             )}
           >
             {evaluation.decision}

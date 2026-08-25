@@ -12,6 +12,13 @@ const previewHost = (() => {
 
 const nextConfig = {
   output: 'standalone',
+  /*
+   * The only images on this site are the four brand lockups: small PNGs and one
+   * WebP, all first-party. Serving them as-is skips the optimiser entirely,
+   * which keeps the runtime free of a native image dependency and keeps the
+   * network trace to exactly the files in /public/brand.
+   */
+  images: { unoptimized: true },
   // Section 8.13 \u2014 /insights article bodies are MDX modules imported through the
   // registry in content/insights/index.ts. MDX pages are not used, so
   // pageExtensions is left alone.

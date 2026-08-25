@@ -70,7 +70,7 @@ export function ModuleGrid({ modules }: { modules: readonly PlatformModule[] }) 
         }}
       >
         <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 z-50 bg-ink/40" />
+          <Dialog.Overlay className="fixed inset-0 z-50 bg-navy/50" />
           <Dialog.Content
             // Radix has no trigger to restore focus to here, since the trigger
             // is a card rather than a Dialog.Trigger. Section 13: focus must go

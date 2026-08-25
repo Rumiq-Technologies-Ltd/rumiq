@@ -4,47 +4,63 @@
 @layer base {
   :root {
     /* ---------------------------------------------------------------
-       Section 5.2 colour tokens, verbatim.
-       Each token is declared twice: once as the canonical hex, once as an
-       HSL triplet consumed by tailwind.config.js so that opacity modifiers
-       work. The two must be edited together.
+       Rumiq Brand Guidelines v1.0.
+
+       The token NAMES are unchanged from the Section 5.2 system, because
+       fifty-odd files reference them. Only the values moved. Two additions
+       were unavoidable and both are documented at the point of use:
+       --plane-public-ink and --boundary-ink, the light-surface text forms of
+       colours that cannot reach 4.5:1 as words on white.
+
+       Each token is declared twice: once as the canonical hex, once as an HSL
+       triplet consumed by tailwind.config.js so opacity modifiers work. The two
+       must be edited together.
        --------------------------------------------------------------- */
 
     /* surfaces */
-    --paper: #f2f4f3; /* default page background, cool paper */
-    --paper-raised: #ffffff; /* cards, panels */
-    --ink: #0f1f1c; /* deep pine-black: body text, dark sections */
-    --paper-dark: #0a1614; /* inverted section background */
+    --paper: #ffffff; /* primary canvas */
+    --paper-alt: #fafbfc; /* Snow: alternate canvas */
+    --paper-raised: #f5f7fa; /* Cloud: cards, panels */
+    --paper-dark: #123a7a; /* Rumiq Navy: inverted sections */
+
+    /* text */
+    --ink: #172033; /* Charcoal: body copy, the default */
+    --ink-strong: #111827; /* Ink: high-contrast text */
+    --muted: #667085; /* Slate: secondary text, captions */
 
     /* the two planes — these carry meaning, use them consistently */
-    --plane-public: #0e7c6b; /* teal: marketing, demand, public data */
-    --plane-protected: #1e3a6b; /* deep clinical blue: PHI, operational systems */
+    --plane-public: #00a696; /* Rumiq Teal: marketing, demand, public data */
+    /* Teal as TEXT on a light surface. Not a new brand colour: Rumiq Teal is
+       3.05:1 on white, and the guidelines say plainly that it is not for normal
+       body copy there. Fills, borders, icons and large type keep --plane-public;
+       small teal words use this. 5.4:1 on white, 5.0:1 on Cloud. */
+    --plane-public-ink: #00786c;
+    --plane-protected: #123a7a; /* Rumiq Navy: PHI, operational systems */
 
-    /* the boundary — sparingly, only for policy moments */
+    /* the boundary — a functional status colour, never brand, never marketing.
+       It is not in the brand palette on purpose: it exists so a policy state
+       reads as a policy state rather than as a Rumiq accent. */
     --boundary: #d98a16; /* amber: blocked, redacted, policy-enforced */
-    /* The same boundary token as TEXT on a light surface. Not a new colour in
-       the palette: --boundary reaches only 2.5:1 against --paper, so amber
-       words on paper fail WCAG 2.2 AA 1.4.3 at any size. Fills, borders,
-       underlines and dark surfaces keep --boundary; amber text on paper uses
-       this. Ratio 4.6:1 on --paper, 5.1:1 on --paper-raised. */
-    --boundary-ink: #9c6200;
+    --boundary-ink: #9c6200; /* the same, as text on a light surface */
 
     /* utility */
-    --rule: #cbd5d1; /* hairlines, dividers, table borders */
-    --muted: #5c6b67; /* secondary text, captions */
-    --signal-red: #a8342a; /* status signal only: missed calls, red data-quality chips */
+    --rule: #e8ecf1; /* Mist: hairlines, dividers, table borders */
+    --signal-red: #a8342a; /* status signal only */
 
     /* HSL triplets consumed by Tailwind */
-    --paper-hsl: 150 8.3% 95.3%;
-    --paper-raised-hsl: 0 0% 100%;
-    --ink-hsl: 168.8 34.8% 9%;
-    --paper-dark-hsl: 170 37.5% 6.3%;
-    --plane-public-hsl: 170.7 79.7% 27.1%;
-    --plane-protected-hsl: 218.2 56.2% 26.9%;
+    --paper-hsl: 0 0% 100%;
+    --paper-alt-hsl: 210 25% 98.4%;
+    --paper-raised-hsl: 216 33.3% 97.1%;
+    --paper-dark-hsl: 216.9 74.3% 27.5%;
+    --ink-hsl: 220.7 37.8% 14.5%;
+    --ink-strong-hsl: 220.9 39.3% 11%;
+    --muted-hsl: 220.6 13.2% 46.1%;
+    --plane-public-hsl: 174.2 100% 32.5%;
+    --plane-public-ink-hsl: 174 100% 23.5%;
+    --plane-protected-hsl: 216.9 74.3% 27.5%;
     --boundary-hsl: 35.7 81.6% 46.9%;
     --boundary-ink-hsl: 37.7 100% 30.6%;
-    --rule-hsl: 156 10.6% 81.6%;
-    --muted-hsl: 164 7.5% 39%;
+    --rule-hsl: 213.3 24.3% 92.7%;
     --signal-red-hsl: 4.3 60.5% 41.2%;
 
     /* shadcn/ui contract, pointed at the Rumiq palette */
@@ -52,9 +68,9 @@
     --foreground: var(--ink-hsl);
     --card: var(--paper-raised-hsl);
     --card-foreground: var(--ink-hsl);
-    --popover: var(--paper-raised-hsl);
+    --popover: var(--paper-hsl);
     --popover-foreground: var(--ink-hsl);
-    --primary: var(--ink-hsl);
+    --primary: var(--paper-dark-hsl);
     --primary-foreground: var(--paper-hsl);
     --secondary: var(--paper-raised-hsl);
     --secondary-foreground: var(--ink-hsl);
@@ -65,8 +81,9 @@
     --destructive-foreground: var(--paper-hsl);
     --border: var(--rule-hsl);
     --input: var(--rule-hsl);
-    --ring: var(--ink-hsl);
-    --radius: 4px;
+    --ring: var(--paper-dark-hsl);
+    /* Brand shape language: buttons 8, cards 12, large containers 16. */
+    --radius: 8px;
   }
 
   * {
@@ -89,13 +106,56 @@
     text-wrap: balance;
   }
 
+
+  /* ---------------------------------------------------------------
+     Brand Guidelines: Navy carries authority, and headings are where it
+     does that work. Applied at the element level so no page has to
+     remember it.
+
+     Dark surfaces opt out: on Navy, a Navy heading is invisible. Every
+     inverted section in this codebase is marked with bg-paper-dark or
+     bg-navy, and components that set their own light heading colour with
+     a utility class win anyway, because utilities beat element selectors.
+     --------------------------------------------------------------- */
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: hsl(var(--paper-dark-hsl));
+  }
+
+  /* White, not `inherit`: inherit resolves to body Charcoal, which is 1.6:1 on
+     Navy. Components that want a softer inverted tone set it with a utility
+     class, and utilities beat this. */
+  :is(.bg-paper-dark, .bg-navy) :is(h1, h2, h3, h4) {
+    color: hsl(var(--paper-hsl));
+  }
+
+  :is(.bg-paper-dark, .bg-navy) :is(strong, b) {
+    color: inherit;
+  }
+
+  /* Body copy is Charcoal, secondary text is Slate, and the strongest
+     contrast token is reserved for the few places that need it. */
+  strong,
+  b {
+    color: hsl(var(--ink-strong-hsl));
+  }
+
+  /* Optical refinement the brand asks for implicitly by specifying Manrope
+     and Inter: both are designed with these features on. */
+  body {
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+  }
+
   /* Section 13 — visible focus rings, 2px, offset 2px, never removed. */
   :focus-visible {
-    @apply outline-none ring-2 ring-ink ring-offset-2 ring-offset-paper;
+    @apply outline-none ring-2 ring-navy ring-offset-2 ring-offset-paper;
   }
 
   ::selection {
-    @apply bg-ink text-paper;
+    @apply bg-navy text-paper;
   }
 }
 
@@ -117,3 +177,92 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Motion.
+
+   The brand's shape language is rounded arcs and asymmetric flow, so entrances
+   move rather than blink. Every value here is on the calm side on purpose: this
+   is a product for people making budget decisions, not a showreel.
+
+   The pending state is only ever applied by components/rumiq/scroll-reveal.tsx,
+   and only to elements below the fold. CSS alone never hides anything, so a
+   failed script or a missing IntersectionObserver cannot cost a reader the page.
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal='pending'] {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+
+  [data-reveal='in'] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 720ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 720ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Lists and grids stagger, so a row of cards reads left to right rather than
+     landing as one slab. Eight steps is enough for every grid on the site. */
+  [data-reveal='pending'] :is(ul, ol, dl) > * {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+
+  [data-reveal='in'] :is(ul, ol, dl) > * {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 560ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 560ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-reveal='in'] :is(ul, ol, dl) > *:nth-child(1) { transition-delay: 60ms; }
+  [data-reveal='in'] :is(ul, ol, dl) > *:nth-child(2) { transition-delay: 120ms; }
+  [data-reveal='in'] :is(ul, ol, dl) > *:nth-child(3) { transition-delay: 180ms; }
+  [data-reveal='in'] :is(ul, ol, dl) > *:nth-child(4) { transition-delay: 240ms; }
+  [data-reveal='in'] :is(ul, ol, dl) > *:nth-child(5) { transition-delay: 300ms; }
+  [data-reveal='in'] :is(ul, ol, dl) > *:nth-child(6) { transition-delay: 360ms; }
+  [data-reveal='in'] :is(ul, ol, dl) > *:nth-child(7) { transition-delay: 420ms; }
+  [data-reveal='in'] :is(ul, ol, dl) > *:nth-child(n + 8) { transition-delay: 480ms; }
+
+  /* The first section of every page rises on load. No script involved, so it
+     cannot leave anything hidden. */
+  main > section:first-of-type > div,
+  main > article > header > div {
+    animation: rumiq-rise 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes rumiq-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Interaction. Cards lift, rules thicken, links underline properly. Sub-200ms,
+   because a hover that takes longer than that feels broken. */
+.card-lift {
+  transition:
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 220ms ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -20px hsl(var(--paper-dark-hsl) / 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-lift:hover {
+    transform: none;
+  }
+}

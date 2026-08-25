@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { fontVariables } from '@/lib/fonts';
-import { BoundaryRule, ConsentBanner, Footer, Header, JsonLd } from '@/components/rumiq';
+import { BoundaryRule, ConsentBanner, Footer, Header, JsonLd, ScrollReveal } from '@/components/rumiq';
 import { BASE_URL, organisationJsonLd, robotsDirective, websiteJsonLd } from '@/lib/seo';
 import { tokenHex } from '@/lib/design-tokens';
 
@@ -46,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer />
         <ConsentBanner />
+        <ScrollReveal />
         {/* Section 13 — organisation and site nodes, once, site-wide. */}
         <JsonLd data={[organisationJsonLd(), websiteJsonLd()]} />
       </body>

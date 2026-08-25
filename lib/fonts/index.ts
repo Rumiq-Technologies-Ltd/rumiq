@@ -1,22 +1,27 @@
 import localFont from 'next/font/local';
 
 /**
- * Section 5.3 / Section 12 — three faces, three jobs, all self-hosted.
+ * Three faces, three jobs, all self-hosted.
  *
  * Files are vendored in ./files as woff2, Latin subset only. Nothing is
  * requested from fonts.googleapis.com or fonts.gstatic.com at runtime:
  * hotlinking would leak visitor IPs to a third party, which Section 4.3
  * forbids outright.
  *
- * Bricolage Grotesque and Public Sans ship as variable fonts, so one file
- * covers both required weights. The declared weight range is clamped to the
- * weights the design system actually uses.
+ * Brand Guidelines v1.0: Manrope for display and headings, Inter for body.
+ * Both ship as variable fonts, so one file per face covers every weight the
+ * design system uses. The ranges below are clamped to those weights.
+ *
+ * IBM Plex Mono is kept deliberately, and only for tabular figures, record IDs
+ * and audit lines in the demos. The brand kit names no monospace face because
+ * it was not written for a data product; a call ID set in Inter is harder to
+ * scan and easier to misread. It never appears in a heading.
  *
  * Arabic subsetting for /regions/gulf is a later addition (Section 12).
  */
 
 export const fontDisplay = localFont({
-  src: [{ path: './files/bricolage-grotesque-var.woff2', weight: '600 700', style: 'normal' }],
+  src: [{ path: './files/manrope-var.woff2', weight: '500 700', style: 'normal' }],
   variable: '--font-display',
   display: 'swap',
   preload: true,
@@ -25,7 +30,7 @@ export const fontDisplay = localFont({
 });
 
 export const fontBody = localFont({
-  src: [{ path: './files/public-sans-var.woff2', weight: '400 500', style: 'normal' }],
+  src: [{ path: './files/inter-var.woff2', weight: '400 600', style: 'normal' }],
   variable: '--font-body',
   display: 'swap',
   preload: true,

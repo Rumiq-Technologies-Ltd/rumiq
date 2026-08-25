@@ -22,7 +22,7 @@ export const metadata = pageMetadata(seo);
 /** Privacy-class colour coding for the data model table. Teal public, ink
  *  operational, amber policy, blue protected — consistent with Section 5.2. */
 const classStyle: Record<string, string> = {
-  public: 'text-plane-public border-plane-public',
+  public: 'text-plane-public-ink border-plane-public',
   operational: 'text-ink border-ink',
   policy: 'text-boundary-ink border-boundary-ink',
   protected: 'text-plane-protected border-plane-protected',

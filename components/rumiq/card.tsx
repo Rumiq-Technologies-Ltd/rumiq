@@ -23,8 +23,7 @@ export function Card({
         'rounded-card border',
         inverted ? 'border-paper/15 bg-paper/5' : 'border-rule bg-paper-raised',
         interactive &&
-          'transition-[transform,border-color] duration-120 hover:-translate-y-[2px] motion-reduce:transform-none ' +
-            (inverted ? 'hover:border-paper/40' : 'hover:border-ink/40'),
+          'card-lift ' + (inverted ? 'hover:border-paper/40' : 'hover:border-navy/40'),
         className,
       )}
     >

@@ -24,35 +24,35 @@ export type ColourToken = {
 export const colourTokens: ColourToken[] = [
   {
     name: 'paper',
-    hex: '#F2F4F3',
+    hex: '#FFFFFF',
     swatchClass: 'bg-paper',
     group: 'surface',
     usage: 'Default page background. Cool paper, deliberately not warm cream.',
   },
   {
     name: 'paper-raised',
-    hex: '#FFFFFF',
+    hex: '#F5F7FA',
     swatchClass: 'bg-paper-raised',
     group: 'surface',
     usage: 'Cards and panels lifted off the page.',
   },
   {
     name: 'ink',
-    hex: '#0F1F1C',
+    hex: '#172033',
     swatchClass: 'bg-ink',
     group: 'surface',
     usage: 'Deep pine-black. Body text, primary buttons, dark sections.',
   },
   {
     name: 'paper-dark',
-    hex: '#0A1614',
+    hex: '#123A7A',
     swatchClass: 'bg-paper-dark',
     group: 'surface',
     usage: 'Inverted section background. The problem section, the CTA band.',
   },
   {
     name: 'plane-public',
-    hex: '#0E7C6B',
+    hex: '#00A696',
     swatchClass: 'bg-plane-public',
     group: 'plane',
     semantic: true,
@@ -60,7 +60,7 @@ export const colourTokens: ColourToken[] = [
   },
   {
     name: 'plane-protected',
-    hex: '#1E3A6B',
+    hex: '#123A7A',
     swatchClass: 'bg-plane-protected',
     group: 'plane',
     semantic: true,
@@ -76,6 +76,30 @@ export const colourTokens: ColourToken[] = [
       'Amber. Only where a policy decision is made or shown: blocked events, redacted fields, consent gates, the boundary rule. Never on a button or a heading.',
   },
   {
+    name: 'paper-alt',
+    hex: '#FAFBFC',
+    swatchClass: 'bg-paper-alt',
+    group: 'surface',
+    semantic: false,
+    usage: 'Snow. The alternate canvas, for a section that needs to separate from white without becoming a panel.',
+  },
+  {
+    name: 'ink-strong',
+    hex: '#111827',
+    swatchClass: 'bg-ink-strong',
+    group: 'surface',
+    semantic: false,
+    usage: 'Ink. The high-contrast text token, for emphasis inside body copy. Body copy itself is Charcoal.',
+  },
+  {
+    name: 'plane-public-ink',
+    hex: '#00786C',
+    swatchClass: 'bg-plane-public-ink',
+    group: 'plane',
+    semantic: true,
+    usage: 'Rumiq Teal as small text on a light surface. The brand teal is 3.05:1 on white and the guidelines rule it out for body copy there; fills, icons and large type keep the brand teal.',
+  },
+  {
     name: 'boundary-ink',
     hex: '#9C6200',
     swatchClass: 'bg-boundary-ink',
@@ -86,14 +110,14 @@ export const colourTokens: ColourToken[] = [
   },
   {
     name: 'rule',
-    hex: '#CBD5D1',
+    hex: '#E8ECF1',
     swatchClass: 'bg-rule',
     group: 'utility',
     usage: 'Hairlines, dividers, table borders, input borders.',
   },
   {
     name: 'muted',
-    hex: '#5C6B67',
+    hex: '#667085',
     swatchClass: 'bg-muted',
     group: 'utility',
     usage: 'Secondary text and captions. Contrast against paper verified per Section 13.',
@@ -113,7 +137,7 @@ export type TypeStep = {
   className: string;
   size: string;
   lineHeight: string;
-  face: 'Bricolage Grotesque' | 'Public Sans' | 'IBM Plex Mono';
+  face: 'Manrope' | 'Inter' | 'IBM Plex Mono';
   notes?: string;
 };
 
@@ -123,7 +147,7 @@ export const typeScale: TypeStep[] = [
     className: 'font-display font-bold text-display-xl',
     size: 'clamp(2.75rem, 6vw, 5.25rem)',
     lineHeight: '0.98',
-    face: 'Bricolage Grotesque',
+    face: 'Manrope',
     notes: 'Tracking -0.03em. Sentence case, never all caps.',
   },
   {
@@ -131,28 +155,28 @@ export const typeScale: TypeStep[] = [
     className: 'font-display font-semibold text-display-l',
     size: 'clamp(2.25rem, 4.5vw, 3.75rem)',
     lineHeight: '1.02',
-    face: 'Bricolage Grotesque',
+    face: 'Manrope',
   },
   {
     name: 'h2',
     className: 'font-display font-semibold text-h2',
     size: 'clamp(1.75rem, 3vw, 2.75rem)',
     lineHeight: '1.08',
-    face: 'Bricolage Grotesque',
+    face: 'Manrope',
   },
   {
     name: 'h3',
     className: 'font-display font-semibold text-h3',
     size: 'clamp(1.25rem, 2vw, 1.625rem)',
     lineHeight: '1.2',
-    face: 'Bricolage Grotesque',
+    face: 'Manrope',
   },
   {
     name: 'body-l',
     className: 'text-body-l',
     size: '1.125rem',
     lineHeight: '1.6',
-    face: 'Public Sans',
+    face: 'Inter',
     notes: 'Measure capped at 68 characters. Never full-bleed paragraphs.',
   },
   {
@@ -160,14 +184,14 @@ export const typeScale: TypeStep[] = [
     className: 'text-body',
     size: '1rem',
     lineHeight: '1.65',
-    face: 'Public Sans',
+    face: 'Inter',
   },
   {
     name: 'caption',
     className: 'text-caption text-muted',
     size: '0.875rem',
     lineHeight: '1.5',
-    face: 'Public Sans',
+    face: 'Inter',
   },
   {
     name: 'mono-eyebrow',

@@ -16,6 +16,7 @@ import {
 import { planeBg, planeShortLabel, planeText, type Plane } from '@/lib/planes';
 import { Button } from './button';
 import { Eyebrow } from './eyebrow';
+import { Logo } from './logo';
 
 /**
  * Section 7.1 — sticky, 72px, paper at 92% with backdrop blur and a bottom
@@ -112,18 +113,21 @@ export function Header() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 border-b border-rule bg-paper/92 backdrop-blur-md transition-[height] duration-300',
+        'sticky top-0 z-50 border-b border-rule bg-paper/90 backdrop-blur-md transition-[height] duration-300',
         compact ? 'h-14' : 'h-18',
       )}
       onMouseLeave={scheduleClose}
     >
       <div className="mx-auto flex h-full max-w-bleed items-center gap-6 px-6 lg:pl-gutter">
+        {/* The lockup, not type. Brand Guidelines: the wordmark is never
+            redrawn, recoloured or restyled. 148px sits above the 120px minimum
+            and inside the preferred 160px band once clear space is counted. */}
         <Link
           href="/"
-          className="font-display text-h3 font-bold tracking-[-0.03em] lowercase"
+          className="shrink-0 rounded-input transition-opacity duration-150 hover:opacity-80"
           aria-label={`${site.name} home`}
         >
-          {site.wordmark}
+          <Logo variant="primary" width={148} priority />
         </Link>
 
         {/* Desktop navigation */}
@@ -287,7 +291,7 @@ export function Header() {
           className="fixed inset-0 z-50 overflow-y-auto bg-paper lg:hidden"
         >
           <div className="flex h-18 items-center justify-between border-b border-rule px-6">
-            <span className="font-display text-h3 font-bold lowercase">{site.wordmark}</span>
+            <Logo variant="primary" width={132} />
             <button
               type="button"
               onClick={() => setMobileOpen(false)}

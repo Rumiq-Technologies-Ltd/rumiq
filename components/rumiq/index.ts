@@ -16,6 +16,8 @@ export { Footer } from './footer';
 export { RumiqForm, type FormSuccessCopy } from './form';
 export { JsonLd } from './json-ld';
 export { LegalScaffold } from './legal-scaffold';
+export { Logo } from './logo';
+export { ScrollReveal } from './scroll-reveal';
 export { FunnelTrack, type FunnelStage } from './funnel-track';
 export { Header } from './header';
 export { Hero } from './hero';

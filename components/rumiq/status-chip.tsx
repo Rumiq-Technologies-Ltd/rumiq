@@ -21,7 +21,7 @@ const statusLabel: Record<ModuleStatus, string> = {
 };
 
 const statusStyle: Record<ModuleStatus, string> = {
-  live: 'bg-ink text-paper border-ink',
+  live: 'bg-navy text-paper border-navy',
   build: 'bg-transparent text-ink border-ink',
   design: 'bg-transparent text-muted border-muted',
   road: 'bg-transparent text-muted border-rule border-dashed',

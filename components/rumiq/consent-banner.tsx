@@ -152,7 +152,7 @@ export function ConsentBanner() {
                         }
                         className={cn(
                           'relative h-6 w-11 shrink-0 rounded-button border transition-colors duration-120',
-                          checked ? 'border-ink bg-ink' : 'border-rule bg-paper-raised',
+                          checked ? 'border-navy bg-navy' : 'border-rule bg-paper-raised',
                           category.locked && 'cursor-not-allowed opacity-60',
                         )}
                       >

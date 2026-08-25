@@ -3,6 +3,7 @@ import { footerColumns } from '@/content/navigation';
 import { legalDisclaimer, site } from '@/content/site';
 import { Eyebrow } from './eyebrow';
 import { CookiePreferencesButton } from './cookie-preferences-button';
+import { Logo } from './logo';
 
 /**
  * Section 7.2 — four columns plus a base bar carrying the entity, the
@@ -14,6 +15,10 @@ export function Footer() {
   return (
     <footer className="border-t border-rule bg-paper">
       <div className="mx-auto max-w-content px-6 py-16 lg:pl-gutter">
+        {/* The lockup closes the page. Primary version, because the footer is
+            paper. 132px clears the 120px minimum. */}
+        <Logo variant="primary" width={132} className="mb-12" />
+
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {footerColumns.map((column) => (
             <div key={column.title}>

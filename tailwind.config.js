@@ -34,14 +34,26 @@ module.exports = {
         /* Rumiq surfaces */
         paper: {
           DEFAULT: token('paper'),
+          alt: token('paper-alt'),
           raised: token('paper-raised'),
           dark: token('paper-dark'),
         },
-        ink: token('ink'),
+        ink: {
+          DEFAULT: token('ink'),
+          strong: token('ink-strong'),
+        },
+        /* Brand primaries, by their brand names, for the few places that read
+           better said out loud than through a surface token. */
+        navy: token('paper-dark'),
+        teal: token('plane-public'),
 
         /* The two planes. Semantic, not decorative. */
         plane: {
-          public: token('plane-public'),
+          public: {
+            DEFAULT: token('plane-public'),
+            /* Rumiq Teal is 3.05:1 on white, so small teal words use this. */
+            ink: token('plane-public-ink'),
+          },
           protected: token('plane-protected'),
         },
 
@@ -65,15 +77,15 @@ module.exports = {
            primitives inherit the design system without restyling. */
         border: token('rule'),
         input: token('rule'),
-        ring: token('ink'),
+        ring: token('paper-dark'),
         background: token('paper'),
         foreground: token('ink'),
-        primary: { DEFAULT: token('ink'), foreground: token('paper') },
+        primary: { DEFAULT: token('paper-dark'), foreground: token('paper') },
         secondary: { DEFAULT: token('paper-raised'), foreground: token('ink') },
         accent: { DEFAULT: token('paper-raised'), foreground: token('ink') },
         destructive: { DEFAULT: token('signal-red'), foreground: token('paper') },
         card: { DEFAULT: token('paper-raised'), foreground: token('ink') },
-        popover: { DEFAULT: token('paper-raised'), foreground: token('ink') },
+        popover: { DEFAULT: token('paper'), foreground: token('ink') },
       },
 
       fontFamily: {
@@ -84,27 +96,36 @@ module.exports = {
 
       /* Section 5.3 — fluid scale, clamped between mobile and desktop. */
       fontSize: {
-        'display-xl': ['clamp(2.75rem, 6vw, 5.25rem)', { lineHeight: '0.98', letterSpacing: '-0.03em' }],
-        'display-l': ['clamp(2.25rem, 4.5vw, 3.75rem)', { lineHeight: '1.02', letterSpacing: '-0.03em' }],
-        h2: ['clamp(1.75rem, 3vw, 2.75rem)', { lineHeight: '1.08', letterSpacing: '-0.02em' }],
-        h3: ['clamp(1.25rem, 2vw, 1.625rem)', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
-        'body-l': ['1.125rem', { lineHeight: '1.6' }],
+        /* Brand Guidelines type scale. Display XL 64-72, H1 48-56, H2 36-40,
+           H3 26-30, Lead 20, Body 16, Small 14, Caption 12. Fluid between the
+           stated bounds rather than stepped, and tracking kept restrained:
+           the guidelines ask for no exaggerated tracking. */
+        'display-xl': ['clamp(2.75rem, 5.5vw, 4.5rem)', { lineHeight: '1.04', letterSpacing: '-0.022em' }],
+        'display-l': ['clamp(2.25rem, 4.2vw, 3.5rem)', { lineHeight: '1.07', letterSpacing: '-0.02em' }],
+        h2: ['clamp(1.75rem, 3vw, 2.5rem)', { lineHeight: '1.15', letterSpacing: '-0.015em' }],
+        h3: ['clamp(1.375rem, 2vw, 1.875rem)', { lineHeight: '1.28', letterSpacing: '-0.01em' }],
+        'body-l': ['1.25rem', { lineHeight: '1.6' }],
         body: ['1rem', { lineHeight: '1.65' }],
-        caption: ['0.875rem', { lineHeight: '1.5' }],
-        'mono-eyebrow': ['0.75rem', { lineHeight: '1.2', letterSpacing: '0.08em' }],
+        caption: ['0.875rem', { lineHeight: '1.55' }],
+        /* Small uppercase labels, never headlines. Tracking pulled back from
+           0.08em to 0.045em per the brand's note on exaggerated tracking. */
+        'mono-eyebrow': ['0.75rem', { lineHeight: '1.25', letterSpacing: '0.045em' }],
       },
 
       /* Section 5.4 — nothing rounder than 4px. */
+      /* Brand shape language: rounded arcs, not hard corners.
+         Buttons 8, cards 12, large containers 16. */
       borderRadius: {
         none: '0px',
-        sm: '2px',
-        DEFAULT: '4px',
-        md: '4px',
-        lg: '4px',
-        xl: '4px',
-        card: '4px',
-        input: '4px',
-        button: '2px',
+        sm: '4px',
+        DEFAULT: '8px',
+        md: '8px',
+        lg: '12px',
+        xl: '16px',
+        card: '12px',
+        input: '8px',
+        button: '8px',
+        panel: '16px',
       },
 
       spacing: {

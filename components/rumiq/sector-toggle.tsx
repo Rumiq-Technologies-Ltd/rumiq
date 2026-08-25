@@ -72,7 +72,7 @@ export function SectorToggle({
               }}
               className={cn(
                 'rounded-button px-4 py-2 font-sans text-caption font-medium transition-colors duration-120',
-                active ? 'bg-ink text-paper' : 'text-muted hover:text-ink',
+                active ? 'bg-navy text-paper' : 'text-muted hover:text-ink',
               )}
             >
               {sector.label}

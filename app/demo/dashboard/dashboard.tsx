@@ -298,7 +298,7 @@ export function GrowthDashboard() {
                           className={cn(
                             'inline-flex min-w-[72px] items-center justify-between gap-2 rounded-sm border px-2 py-1 font-mono text-caption tabular-nums',
                             over && 'border-boundary-ink bg-boundary/10 text-boundary-ink',
-                            under && 'border-plane-public/40 bg-plane-public/5 text-plane-public',
+                            under && 'border-plane-public/40 bg-plane-public/5 text-plane-public-ink',
                             !over && !under && 'border-rule text-ink',
                           )}
                         >
@@ -314,7 +314,7 @@ export function GrowthDashboard() {
         </div>
         <p className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-mono text-mono-eyebrow uppercase text-muted">
           <span className="text-boundary-ink">Over 100% — over-committed</span>
-          <span className="text-plane-public">Under 60% — under-used</span>
+          <span className="text-plane-public-ink">Under 60% — under-used</span>
         </p>
       </section>
 
@@ -330,7 +330,7 @@ export function GrowthDashboard() {
                 </p>
                 <h3 className="mt-3 text-h3 font-semibold">{action.title}</h3>
                 <p className="mt-3 text-caption text-muted">{action.rationale}</p>
-                <p className="mt-4 font-mono text-mono-eyebrow uppercase text-plane-public">
+                <p className="mt-4 font-mono text-mono-eyebrow uppercase text-plane-public-ink">
                   {action.effect}
                 </p>
               </li>

@@ -32,7 +32,7 @@ const auditTimestamp = (index: number) =>
   new Date(LEDGER_EPOCH + index * 41_000).toISOString().replace('.000', '');
 
 const outcomeStyle = {
-  booked: 'text-plane-public',
+  booked: 'text-plane-public-ink',
   not_booked: 'text-muted',
   missed: 'text-signal-red',
 } as const;
@@ -181,7 +181,7 @@ export function CallIntelligence() {
                       <span
                         className={cn(
                           'font-mono text-caption tabular-nums',
-                          low ? 'text-boundary-ink' : 'text-plane-public',
+                          low ? 'text-boundary-ink' : 'text-plane-public-ink',
                         )}
                       >
                         {Math.round(c.confidence * 100)}%

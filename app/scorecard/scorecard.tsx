@@ -197,7 +197,7 @@ export function Scorecard() {
             className="mt-4 h-1 w-full bg-rule"
           >
             <div
-              className="h-1 bg-ink transition-[width] duration-300 ease-instrument motion-reduce:transition-none"
+              className="h-1 bg-navy transition-[width] duration-300 ease-instrument motion-reduce:transition-none"
               style={{ width: `${percent}%` }}
             />
           </div>
@@ -227,7 +227,7 @@ export function Scorecard() {
                     htmlFor={id}
                     className={cn(
                       'flex cursor-pointer items-start gap-4 rounded-card border p-4 transition-colors duration-120',
-                      selected ? 'border-ink bg-ink/5' : 'border-rule hover:border-ink/40',
+                      selected ? 'border-navy bg-navy/5' : 'border-rule hover:border-ink/40',
                     )}
                   >
                     <input
@@ -341,7 +341,7 @@ export function Scorecard() {
           aria-hidden
           className="mt-8 h-1 w-full bg-rule"
         >
-          <div className="h-1 bg-ink" style={{ width: `${Math.round((shown.total / MAX_SCORE) * 100)}%` }} />
+          <div className="h-1 bg-navy" style={{ width: `${Math.round((shown.total / MAX_SCORE) * 100)}%` }} />
         </div>
       </div>
 

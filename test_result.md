@@ -29,6 +29,39 @@
 ##         -comment: "Detailed comment about status"
 ##
 ## frontend:
+  - task: "Brand Guidelines v1.0 rebrand: palette, typography, logo, radii"
+    implemented: true
+    working: true
+    file: "app/globals.css, tailwind.config.js, lib/fonts/index.ts, lib/design-tokens.ts, components/rumiq/logo.tsx, public/brand/*, components/rumiq/header.tsx, components/rumiq/footer.tsx, components/rumiq/button.tsx, lib/og.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Token NAMES were kept and only their values moved, so fifty-odd files rebranded without a single class rename. Navy #123A7A, Teal #00A696, Ink #111827, Charcoal #172033, Slate #667085, Mist #E8ECF1, Cloud #F5F7FA, Snow #FAFBFC. White is now the canvas, Cloud the panel, Navy the inverted surface. Radii 8/12/16. Fonts: Manrope 500-700 and Inter 400-600, self-hosted as woff2 copied out of @fontsource-variable at build time, so still zero third-party requests; Bricolage Grotesque and Public Sans deleted. IBM Plex Mono kept for tabular figures and record IDs only, per the agreed exception. Headings are Navy via an element-level rule with an explicit white override inside .bg-paper-dark and .bg-navy. Logo: four real assets in /public/brand behind one <Logo> component that refuses to render the full lockup below the 120px minimum and swaps to the symbol instead; the wordmark is never redrawn in type, including in the OG card, which now inlines the reverse lockup as a data URI. app/icon.png and app/apple-icon.png come from the mark. images.unoptimized is set because the only images on the site are these four first-party files. Verified in-browser: h1 renders Manrope in rgb(18,58,122), body Inter in rgb(23,32,51), the header lockup loads at its natural 800x222, and all 31 routes still 200."
+  - task: "Scroll and interaction motion"
+    implemented: true
+    working: true
+    file: "components/rumiq/scroll-reveal.tsx, app/globals.css, components/rumiq/card.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "One IntersectionObserver in the root layout, no motion library. Section inner containers fade and rise on entry; lists, grids and definition lists stagger their children in eight steps. Two safety rules: only elements BELOW the fold are ever hidden, so nothing flashes and the hero never animates out from under the reader, and the pending state is only ever set by script, so with JavaScript off or without IntersectionObserver every section is simply visible - CSS alone can never hide content. prefers-reduced-motion short-circuits the whole thing before anything is hidden. The first section of each page rises via a pure CSS keyframe, no script. Cards lift 3px on hover with a navy-tinted shadow, disabled under reduced motion. Browser-verified on /platform and /about: pending counts drop as sections enter, cards visibly stagger."
+  - task: "Contrast re-audit against the brand palette"
+    implemented: true
+    working: true
+    file: "tests/contrast.mjs, app/globals.css, components/rumiq/data-freshness.tsx, components/rumiq/audit-line.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Rewritten for the new palette and passing. Findings worth recording. Rumiq Teal is 3.05:1 on white and the guidelines themselves rule it out for body copy, so --plane-public-ink #00786C was added as the light-surface text form, exactly as --boundary-ink already was for amber. The dark surface moved from near-black to Navy, which broke two pairs that used to pass: teal on Navy is 3.61:1 and amber on Navy is 3.97:1, both under 4.5, so inverted audit-line decision words are now white and the colour is carried by the row accent, which only needs 3:1. The fresh-state dot moved to teal-ink because brand teal on Cloud is 2.84:1, under the 3:1 non-text threshold. Two real bugs surfaced on the way: bg-paper/92 on the header was never a valid Tailwind opacity step, so the header had always been fully transparent - invisible on a white page, glaring once sections turned Navy, now bg-paper/90; and the first pass reset dark-section headings to `inherit`, which resolved to Charcoal on Navy at 1.6:1, now explicitly white."
   - task: "Section 8.11 /approach with the phase table rendered directly"
     implemented: true
     working: true
@@ -643,3 +676,6 @@ agent_communication:
 
     - agent: "main"
       message: "Document 05 placed. No backend change in this step, so no backend retest needed - the two form routes were already verified 40/40. Frontend still not run through the testing agent (no authorisation); I verified FAQ placement, order, flag gating and pilot-variant gating programmatically across all ten pages, plus a browser pass on /trust. Outstanding, unchanged: narrow-viewport pass, reduced-motion pass, legal copy, real contact addresses, TTF subset for brand-exact OG cards, and sign-off on the --boundary-ink token."
+
+    - agent: "main"
+      message: "Rebrand to Brand Guidelines v1.0 done, with motion. No backend change, so no backend retest. Verified myself in a real browser on /, /platform, /about and /demo/dashboard plus a 31-route status sweep and the contrast audit. Two latent bugs were found and fixed while doing it: an invalid Tailwind opacity step had left the sticky header transparent site-wide, and dark-section headings needed an explicit white rather than inherit. Known gaps: OG card headline type is not Manrope yet because satori cannot read woff2 and every vendored face is woff2 (the wordmark itself is the real asset, inlined); the footer is still paper rather than Navy; no narrow-viewport or reduced-motion pass has been run since the rebrand."

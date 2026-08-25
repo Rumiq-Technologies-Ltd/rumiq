@@ -21,7 +21,7 @@ import {
  * after mount.
  */
 const stateStyle: Record<FieldState, string> = {
-  allowed: 'text-plane-public',
+  allowed: 'text-plane-public-ink',
   redacted: 'text-boundary-ink',
   blocked: 'text-boundary-ink',
   absent: 'text-muted',
@@ -57,7 +57,7 @@ export function PolicySandboxStaticFrame({ compact = false }: { compact?: boolea
                   className={cn(
                     'inline-flex items-center rounded-button border px-3 py-2 text-caption',
                     option.id === group.selected
-                      ? 'border-ink bg-ink text-paper'
+                      ? 'border-navy bg-navy text-paper'
                       : 'border-rule bg-paper-raised text-muted',
                   )}
                 >
@@ -72,7 +72,7 @@ export function PolicySandboxStaticFrame({ compact = false }: { compact?: boolea
       <div className="flex flex-wrap items-center gap-x-8 gap-y-3 border-b border-rule bg-paper px-6 py-5 font-mono text-caption">
         <p>
           <span className="text-muted">decision=</span>
-          <span className="font-medium text-plane-public">{evaluation.decision}</span>
+          <span className="font-medium text-plane-public-ink">{evaluation.decision}</span>
         </p>
         <p>
           <span className="text-muted">fields_sent=</span>

@@ -13,14 +13,15 @@ export type AuditDecision = 'ALLOW' | 'REDACT' | 'BLOCK';
 export type AuditFields = Record<string, string | number>;
 
 /**
- * On a dark surface the amber token itself is legible (6.7:1). On a light one it
- * is not (2.5:1), so the light form of the token is used there instead. Same
- * policy meaning, two surfaces.
+ * The dark surface is now Rumiq Navy rather than near-black, and against Navy
+ * neither amber (4.0:1) nor teal (3.6:1) clears 4.5:1 as a small label. So on
+ * dark the decision word is white and the colour is carried by the row accent,
+ * which only has to reach 3:1. On light, each token uses its text form.
  */
 const decisionStyle: Record<AuditDecision, { light: string; inverted: string }> = {
-  ALLOW: { light: 'text-plane-public', inverted: 'text-plane-public' },
-  REDACT: { light: 'text-boundary-ink', inverted: 'text-boundary' },
-  BLOCK: { light: 'text-boundary-ink', inverted: 'text-boundary' },
+  ALLOW: { light: 'text-plane-public-ink', inverted: 'text-paper' },
+  REDACT: { light: 'text-boundary-ink', inverted: 'text-paper' },
+  BLOCK: { light: 'text-boundary-ink', inverted: 'text-paper' },
 };
 
 export function AuditLine({

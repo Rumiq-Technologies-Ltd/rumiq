@@ -13,8 +13,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-ink text-paper hover:bg-paper-dark',
-        secondary: 'border border-ink/25 bg-transparent text-ink hover:border-ink hover:bg-ink/5',
+        primary: 'bg-navy text-paper hover:bg-ink-strong',
+        secondary: 'border border-navy/30 bg-transparent text-navy hover:border-navy hover:bg-navy/5',
         ghost: 'bg-transparent text-ink underline decoration-rule underline-offset-4 hover:decoration-ink',
       },
       size: {
@@ -28,7 +28,7 @@ const buttonVariants = cva(
       },
     },
     compoundVariants: [
-      { variant: 'primary', inverted: true, className: 'bg-paper text-ink hover:bg-rule' },
+      { variant: 'primary', inverted: true, className: 'bg-paper text-navy hover:bg-rule' },
       {
         variant: 'secondary',
         inverted: true,
