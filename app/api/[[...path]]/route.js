@@ -3,16 +3,20 @@ import { v4 as uuidv4 } from 'uuid'
 import { NextResponse } from 'next/server'
 
 // MongoDB connection
-let client
-let db
+let connection
 
 async function connectToMongo() {
-  if (!client) {
-    client = new MongoClient(process.env.MONGO_URL)
-    await client.connect()
-    db = client.db(process.env.DB_NAME)
+  if (!connection) {
+    const client = new MongoClient(process.env.MONGO_URL)
+    // Share the in-flight connection across concurrent requests. A failed
+    // attempt must not poison the instance for every subsequent request.
+    connection = client.connect().then(() => client.db(process.env.DB_NAME)).catch(async (error) => {
+      connection = undefined
+      try { await client.close() } catch { /* Preserve the connection error. */ }
+      throw error
+    })
   }
-  return db
+  return connection
 }
 
 // Helper function to handle CORS
@@ -36,8 +40,6 @@ async function handleRoute(request, { params }) {
   const method = request.method
 
   try {
-    const db = await connectToMongo()
-
     // Root endpoint - GET /api/root (since /api/ is not accessible with catch-all)
     if (route === '/root' && method === 'GET') {
       return handleCORS(NextResponse.json({ message: "Hello World" }))
@@ -64,12 +66,14 @@ async function handleRoute(request, { params }) {
         timestamp: new Date()
       }
 
+      const db = await connectToMongo()
       await db.collection('status_checks').insertOne(statusObj)
       return handleCORS(NextResponse.json(statusObj))
     }
 
     // Status endpoints - GET /api/status
     if (route === '/status' && method === 'GET') {
+      const db = await connectToMongo()
       const statusChecks = await db.collection('status_checks')
         .find({})
         .limit(1000)
