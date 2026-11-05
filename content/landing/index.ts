@@ -121,8 +121,8 @@ export const landing = {
     headline: 'What every client can count on.',
     principles: [
       {
-        label: 'Privacy First. Results Always',
-        body: 'Three commitments guide every client we take on. We check compliance first, keep patient information protected, and report every result honestly',
+        label: 'Privacy First. Results Always.',
+        body: 'Three commitments guide every client we take on. We check compliance first, keep patient information protected, and report every result honestly.',
       },
       {
         label: 'Compliance check before we start.',
