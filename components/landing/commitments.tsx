@@ -31,8 +31,10 @@ export function Commitments({ label }: { label: string }) {
 
       <div className="relative ml-[1.375rem] mt-2">
         {/* The spine, and the dot that runs down it. */}
-        <span aria-hidden="true" className="absolute bottom-7 left-0 top-0 w-px bg-navy/20">
-          <span className="commit-dot motion-reduce:hidden absolute -left-1 size-2 rounded-full bg-teal" />
+        {/* Rows have a fixed height (h-14, sm:h-[3.75rem]), so the spine can stop exactly
+            at the centre of the last row: half a row up from the bottom. */}
+        <span aria-hidden="true" className="absolute bottom-7 left-0 top-0 w-px bg-navy/20 sm:bottom-[30px]">
+          <span className="commit-dot motion-reduce:hidden absolute -left-[3.5px] size-2 rounded-full bg-teal" />
         </span>
 
         <ol className="space-y-3 pt-3">
@@ -43,7 +45,7 @@ export function Commitments({ label }: { label: string }) {
                 {/* Branch from the spine. */}
                 <span aria-hidden="true" className="absolute left-0 top-1/2 h-px w-6 bg-navy/20 sm:w-8" />
                 <span
-                  className="commit-row flex flex-1 items-center gap-3 rounded-card border border-rule bg-paper-raised px-3 py-2.5 sm:gap-4 sm:px-4 sm:py-3"
+                  className="commit-row flex h-14 flex-1 items-center gap-3 rounded-card border border-rule bg-paper-raised px-3 sm:h-[3.75rem] sm:gap-4 sm:px-4"
                   style={{ animationDelay: `${(0.7 + i * 1.4).toFixed(1)}s` }}
                 >
                   <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-navy/25 bg-paper">

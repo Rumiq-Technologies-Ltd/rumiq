@@ -451,15 +451,16 @@
 .pf-grid {
   display: grid;
   align-items: center;
-  /* The filter sits left of centre so the stripped fields have room beside it. */
-  grid-template-columns: minmax(0, 0.55fr) auto minmax(0, 1.45fr);
+  /* On phones the filter sits at the left edge, under the left edge of the
+     cards, so its icon lines up with the card icons above and below. */
+  grid-template-columns: auto minmax(0, 1fr);
   grid-template-rows: auto 1.75rem auto 1.75rem auto;
   grid-template-areas:
-    'in in in'
-    '. l1 .'
-    '. f t'
-    '. l2 .'
-    'out out out';
+    'in in'
+    'l1 .'
+    'f t'
+    'l2 .'
+    'out out';
 }
 .pf-tray-area { display: flex; align-items: center; min-width: 0; contain: inline-size; }
 .pf-tray { min-width: 0; }
@@ -544,11 +545,12 @@
    commitment lights as it passes; the compliance ticks pop in turn, then the
    review starts again. Everything is shown, still, under reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
+  /* The dot is 8px, so its centre runs from the spine's top to its bottom end. */
   @keyframes commit-dot {
-    0% { top: 0; opacity: 0; }
+    0% { top: -4px; opacity: 0; }
     5% { opacity: 1; }
-    85% { top: 100%; opacity: 1; }
-    92%, 100% { top: 100%; opacity: 0; }
+    85% { top: calc(100% - 4px); opacity: 1; }
+    92%, 100% { top: calc(100% - 4px); opacity: 0; }
   }
   @keyframes commit-row {
     0% { border-color: hsl(var(--plane-public-hsl) / 0.6); background-color: hsl(var(--plane-public-hsl) / 0.07); }
