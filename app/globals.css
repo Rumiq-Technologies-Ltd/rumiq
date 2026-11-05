@@ -334,28 +334,6 @@
   }
 }
 
-/* TEMPORARY LANDING PAGE — the "How we work" rail. Both layers are repeating
-   patterns whose background-position is moved by principles-carousel.tsx, so
-   the rail flows: dashes along the unreached track, glints along the fill.
-   Static (but still complete) under reduced motion. */
-.principle-rail-track {
-  background-image: repeating-linear-gradient(
-    90deg,
-    hsl(var(--paper-dark-hsl) / 0.22) 0 6px,
-    transparent 6px 14px
-  );
-}
-
-.principle-rail-fill {
-  background-color: hsl(var(--paper-dark-hsl));
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent 0 34px,
-    hsl(var(--plane-public-hsl) / 0.9) 34px 46px,
-    transparent 46px 72px
-  );
-}
-
 /* TEMPORARY LANDING PAGE — "Who we work with" (who-we-serve.tsx). The client
    chips take turns: eight chips, 1.5s apart, on a 12s cycle, so exactly one is
    lit at a time. */
@@ -377,44 +355,104 @@
   }
 }
 
-/* TEMPORARY LANDING PAGE — the HIPAA visual (privacy-flow.tsx). Campaign data
-   flows out past the boundary; patient data runs to the boundary and stops
-   there, and the stop mark answers each time it arrives. */
-@media (prefers-reduced-motion: no-preference) {
-  @keyframes privacy-out {
-    0% { left: 0; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { left: calc(100% - 0.5rem); opacity: 0; }
+/* TEMPORARY LANDING PAGE — the HIPAA visual (privacy-flow.tsx). Client data
+   runs into Rumiq; the patient fields drop to "Stays in the practice" and only
+   campaign data carries on. Phones: top to bottom, stripped fields beside the
+   filter. From sm: left to right, stripped fields below it. */
+.pf-grid {
+  display: grid;
+  align-items: center;
+  /* The filter sits left of centre so the stripped fields have room beside it. */
+  grid-template-columns: minmax(0, 0.55fr) auto minmax(0, 1.45fr);
+  grid-template-rows: auto 1.75rem auto 1.75rem auto;
+  grid-template-areas:
+    'in in in'
+    '. l1 .'
+    '. f t'
+    '. l2 .'
+    'out out out';
+}
+.pf-tray-area { display: flex; align-items: center; min-width: 0; contain: inline-size; }
+.pf-tray { min-width: 0; }
+.pf-link { position: relative; align-self: stretch; justify-self: stretch; }
+.pf-link::before { content: ''; position: absolute; background: currentColor; }
+.pf-dot {
+  position: absolute; left: 0; top: 0; width: 8px; height: 8px;
+  margin: -4px 0 0 -4px; border-radius: 9999px; opacity: 0;
+}
+/* Vertical on phones. */
+.pf-link-a::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+.pf-link-a .pf-dot { left: 50%; }
+/* Horizontal on phones. */
+.pf-link-b { width: 1rem; flex-shrink: 0; }
+.pf-link-b::before { top: 50%; left: 0; right: 0; height: 1px; }
+.pf-link-b .pf-dot { top: 50%; }
+.pf-filter-drop { display: none; }
+
+@media (min-width: 640px) {
+  .pf-grid {
+    grid-template-columns: minmax(0, 1fr) 2.25rem auto 2.25rem minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      'in l1 f l2 out'
+      '. t t t .';
   }
-  @keyframes privacy-blocked {
-    0% { left: 0; opacity: 0; }
-    12% { opacity: 1; }
-    70% { left: calc(100% - 0.5rem); opacity: 1; transform: scale(1); }
-    82% { left: calc(100% - 0.5rem); opacity: 0; transform: scale(1.8); }
-    100% { left: calc(100% - 0.5rem); opacity: 0; }
-  }
-  @keyframes privacy-stop {
-    0%, 62% { box-shadow: 0 0 0 0 hsl(var(--boundary-hsl) / 0); }
-    74% { box-shadow: 0 0 0 7px hsl(var(--boundary-hsl) / 0.25); }
-    100% { box-shadow: 0 0 0 12px hsl(var(--boundary-hsl) / 0); }
-  }
-  .privacy-out { animation: privacy-out 2.8s ease-in-out infinite; }
-  .privacy-blocked { animation: privacy-blocked 2.8s ease-in infinite; }
-  .privacy-stop { animation: privacy-stop 2.8s ease-out infinite; }
+  .pf-tray-area { flex-direction: column; }
+  /* Wider than the filter column: centred under it, overhanging both sides. */
+  .pf-tray { width: max-content; max-width: 30rem; }
+  .pf-link-a::before { left: 0; right: 0; top: 50%; bottom: auto; width: auto; height: 1px; }
+  .pf-link-a .pf-dot { left: 0; top: 50%; }
+  .pf-link-b { width: 1rem; height: 1rem; align-self: center; }
+  .pf-link-b::before { left: 50%; right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
+  .pf-link-b .pf-dot { left: 50%; top: 0; }
+  /* The tray link is only a spacer here; the line and its dot run in
+     .pf-filter-drop, from the filter's centre through the gap to the tray. */
+  .pf-link-b::before, .pf-link-b .pf-dot { display: none; }
+  .pf-filter-drop { display: block; position: absolute; left: 50%; top: 50%; bottom: -1rem; width: 1px; background: currentColor; }
+  .pf-filter-drop .pf-dot { left: 50%; top: 0; }
 }
 
-/* TEMPORARY LANDING PAGE — the "How we work" carousel and its visuals. Motion
+@media (prefers-reduced-motion: no-preference) {
+  /* One 6s cycle. In: 0–28%. Split at the filter: 30–40%.
+     Stripped: 38–56%, then the tray answers. Out: 38–66%, then the card answers. */
+  @keyframes pf-in-v { 0% { top: 0; opacity: 0; } 4% { opacity: 1; } 28% { top: 100%; opacity: 1; } 31%, 100% { top: 100%; opacity: 0; } }
+  @keyframes pf-in-h { 0% { left: 0; opacity: 0; } 4% { opacity: 1; } 28% { left: 100%; opacity: 1; } 31%, 100% { left: 100%; opacity: 0; } }
+  @keyframes pf-out-v { 0%, 36% { top: 0; opacity: 0; } 40% { opacity: 1; } 66% { top: 100%; opacity: 1; } 69%, 100% { top: 100%; opacity: 0; } }
+  @keyframes pf-out-h { 0%, 36% { left: 0; opacity: 0; } 40% { opacity: 1; } 66% { left: 100%; opacity: 1; } 69%, 100% { left: 100%; opacity: 0; } }
+  @keyframes pf-strip-v { 0%, 36% { top: 0; opacity: 0; } 40% { opacity: 1; } 56% { top: 100%; opacity: 1; } 59%, 100% { top: 100%; opacity: 0; } }
+  @keyframes pf-strip-h { 0%, 36% { left: 0; opacity: 0; } 40% { opacity: 1; } 56% { left: 100%; opacity: 1; } 59%, 100% { left: 100%; opacity: 0; } }
+  @keyframes pf-filter {
+    0%, 26% { box-shadow: 0 0 0 0 hsl(var(--plane-public-hsl) / 0); }
+    34% { box-shadow: 0 0 0 7px hsl(var(--plane-public-hsl) / 0.22); }
+    48%, 100% { box-shadow: 0 0 0 12px hsl(var(--plane-public-hsl) / 0); }
+  }
+  @keyframes pf-tray {
+    0%, 54% { box-shadow: 0 0 0 0 hsl(var(--boundary-hsl) / 0); }
+    62% { box-shadow: 0 0 0 5px hsl(var(--boundary-hsl) / 0.18); }
+    76%, 100% { box-shadow: 0 0 0 8px hsl(var(--boundary-hsl) / 0); }
+  }
+  @keyframes pf-out {
+    0%, 64% { box-shadow: 0 0 0 0 hsl(var(--plane-public-hsl) / 0); }
+    72% { box-shadow: 0 0 0 5px hsl(var(--plane-public-hsl) / 0.16); }
+    88%, 100% { box-shadow: 0 0 0 8px hsl(var(--plane-public-hsl) / 0); }
+  }
+  .pf-dot { animation: 6s linear infinite; }
+  .pf-link-a .pf-dot-in { animation-name: pf-in-v; }
+  .pf-link-a .pf-dot-out { animation-name: pf-out-v; }
+  .pf-link-b .pf-dot-strip { animation-name: pf-strip-h; }
+  .pf-filter { animation: pf-filter 6s ease-out infinite; }
+  .pf-tray { animation: pf-tray 6s ease-out infinite; }
+  .pf-out { animation: pf-out 6s ease-out infinite; }
+  @media (min-width: 640px) {
+    .pf-link-a .pf-dot-in { animation-name: pf-in-h; }
+    .pf-link-a .pf-dot-out { animation-name: pf-out-h; }
+    .pf-filter-drop .pf-dot-strip { animation-name: pf-strip-v; }
+  }
+}
+
+/* TEMPORARY LANDING PAGE — one-off motion for the landing visuals. Motion
    only when the reader has not asked for less. */
 @media (prefers-reduced-motion: no-preference) {
-  @keyframes principle-enter {
-    from { opacity: 0; transform: translate3d(0, 12px, 0); }
-    to { opacity: 1; transform: none; }
-  }
-  @keyframes window-grow {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
-  }
   @keyframes hero-arc-draw {
     from { stroke-dashoffset: 1; }
     to { stroke-dashoffset: 0; }
@@ -422,12 +460,5 @@
   .hero-arc {
     stroke-dasharray: 1;
     animation: hero-arc-draw 1600ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .principle-enter {
-    animation: principle-enter 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .journey-window {
-    transform-origin: left center;
-    animation: window-grow 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 }

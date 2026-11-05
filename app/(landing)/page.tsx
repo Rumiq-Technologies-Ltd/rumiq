@@ -8,8 +8,6 @@ import { landing } from '@/content/landing';
 import { ClientFlow, measureFlowNodes } from '@/components/landing/client-flow';
 import { PrivacyFlow } from '@/components/landing/privacy-flow';
 import { CareersRoles } from '@/components/landing/careers-roles';
-import { PrinciplesCarousel } from '@/components/landing/principles-carousel';
-import { TimezoneOverlap } from '@/components/landing/timezone-overlap';
 import { landingJsonLd } from '@/lib/landing/structured-data';
 import { pageMetadata } from '@/lib/seo';
 
@@ -29,6 +27,12 @@ export const metadata: Metadata = pageMetadata({
 const sectionNumber = (n: number) => String(n).padStart(2, '0');
 
 const contactHref = `mailto:${landing.email}`;
+
+/* "How we work": one visual per principle, in the same order as the copy. */
+const principleVisuals = [
+  <PrivacyFlow key="privacy" label="Your data passes through Rumiq; patient information stays in the practice and only business information reaches ad platforms" />,
+  <ClientFlow key="measure" row label="Inquiries, calls and bookings, reported plainly" nodes={measureFlowNodes} />,
+];
 
 export default function LandingPage() {
   return (
@@ -97,22 +101,28 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How we work. A carousel: one principle at a time, each with its visual. */}
+      {/* How we work. Each principle beside its visual; the sides alternate. */}
       <section id="how-we-work" className="scroll-mt-20 border-b border-rule">
         <div className="mx-auto max-w-content px-6 py-section-mobile lg:py-section lg:pl-gutter">
           <SectionHeader
             eyebrow={`${sectionNumber(3)} · ${landing.howWeWork.eyebrow}`}
             headline={landing.howWeWork.headline}
           />
-          <div className="mt-14">
-            <PrinciplesCarousel
-              items={landing.howWeWork.principles}
-              visuals={[
-                <PrivacyFlow key="privacy" label="Patient data stays in the practice; only campaign data reaches ad platforms" />,
-                <ClientFlow key="measure" row label="Inquiries, calls and bookings, reported plainly" nodes={measureFlowNodes} />,
-                <TimezoneOverlap key="time" label="Pakistan hours and US Eastern time overlap" />,
-              ]}
-            />
+          <div className="mt-12 space-y-14 lg:mt-14 lg:space-y-16">
+            {landing.howWeWork.principles.map((principle, i) => {
+              const visual = principleVisuals[i];
+              const textFirst = i % 2 === 0;
+              return (
+                <div key={principle.label} className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-16">
+                  {/* Text first on phones every time; on wide screens the sides alternate. */}
+                  <div className={textFirst ? '' : 'lg:order-2'}>
+                    <h3 className="text-h2 font-semibold">{principle.label}</h3>
+                    <p className="mt-5 max-w-measure text-body-l text-muted">{principle.body}</p>
+                  </div>
+                  {visual ? <div className={textFirst ? '' : 'lg:order-1'}>{visual}</div> : null}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -120,14 +130,15 @@ export default function LandingPage() {
       {/* Careers */}
       <section id="careers" className="scroll-mt-20 border-b border-rule bg-paper-dark">
         <div className="mx-auto max-w-content px-6 py-section-mobile lg:py-section lg:pl-gutter">
-          <SectionHeader
-            inverted
-            eyebrow={`${sectionNumber(4)} · ${landing.careers.eyebrow}`}
-            headline={landing.careers.headline}
-            standfirst={landing.careers.intro}
-          />
-
           <CareersRoles
+            header={
+              <SectionHeader
+                inverted
+                eyebrow={`${sectionNumber(4)} · ${landing.careers.eyebrow}`}
+                headline={landing.careers.headline}
+                standfirst={landing.careers.intro}
+              />
+            }
             roles={landing.careers.roles}
             facts={landing.careers.facts}
             email={landing.email}

@@ -1,99 +1,131 @@
-import { Globe, Lock, Megaphone, X, type LucideIcon } from 'lucide-react';
+import { Database, Globe, Lock } from 'lucide-react';
+import { Logo } from '@/components/rumiq';
 import { cn } from '@/lib/utils';
 
 /*
- * TEMPORARY LANDING PAGE — "HIPAA-conscious by default" as two lanes and a
- * boundary.
+ * TEMPORARY LANDING PAGE — "HIPAA-conscious by default" as a filter.
  *
- * An amber boundary (the system's policy colour: blocked, enforced) runs down
- * the middle. Two lanes cross towards the ad platforms:
+ * What Rumiq does with a client's data, in one picture:
  *
- *   Patient data   ─────▶ ✕          stopped at the boundary, every time
- *   Campaign data  ─────┊─────▶ Ad platforms
+ *   Your Data ──▶ (Rumiq) ──▶ Ad Platforms
+ *                      │
+ *                      ▼
+ *            Stays in the practice
  *
- * Patient data sits inside a dashed "Stays in the practice" frame and its
- * pulse dies at the boundary; campaign data is the only thing that crosses.
- * The labels are the same four the earlier visual used, so no copy is added.
- * Same layout on every width; on phones the labels wrap under the icons.
- * Under reduced motion the pulses are hidden and the lanes stay drawn.
+ * The client's data arrives as two kinds of information: patient information
+ * (amber, the system's policy colour, with a lock) and business information.
+ * Rumiq is the filter. Patient information drops off and stays in the
+ * practice; only business information goes on as campaign data.
  *
- * Geometry: every node is a p-3 box with a 48px icon on top, so icon centres
- * sit 36px below each row's top. The lanes are drawn at that height, and the
- * boundary is one continuous line because the rows have no gap between them.
+ * One dot carries the data in. At the filter it splits: an amber dot drops to
+ * "Stays in the practice", a teal dot carries on to the campaign. Timing and
+ * the responsive layout live in globals.css (pf-*). On phones the flow runs
+ * top to bottom with "Stays in the practice" beside the filter; from sm up it
+ * runs left to right with it below. Under reduced motion the dots are hidden and
+ * the picture is complete.
  */
 
-const ICON_CENTRE = 'top-9'; // 12px padding + 24px half-icon = 36px
+/* Deliberately general: two kinds of information, not a list of fields, so
+ * the picture never reads as an inventory of what is or isn't sent. */
+type Tone = 'patient' | 'business';
 
-function Node({ icon: Icon, label, framed = false, children }: { icon: LucideIcon; label: string; framed?: boolean; children?: React.ReactNode }) {
+const items: { label: string; tone: Tone }[] = [
+  { label: 'Patient information', tone: 'patient' },
+  { label: 'Business information', tone: 'business' },
+];
+
+function Chip({ label, tone, moved = false }: { label: string; tone: Tone; moved?: boolean }) {
   return (
-    <div
+    <span
+      role="listitem"
       className={cn(
-        'flex flex-col items-center gap-2 rounded-card border p-3 text-center',
-        framed ? 'border-dashed border-navy/40 bg-navy/[0.03]' : 'border-transparent',
+        'inline-flex items-center gap-1 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-medium leading-snug sm:text-caption',
+        tone === 'patient' && 'border-boundary/50 bg-boundary/[0.06] text-boundary-ink',
+        tone === 'business' && (moved ? 'border-teal/40 bg-teal/[0.06] text-ink' : 'border-rule bg-paper-raised text-ink'),
       )}
     >
-      <span className="flex size-12 shrink-0 items-center justify-center rounded-full border border-navy/30 bg-paper">
-        <Icon aria-hidden="true" className="size-5 text-navy" strokeWidth={1.5} />
-      </span>
-      <span className="max-w-[6rem] text-caption font-medium leading-tight text-ink sm:max-w-none sm:whitespace-nowrap sm:text-body">
-        {label}
-      </span>
-      {children}
-    </div>
+      {tone === 'patient' ? <Lock aria-hidden="true" className="size-3 shrink-0" strokeWidth={2} /> : null}
+      {label}
+    </span>
   );
 }
 
-/* The boundary segment for one row. Rows touch, so the segments read as one line. */
-function Boundary() {
-  return <span aria-hidden="true" className="absolute inset-y-0 left-[62%] border-l-2 border-dashed border-boundary/70" />;
+function CardTitle({ icon: Icon, children }: { icon: typeof Database; children: React.ReactNode }) {
+  return (
+    <span className="flex items-center gap-2 text-caption font-medium text-ink sm:text-body">
+      <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-navy/30 bg-paper">
+        <Icon aria-hidden="true" className="size-3.5 text-navy" strokeWidth={1.75} />
+      </span>
+      {children}
+    </span>
+  );
+}
+
+/* A connector with its travelling dot. `a` runs down on phones and across from
+ * sm up; `b` runs across on phones and down from sm up (globals.css). */
+function Link({ area, axis, phase, className }: { area?: string; axis: 'a' | 'b'; phase: 'in' | 'out' | 'strip'; className?: string }) {
+  return (
+    <span aria-hidden="true" className={cn('pf-link', `pf-link-${axis}`, className)} style={area ? { gridArea: area } : undefined}>
+      <span
+        className={cn(
+          `pf-dot pf-dot-${phase} motion-reduce:hidden`,
+          phase === 'in' && 'bg-navy',
+          phase === 'out' && 'bg-teal',
+          phase === 'strip' && 'bg-boundary',
+        )}
+      />
+    </span>
+  );
 }
 
 export function PrivacyFlow({ label }: { label: string }) {
   return (
-    <figure aria-label={label} className="rounded-card border border-rule bg-paper p-4 sm:p-6 md:p-8">
-      <div className="grid grid-cols-[auto_minmax(4rem,1fr)_auto]">
-        {/* Lane 1: patient data, stopped at the boundary. */}
-        <div className="pb-5">
-          <Node icon={Lock} label="Patient data" framed>
-            <span className="mt-1 font-mono text-[0.625rem] uppercase leading-tight tracking-wide text-muted sm:text-mono-eyebrow">
+    <figure aria-label={label} className="flex items-center rounded-card border border-rule bg-paper p-4 sm:p-5 md:p-6">
+      <div className="pf-grid w-full">
+        {/* The client's data, as it arrives. */}
+        <div style={{ gridArea: 'in' }} className="rounded-card border border-rule bg-paper p-3 sm:p-4">
+          <CardTitle icon={Database}>Your Data</CardTitle>
+          <div role="list" className="mt-3 flex flex-wrap gap-1.5">
+            {items.map((item) => (
+              <Chip key={item.label} label={item.label} tone={item.tone} />
+            ))}
+          </div>
+        </div>
+
+        <Link area="l1" axis="a" phase="in" className="text-navy/30" />
+
+        {/* Rumiq, the filter. */}
+        <div style={{ gridArea: 'f' }} className="relative flex items-center justify-center self-stretch">
+          {/* From sm up: the drop from the filter's centre down to the tray, one unbroken line. */}
+          <span aria-hidden="true" className="pf-filter-drop text-boundary/60">
+            <span className="pf-dot pf-dot-strip bg-boundary motion-reduce:hidden" />
+          </span>
+          <span className="pf-filter relative z-[1] flex size-12 items-center justify-center rounded-full border-2 border-teal bg-paper sm:size-14">
+            <Logo variant="mark" width={24} />
+          </span>
+        </div>
+
+        {/* What the filter strips off: it stays in the practice. */}
+        <div style={{ gridArea: 't' }} className="pf-tray-area">
+          <Link axis="b" phase="strip" className="pf-tray-link text-boundary/60" />
+          <div className="pf-tray flex flex-wrap items-center gap-x-2.5 gap-y-1.5 rounded-card border border-dashed border-boundary/60 bg-boundary/[0.04] px-2.5 py-2 sm:px-3">
+            <span className="font-mono text-[0.5625rem] uppercase leading-tight tracking-wide text-boundary-ink sm:text-[0.625rem]">
               Stays in the practice
             </span>
-          </Node>
+            <span role="list" className="flex">
+              <Chip label={items[0].label} tone="patient" />
+            </span>
+          </div>
         </div>
-        <div className="relative">
-          <Boundary />
-          <span aria-hidden="true" className={cn('absolute left-0 h-px w-[62%] bg-navy/25', ICON_CENTRE)}>
-            <span className="privacy-blocked motion-reduce:hidden absolute -top-1 left-0 size-2 rounded-full bg-navy" />
-          </span>
-          <span
-            aria-hidden="true"
-            className={cn(
-              'privacy-stop absolute left-[62%] flex size-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-boundary bg-paper',
-              ICON_CENTRE,
-            )}
-          >
-            <X className="size-3.5 text-boundary-ink" strokeWidth={2.5} />
-          </span>
-        </div>
-        <div aria-hidden="true" />
 
-        {/* Lane 2: campaign data, the only thing that crosses. */}
-        <div>
-          <Node icon={Megaphone} label="Campaign data" />
-        </div>
-        <div className="relative">
-          <Boundary />
-          <span aria-hidden="true" className={cn('absolute inset-x-0 h-px bg-navy/40', ICON_CENTRE)}>
-            <span className="privacy-out motion-reduce:hidden absolute -top-1 left-0 size-2 rounded-full bg-teal" />
-          </span>
-          {/* Where the lane passes the boundary: an opening, not a stop. */}
-          <span
-            aria-hidden="true"
-            className={cn('absolute left-[62%] size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-teal bg-paper', ICON_CENTRE)}
-          />
-        </div>
-        <div>
-          <Node icon={Globe} label="Ad platforms" />
+        <Link area="l2" axis="a" phase="out" className="text-teal/50" />
+
+        {/* What goes on to the ad platforms. */}
+        <div style={{ gridArea: 'out' }} className="pf-out rounded-card border border-teal/40 bg-paper p-3 sm:p-4">
+          <CardTitle icon={Globe}>Ad Platforms</CardTitle>
+          <div role="list" className="mt-3 flex flex-wrap gap-1.5">
+            <Chip label={items[1].label} tone="business" moved />
+          </div>
         </div>
       </div>
     </figure>

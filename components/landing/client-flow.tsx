@@ -110,5 +110,5 @@ export const measureFlowNodes: Node[] = [
   { label: 'Inquiries', icon: MessageSquare },
   { label: 'Calls', icon: PhoneCall },
   { label: 'Bookings', icon: CalendarCheck },
-  { label: 'Plain report', icon: FileText },
+  { label: 'Business Intelligence', icon: FileText },
 ];

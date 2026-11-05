@@ -128,10 +128,6 @@ export const landing = {
         label: 'Measured honestly.',
         body: 'We report on inquiries, calls and bookings, and we tell clients plainly what is and isn’t working.',
       },
-      {
-        label: 'One team, two time zones.',
-        body: 'We work Pakistan hours and overlap with US Eastern time when our clients need us.',
-      },
     ],
   },
 
