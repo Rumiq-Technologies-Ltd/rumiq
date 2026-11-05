@@ -40,15 +40,15 @@ export const landing = {
         title: 'Search and discovery',
         services: [
         {
-          label: 'Local search and Google Business Profiles.',
+          label: 'Local Search & Google Business Profiles',
           body: 'Accurate listings, fresh posts and steady reviews, so nearby patients find our clients first.',
         },
         {
-          label: 'SEO and AI search.',
+          label: 'SEO & AI Search',
           body: 'Websites and content structured to rank on Google and to be cited by AI assistants like ChatGPT and Gemini.',
         },
         {
-          label: 'Paid advertising.',
+          label: 'Paid Media',
           body: 'Google Ads and Meta Ads campaigns built around real inquiries, not vanity clicks.',
         },
         ],
@@ -57,15 +57,15 @@ export const landing = {
         title: 'Social and video',
         services: [
         {
-          label: 'Social media.',
+          label: 'Social Media',
           body: 'Instagram, Facebook and TikTok content that builds trust in local communities and beyond.',
         },
         {
-          label: 'YouTube.',
+          label: 'YouTube',
           body: 'Short and long-form video that explains healthcare options, answers common questions and puts a friendly face to the practice.',
         },
         {
-          label: 'LinkedIn.',
+          label: 'LinkedIn',
           body: 'Regular, thoughtful content that helps healthcare professionals become trusted, recognized voices in their field.',
         },
         ],
@@ -74,15 +74,15 @@ export const landing = {
         title: 'Content and brand',
         services: [
         {
-          label: 'Brand guidelines.',
+          label: 'Brand Guidelines',
           body: 'A clear, consistent look and voice, so every website, ad and post feels unmistakably like our client.',
         },
         {
-          label: 'Copy and content.',
+          label: 'Copy & Content',
           body: 'Clear, warm, plain-English writing for websites, ads and posts.',
         },
         {
-          label: 'Email marketing and newsletters.',
+          label: 'Email Marketing & Newsletters',
           body: 'Useful, well-timed emails that keep patients informed and bring them back.',
         },
         ],
@@ -91,16 +91,16 @@ export const landing = {
         title: 'Patients and growth',
         services: [
         {
-          label: 'Patient access and messaging.',
+          label: 'Patient Access & Messaging',
           body: 'Making it easy for patients to call, book or message, and making sure every inquiry gets a fast, helpful reply.',
         },
         {
-          label: 'Analytics and growth intelligence.',
+          label: 'Analytics & Growth Intelligence',
           body: 'Clear tracking and reporting that shows where new patients come from and where to invest next.',
         },
         {
-          label: 'AI tools.',
-          body: 'Practical AI that saves our clients time, from content workflows to smarter reporting.',
+          label: 'AI Tools',
+          body: 'Practical AI that saves our clients time and resources, from content workflows to smarter reporting.',
         },
         ],
       },

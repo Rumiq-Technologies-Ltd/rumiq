@@ -334,45 +334,89 @@
   }
 }
 
-/* TEMPORARY LANDING PAGE — "How we work" panels (principles-panels.tsx). The
-   countdown fills along the open panel's foot; its duration and play state are
-   set inline, in step with the rotation. */
-@keyframes principle-timer {
-  from { width: 0; }
-  to { width: 100%; }
+/* TEMPORARY LANDING PAGE — "How we work" panels (principles-panels.tsx).
+   From xl the panels are placed with transform and cut with clip-path, set
+   inline; these rules give the states and the motion between them. Only
+   transform, clip-path and opacity ever change, so the move needs no layout.
+   Under reduced motion the states apply instantly. */
+.pp-row {
+  --pp-move: 760ms;
+  --pp-ease: cubic-bezier(0.32, 0.72, 0, 1);
 }
-.principle-timer { animation: principle-timer linear forwards; }
+.pp-sized .pp-panel,
+.pp-sized .pp-inner {
+  will-change: transform, clip-path;
+}
+.pp-sized .pp-content {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(20px, 0, 0);
+}
+.pp-sized .pp-panel[data-open] .pp-content {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+.pp-sized .pp-panel[data-open] .pp-strip {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* The countdown: the fill grows by transform along the open panel's foot,
+   and fades with the panel when it closes or the reader pauses. */
+@keyframes pp-timer {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.pp-timer {
+  transform-origin: left center;
+  animation: pp-timer linear both;
+}
+.pp-timer-track { opacity: 0; }
+.pp-panel[data-open] .pp-timer-track[data-playing] { opacity: 1; }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* The move: every panel eases its width over 700ms with one curve (MOVE_MS
-     in principles-panels.tsx), and its tint follows. */
-  .principle-panel {
-    transition: width 700ms cubic-bezier(0.77, 0, 0.18, 1), background-color 700ms ease;
+  /* The move: position and cut share one duration and curve, so the outer
+     and inner clips (the border between them) stay locked together. */
+  .pp-animate .pp-panel {
+    transition: transform var(--pp-move) var(--pp-ease), clip-path var(--pp-move) var(--pp-ease);
   }
-  /* Opening: content is already at its final width, uncovered by the growing
-     edge; it fades and drifts 24px into place as it is revealed. */
-  @keyframes principle-panel-in {
-    from { opacity: 0; transform: translate3d(24px, 0, 0); }
+  .pp-animate .pp-inner {
+    transition: clip-path var(--pp-move) var(--pp-ease);
+  }
+  .pp-animate .pp-tint {
+    transition: background-color var(--pp-move) ease;
+  }
+  /* Closing: content fades quickly while the edge sweeps over it, then is
+     reset (hidden) for next time. */
+  .pp-animate .pp-content {
+    transition: opacity 200ms ease-out, transform 0s linear 200ms, visibility 0s linear 200ms;
+  }
+  /* Opening: content is laid out at its final width from the first frame;
+     it fades in as the edge uncovers it and settles the last 20px. */
+  .pp-animate .pp-panel[data-open] .pp-content {
+    transition: opacity 460ms ease-out 140ms, transform var(--pp-move) var(--pp-ease) 60ms, visibility 0s;
+  }
+  /* Strip labels: the opening one leaves at once; the closing one returns
+     as its panel settles into a strip. */
+  .pp-animate .pp-strip {
+    transition: opacity 320ms ease-out 440ms, visibility 0s;
+  }
+  .pp-animate .pp-panel[data-open] .pp-strip {
+    transition: opacity 140ms ease-out, visibility 0s linear 140ms;
+  }
+  .pp-animate .pp-timer-track {
+    transition: opacity 260ms ease-out;
+  }
+
+  /* Below xl: the accordion's open panel fades in under its row. */
+  @keyframes principle-accordion-in {
+    from { opacity: 0; transform: translate3d(0, 8px, 0); }
     to { opacity: 1; transform: none; }
   }
-  .principle-panel-in {
-    animation: principle-panel-in 560ms cubic-bezier(0.22, 1, 0.36, 1) 160ms both;
-  }
-  /* Closing: content fades out quickly while the panel narrows over it. */
-  @keyframes principle-panel-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-  .principle-panel-out {
-    animation: principle-panel-out 240ms ease-out both;
-  }
-  /* Its strip label arrives once the panel is a strip again. */
-  @keyframes principle-strip-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  .principle-strip-in {
-    animation: principle-strip-in 320ms ease-out both;
+  .principle-accordion-in {
+    animation: principle-accordion-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 

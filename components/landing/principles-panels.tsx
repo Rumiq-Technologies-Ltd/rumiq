@@ -24,13 +24,17 @@ import { cn } from '@/lib/utils';
  * Below xl it becomes a plain vertical accordion: name rows with a plus, the
  * open one showing its text and visual underneath. It does not rotate there,
  * since opening a different panel changes the page's height under the reader.
- * Opening and closing (xl and up): each panel animates its own width in
- * pixels, with one easing for both, so the row's total never changes. The
- * opening panel's content is laid out at its final width from the first frame
- * and clipped by the panel, so the growing edge uncovers it (no text reflow),
- * while it fades and slides in a few pixels. The closing panel keeps its
- * content, fading it out, until the move ends; then its strip label fades in.
- * Timing lives in globals.css (principle-panel*, principle-strip-in).
+ *
+ * The move (xl and up) never touches layout. Every panel is laid out once at
+ * the open width, positioned with a transform and cut to its visible width
+ * with a clip-path, so a change animates only transform, clip-path and
+ * opacity: no reflow, no sub-pixel rounding between neighbours, no text
+ * snapping, and an interrupted move simply retargets from where it is. The
+ * 1px border is the gap between two clips (an outer one filled with the
+ * border colour, an inner one 1px smaller holding the panel). Content and
+ * strip labels are always mounted and cross-fade with CSS transitions keyed
+ * on data-open, so nothing waits on a JS timer. Timing lives in globals.css
+ * (pp-*).
  *
  * Under prefers-reduced-motion it does not rotate unless the reader presses
  * play, and the panels change without animating.
@@ -39,18 +43,17 @@ import { cn } from '@/lib/utils';
 type Principle = { label: string; body: string };
 
 const ROTATE_MS = 5000;
-/* The open/close move, and the strip and gap it is measured with (xl and up). */
-const MOVE_MS = 700;
+/* Strip width and gap (xl and up); the open panel takes the rest of the row. */
 const STRIP_PX = 72;
 const GAP_PX = 8;
 
-type Tone = { strip: string; panel: string; dark?: boolean };
+type Tone = { strip: string; panel: string; edge: string; dark?: boolean };
 
 const tones: Tone[] = [
-  { strip: 'bg-paper-dark', panel: 'bg-paper-dark', dark: true },
-  { strip: 'bg-boundary/[0.14]', panel: 'bg-boundary/[0.08]' },
-  { strip: 'bg-navy/[0.09]', panel: 'bg-navy/[0.05]' },
-  { strip: 'bg-teal/[0.14]', panel: 'bg-teal/[0.07]' },
+  { strip: 'bg-paper-dark', panel: 'bg-paper-dark', edge: 'bg-paper-dark', dark: true },
+  { strip: 'bg-boundary/[0.14]', panel: 'bg-boundary/[0.08]', edge: 'bg-rule' },
+  { strip: 'bg-navy/[0.09]', panel: 'bg-navy/[0.05]', edge: 'bg-rule' },
+  { strip: 'bg-teal/[0.14]', panel: 'bg-teal/[0.07]', edge: 'bg-rule' },
 ];
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -114,124 +117,157 @@ export function PrinciplesPanels({ items, visuals }: { items: readonly Principle
     };
   }, [index, running, count]);
 
-  // Geometry for the width animation (xl and up). Every panel animates its own
-  // width in pixels: the open one to OPEN, the rest to STRIP. The open panel's
-  // content is laid out at OPEN from the start and the panel clips it, so as
-  // the panel grows it reveals finished text instead of reflowing it.
+  // The open width (xl and up): the row less the strips and gaps, in whole pixels.
   const rowRef = React.useRef<HTMLDivElement>(null);
   const [openWidth, setOpenWidth] = React.useState<number | null>(null);
   React.useEffect(() => {
     const row = rowRef.current;
-    if (!row) return;
-    const measure = () => setOpenWidth(Math.max(0, row.clientWidth - (count - 1) * (STRIP_PX + GAP_PX)));
+    if (!row || !wide) return setOpenWidth(null);
+    const measure = () => setOpenWidth(Math.max(0, Math.round(row.clientWidth - (count - 1) * (STRIP_PX + GAP_PX))));
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(row);
     return () => observer.disconnect();
-    // Re-measured when the layout switches between the accordion and the row.
   }, [count, wide]);
 
-  // The panel that is closing keeps its content for the length of the move,
-  // fading it out, and only then turns back into a strip.
-  const [leaving, setLeaving] = React.useState<number | null>(null);
-  const shownRef = React.useRef(index);
-  React.useEffect(() => {
-    if (shownRef.current === index) return;
-    const previous = shownRef.current;
-    shownRef.current = index;
-    if (!wide || reduced) return;
-    setLeaving(previous);
-    const timer = window.setTimeout(() => setLeaving(null), MOVE_MS);
-    return () => window.clearTimeout(timer);
-  }, [index, wide, reduced]);
-
   const sized = wide && openWidth !== null;
+
+  // Transitions switch on only after the panels have been placed once, and
+  // off again while the row is resized, so neither slides the panels about.
+  const [animate, setAnimate] = React.useState(false);
+  React.useEffect(() => {
+    setAnimate(false);
+    if (!sized) return;
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setAnimate(true));
+    });
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, [sized, openWidth]);
+
+  // Each opening restarts that panel's countdown; a closing panel keeps its
+  // bar where it stopped while it fades, rather than snapping back to empty.
+  const runsRef = React.useRef<number[]>([]);
+  const countedRef = React.useRef<number | null>(null);
+  if (countedRef.current !== index) {
+    countedRef.current = index;
+    runsRef.current[index] = (runsRef.current[index] ?? 0) + 1;
+  }
 
   return (
     <div ref={rootRef}>
       <div
         ref={rowRef}
-        className="flex flex-col gap-2 xl:h-[30rem] xl:flex-row"
-        style={sized ? ({ '--open-w': `${openWidth}px` } as React.CSSProperties) : undefined}
+        className={cn('pp-row relative flex flex-col gap-2 xl:h-[30rem] xl:flex-row', sized && 'pp-sized', animate && 'pp-animate')}
       >
         {items.map((item, i) => {
           const open = i === index;
-          const isLeaving = i === leaving;
           const tone = tones[i % tones.length]!;
           const panelId = `principle-panel-${i}`;
+          const visible = open ? openWidth ?? 0 : STRIP_PX;
+          const x = i * (STRIP_PX + GAP_PX) + (i > index ? (openWidth ?? 0) - STRIP_PX : 0);
+          const cut = (openWidth ?? 0) - visible;
+
           return (
             <div
               key={item.label}
+              data-open={open ? '' : undefined}
               className={cn(
-                'principle-panel relative overflow-hidden rounded-panel border border-rule',
-                open ? tone.panel : tone.strip,
-                tone.dark && 'border-paper-dark',
-                sized ? 'xl:flex-none' : open ? 'xl:flex-[1_1_0%]' : 'xl:flex-[0_0_4.5rem]',
+                sized
+                  ? cn('pp-panel absolute inset-y-0 left-0 rounded-panel', tone.edge)
+                  : cn(
+                      'relative overflow-hidden rounded-panel border border-rule',
+                      open ? tone.panel : tone.strip,
+                      tone.dark && 'border-paper-dark',
+                      open ? 'xl:flex-[1_1_0%]' : 'xl:flex-[0_0_4.5rem]',
+                    ),
               )}
-              style={sized ? { width: open ? openWidth! : STRIP_PX } : undefined}
+              style={
+                sized
+                  ? {
+                      width: openWidth!,
+                      transform: `translate3d(${x}px, 0, 0)`,
+                      clipPath: `inset(0 ${cut}px 0 0 round 16px)`,
+                    }
+                  : undefined
+              }
             >
-              {/* The strip (wide screens) or the name row (smaller screens). */}
-              <button
-                type="button"
-                onClick={() => {
-                  setIndex(i);
-                  // Choosing a panel means the reader has taken over: stop rotating until they press play.
-                  setPlaying(false);
-                }}
-                aria-expanded={open}
-                aria-controls={panelId}
-                tabIndex={open && wide ? -1 : undefined}
-                className={cn(
-                  'flex w-full items-center gap-4 px-5 py-4 text-left',
-                  'xl:absolute xl:inset-y-0 xl:left-0 xl:w-[4.5rem] xl:flex-col xl:items-center xl:justify-between xl:px-0 xl:py-6',
-                  open || isLeaving ? 'xl:pointer-events-none xl:invisible' : 'principle-strip-in',
-                  tone.dark ? 'text-paper' : 'text-ink',
-                )}
-              >
-                <span className={cn('font-mono text-mono-eyebrow', tone.dark ? 'text-paper/70' : 'text-muted')}>{pad(i + 1)}</span>
-                <span className="flex-1 text-body font-semibold xl:mb-auto xl:mt-4 xl:flex-none xl:whitespace-nowrap xl:[writing-mode:vertical-rl]">{item.label}</span>
-                {open ? (
-                  <Minus aria-hidden="true" className="size-5 shrink-0 xl:hidden" />
-                ) : (
-                  <Plus aria-hidden="true" className="size-5 shrink-0" />
-                )}
-              </button>
-
-              {/* The open panel. While closing it stays, fading, for the length of the move. */}
+              {/* The panel itself, 1px inside the border colour (xl and up). Below xl it adds no box. */}
               <div
-                id={panelId}
-                role="region"
-                aria-label={item.label}
-                aria-hidden={isLeaving ? true : undefined}
-                // `hidden` alone loses to xl:flex, so closed panels get no display class at all.
-                className={cn(
-                  'px-5 pb-6 xl:h-full xl:items-center xl:p-10',
-                  sized && 'xl:w-[var(--open-w)] xl:shrink-0',
-                  open ? 'principle-panel-in xl:flex' : isLeaving ? 'principle-panel-out hidden xl:flex' : 'hidden',
-                )}
+                className={sized ? 'pp-inner absolute inset-px overflow-hidden rounded-[15px] bg-paper' : 'contents'}
+                style={sized ? { clipPath: `inset(0 ${cut}px 0 0 round 15px)` } : undefined}
               >
-                <div className="grid w-full gap-8 xl:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] xl:items-center xl:gap-10">
-                  <div>
-                    <p className={cn('hidden font-mono text-mono-eyebrow uppercase xl:block', tone.dark ? 'text-paper/70' : 'text-muted')}>
-                      {pad(i + 1)} / {pad(count)}
-                    </p>
-                    <h3 className={cn('text-h2 font-semibold xl:mt-4', tone.dark ? 'text-paper' : 'text-navy')}>{item.label}</h3>
-                    <p className={cn('mt-4 text-body xl:mt-5 xl:text-body-l', tone.dark ? 'text-paper/80' : 'text-muted')}>{item.body}</p>
-                  </div>
-                  <div>{visuals[i]}</div>
-                </div>
-              </div>
+                {sized ? <div aria-hidden="true" className={cn('pp-tint absolute inset-0', open ? tone.panel : tone.strip)} /> : null}
 
-              {/* The countdown, along the open panel's foot. */}
-              {open && wide && playing ? (
-                <span aria-hidden="true" className="absolute inset-x-0 bottom-0 hidden h-1 xl:block">
-                  <span
-                    key={index}
-                    className={cn('principle-timer absolute inset-y-0 left-0', tone.dark ? 'bg-teal' : 'bg-navy/60')}
-                    style={{ animationDuration: `${ROTATE_MS}ms`, animationPlayState: running ? 'running' : 'paused' }}
-                  />
-                </span>
-              ) : null}
+                {/* The strip (wide screens) or the name row (smaller screens). */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIndex(i);
+                    // Choosing a panel means the reader has taken over: stop rotating until they press play.
+                    setPlaying(false);
+                  }}
+                  aria-expanded={open}
+                  aria-controls={panelId}
+                  tabIndex={open && wide ? -1 : undefined}
+                  className={cn(
+                    'group flex w-full items-center gap-4 px-5 py-4 text-left focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-current',
+                    'xl:absolute xl:inset-y-0 xl:left-0 xl:w-[4.5rem] xl:flex-col xl:items-center xl:justify-between xl:px-0 xl:py-6',
+                    sized ? 'pp-strip' : open && 'xl:pointer-events-none xl:invisible',
+                    tone.dark ? 'text-paper' : 'text-ink',
+                  )}
+                >
+                  <span className={cn('font-mono text-mono-eyebrow', tone.dark ? 'text-paper/70' : 'text-muted')}>{pad(i + 1)}</span>
+                  <span className="flex-1 text-body font-semibold xl:mb-auto xl:mt-4 xl:flex-none xl:whitespace-nowrap xl:[writing-mode:vertical-rl]">
+                    {item.label}
+                  </span>
+                  {open && !wide ? (
+                    <Minus aria-hidden="true" className="size-5 shrink-0" />
+                  ) : (
+                    <Plus aria-hidden="true" className="size-5 shrink-0 transition-transform duration-300 ease-out group-hover:rotate-90" />
+                  )}
+                </button>
+
+                {/* The open panel. From xl every panel keeps its content mounted, faded out while closed. */}
+                <div
+                  id={panelId}
+                  role="region"
+                  aria-label={item.label}
+                  aria-hidden={sized && !open ? true : undefined}
+                  inert={sized && !open ? true : undefined}
+                  // `hidden` alone loses to xl:flex, so closed accordion panels get no display class at all.
+                  className={cn(
+                    sized
+                      ? 'pp-content relative flex h-full w-full items-center p-10'
+                      : cn('px-5 pb-6 xl:h-full xl:items-center xl:p-10', open ? 'principle-accordion-in xl:flex' : 'hidden'),
+                  )}
+                >
+                  <div className="grid w-full gap-8 xl:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] xl:items-center xl:gap-10">
+                    <div>
+                      <p className={cn('hidden font-mono text-mono-eyebrow uppercase xl:block', tone.dark ? 'text-paper/70' : 'text-muted')}>
+                        {pad(i + 1)} / {pad(count)}
+                      </p>
+                      <h3 className={cn('text-h2 font-semibold xl:mt-4', tone.dark ? 'text-paper' : 'text-navy')}>{item.label}</h3>
+                      <p className={cn('mt-4 text-body xl:mt-5 xl:text-body-l', tone.dark ? 'text-paper/80' : 'text-muted')}>{item.body}</p>
+                    </div>
+                    <div>{visuals[i]}</div>
+                  </div>
+                </div>
+
+                {/* The countdown, along the open panel's foot. */}
+                {sized ? (
+                  <span aria-hidden="true" data-playing={playing ? '' : undefined} className="pp-timer-track absolute inset-x-0 bottom-0 h-1">
+                    <span
+                      key={runsRef.current[i] ?? 0}
+                      className={cn('pp-timer absolute inset-0', tone.dark ? 'bg-teal' : 'bg-navy/60')}
+                      style={{ animationDuration: `${ROTATE_MS}ms`, animationPlayState: open && running ? 'running' : 'paused' }}
+                    />
+                  </span>
+                ) : null}
+              </div>
             </div>
           );
         })}
