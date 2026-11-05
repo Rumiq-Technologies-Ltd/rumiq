@@ -7,7 +7,7 @@ import { WhoWeServe } from '@/components/landing/who-we-serve';
 import { landing } from '@/content/landing';
 import { ClientFlow, measureFlowNodes } from '@/components/landing/client-flow';
 import { PrivacyFlow } from '@/components/landing/privacy-flow';
-import { PrinciplesCarousel } from '@/components/landing/principles-carousel';
+import { PrinciplesPanels } from '@/components/landing/principles-panels';
 import { Commitments } from '@/components/landing/commitments';
 import { ComplianceReview } from '@/components/landing/compliance-review';
 import { CareersRoles } from '@/components/landing/careers-roles';
@@ -109,7 +109,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How we work. A self-rotating carousel: one principle at a time, each with its visual. */}
+      {/* How we work. Expanding panels: one principle open, the rest as strips; rotates on wide screens. */}
       <section id="how-we-work" className="scroll-mt-20 border-b border-rule">
         <div className="mx-auto max-w-content px-6 py-section-mobile lg:py-section lg:pl-gutter">
           <SectionHeader
@@ -119,7 +119,7 @@ export default function LandingPage() {
             eyebrowClassName="text-[1.125rem]"
           />
           <div className="mt-12 lg:mt-14">
-            <PrinciplesCarousel items={landing.howWeWork.principles} visuals={principleVisuals} />
+            <PrinciplesPanels items={landing.howWeWork.principles} visuals={principleVisuals} />
           </div>
         </div>
       </section>

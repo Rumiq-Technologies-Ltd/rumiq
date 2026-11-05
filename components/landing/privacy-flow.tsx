@@ -19,9 +19,10 @@ import { cn } from '@/lib/utils';
  *
  * One dot carries the data in. At the filter it splits: an amber dot drops to
  * "Stays in the practice", a teal dot carries on to the campaign. Timing and
- * the responsive layout live in globals.css (pf-*). On phones the flow runs
- * top to bottom with "Stays in the practice" beside the filter; from sm up it
- * runs left to right with it below. Under reduced motion the dots are hidden and
+ * the layout live in globals.css (pf-*). The layout follows the visual's own
+ * width, not the screen's: when narrow it runs top to bottom with "Stays in
+ * the practice" beside the filter; from 30rem wide it runs left to right with
+ * it below. Under reduced motion the dots are hidden and
  * the picture is complete.
  */
 
@@ -80,7 +81,7 @@ function Link({ area, axis, phase, className }: { area?: string; axis: 'a' | 'b'
 
 export function PrivacyFlow({ label }: { label: string }) {
   return (
-    <figure aria-label={label} className="flex items-center rounded-card border border-rule bg-paper p-4 sm:p-5 md:p-6">
+    <figure aria-label={label} className="flex items-center rounded-card border border-rule bg-paper p-4 [container:pf/inline-size] sm:p-5 md:p-6">
       <div className="pf-grid w-full">
         {/* The client's data, as it arrives. */}
         <div style={{ gridArea: 'in' }} className="rounded-card border border-rule bg-paper p-3 sm:p-4">

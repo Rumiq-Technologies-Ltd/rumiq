@@ -334,30 +334,9 @@
   }
 }
 
-/* TEMPORARY LANDING PAGE — the "How we work" rail. Both layers are repeating
-   patterns whose background-position is moved by principles-carousel.tsx, so
-   the rail flows: dashes along the unreached track, glints along the fill.
-   Static (but still complete) under reduced motion. */
-.principle-rail-track {
-  background-image: repeating-linear-gradient(
-    90deg,
-    hsl(var(--paper-dark-hsl) / 0.22) 0 6px,
-    transparent 6px 14px
-  );
-}
-
-.principle-rail-fill {
-  background-color: hsl(var(--paper-dark-hsl));
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent 0 34px,
-    hsl(var(--plane-public-hsl) / 0.9) 34px 46px,
-    transparent 46px 72px
-  );
-}
-
-/* The carousel's countdown: the active dot fills while the principle is shown.
-   Its duration and play state are set inline, in step with the rotation. */
+/* TEMPORARY LANDING PAGE — "How we work" panels (principles-panels.tsx). The
+   countdown fills along the open panel's foot; its duration and play state are
+   set inline, in step with the rotation. */
 @keyframes principle-timer {
   from { width: 0; }
   to { width: 100%; }
@@ -365,12 +344,35 @@
 .principle-timer { animation: principle-timer linear forwards; }
 
 @media (prefers-reduced-motion: no-preference) {
-  @keyframes principle-enter {
-    from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  /* The move: every panel eases its width over 700ms with one curve (MOVE_MS
+     in principles-panels.tsx), and its tint follows. */
+  .principle-panel {
+    transition: width 700ms cubic-bezier(0.77, 0, 0.18, 1), background-color 700ms ease;
+  }
+  /* Opening: content is already at its final width, uncovered by the growing
+     edge; it fades and drifts 24px into place as it is revealed. */
+  @keyframes principle-panel-in {
+    from { opacity: 0; transform: translate3d(24px, 0, 0); }
     to { opacity: 1; transform: none; }
   }
-  .principle-enter {
-    animation: principle-enter 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  .principle-panel-in {
+    animation: principle-panel-in 560ms cubic-bezier(0.22, 1, 0.36, 1) 160ms both;
+  }
+  /* Closing: content fades out quickly while the panel narrows over it. */
+  @keyframes principle-panel-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  .principle-panel-out {
+    animation: principle-panel-out 240ms ease-out both;
+  }
+  /* Its strip label arrives once the panel is a strip again. */
+  @keyframes principle-strip-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .principle-strip-in {
+    animation: principle-strip-in 320ms ease-out both;
   }
 }
 
@@ -395,7 +397,10 @@
   }
 }
 
-/* TEMPORARY LANDING PAGE — the HIPAA visual (privacy-flow.tsx). Client data
+/* TEMPORARY LANDING PAGE — the HIPAA visual (privacy-flow.tsx). The layout
+   follows the visual's own width (a container query on the figure, named pf),
+   not the screen's, because it sits in panels of very different widths.
+   Narrow: top to bottom. 30rem and wider: left to right. Client data
    runs into Rumiq; the patient fields drop to "Stays in the practice" and only
    campaign data carries on. Phones: top to bottom, stripped fields beside the
    filter. From sm: left to right, stripped fields below it. */
@@ -429,9 +434,9 @@
 .pf-link-b .pf-dot { top: 50%; }
 .pf-filter-drop { display: none; }
 
-@media (min-width: 640px) {
+@container pf (min-width: 30rem) {
   .pf-grid {
-    grid-template-columns: minmax(0, 1fr) 2.25rem auto 2.25rem minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 1.75rem auto 1.75rem minmax(0, 1fr);
     grid-template-rows: auto auto;
     grid-template-areas:
       'in l1 f l2 out'
@@ -483,7 +488,7 @@
   .pf-filter { animation: pf-filter 6s ease-out infinite; }
   .pf-tray { animation: pf-tray 6s ease-out infinite; }
   .pf-out { animation: pf-out 6s ease-out infinite; }
-  @media (min-width: 640px) {
+  @container pf (min-width: 30rem) {
     .pf-link-a .pf-dot-in { animation-name: pf-in-h; }
     .pf-link-a .pf-dot-out { animation-name: pf-out-h; }
     .pf-filter-drop .pf-dot-strip { animation-name: pf-strip-v; }
