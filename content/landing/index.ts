@@ -11,7 +11,7 @@
 export const landing = {
   /** Page-level metadata. The title is also the OG and JSON-LD headline. */
   meta: {
-    title: 'Digital marketing and tech for US healthcare',
+    title: 'Digital marketing & tech for US healthcare',
     description:
       'Rumiq helps US healthcare businesses reach more patients and families, with digital marketing and tech solutions that respect patient privacy.',
   },
@@ -25,7 +25,7 @@ export const landing = {
   ],
 
   hero: {
-    headline: 'Helping American healthcare providers get found, chosen and trusted.',
+    headline: 'Helping American healthcare providers get found, chosen & trusted.',
     subheadline:
       'Rumiq helps US healthcare businesses reach more patients and families, with digital marketing and tech solutions that respect patient privacy.',
     primaryCta: { label: "We're hiring", href: '#careers' },
@@ -37,7 +37,7 @@ export const landing = {
     intro: 'We run the full digital presence for our clients, from the first search to the booked appointment.',
     groups: [
       {
-        title: 'Search and discovery',
+        title: 'Search & discovery',
         services: [
         {
           label: 'Local Search & Google Business Profiles',
@@ -54,7 +54,7 @@ export const landing = {
         ],
       },
       {
-        title: 'Social and video',
+        title: 'Social & video',
         services: [
         {
           label: 'Social Media',
@@ -71,7 +71,7 @@ export const landing = {
         ],
       },
       {
-        title: 'Content and brand',
+        title: 'Content & brand',
         services: [
         {
           label: 'Brand Guidelines',
@@ -88,7 +88,7 @@ export const landing = {
         ],
       },
       {
-        title: 'Patients and growth',
+        title: 'Patients & growth',
         services: [
         {
           label: 'Patient Access & Messaging',

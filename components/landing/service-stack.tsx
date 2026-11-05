@@ -9,10 +9,10 @@ import { cn } from '@/lib/utils';
    here, not in the page, because component functions cannot cross the server/
    client boundary as props. */
 const groupIcons: Record<string, LucideIcon> = {
-  'Search and discovery': Search,
-  'Social and video': Video,
-  'Content and brand': PenLine,
-  'Patients and growth': TrendingUp,
+  'Search & discovery': Search,
+  'Social & video': Video,
+  'Content & brand': PenLine,
+  'Patients & growth': TrendingUp,
 };
 
 /*
