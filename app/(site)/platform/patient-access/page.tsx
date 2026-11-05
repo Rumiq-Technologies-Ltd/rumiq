@@ -1,5 +1,5 @@
 import { CTABand, Hero, PolicyCallout, StepSection } from '@/components/rumiq';
-import { CallIntelligence } from '@/app/demo/call-intelligence/calls';
+import { CallIntelligence } from '@/app/(site)/demo/call-intelligence/calls';
 import { patientAccessPage as copy } from '@/content/platform-pages';
 import { pageMetadata } from '@/lib/seo';
 

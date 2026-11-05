@@ -613,7 +613,7 @@ export default function StyleguidePage() {
             by jurisdiction and should be validated with counsel.
           </p>
           <p className="mt-4 font-mono text-caption text-muted">
-            Rumiq Technologies Ltd · DIFC, Dubai
+            Rumiq Technologies (SMC-Private) Limited · DIFC, Dubai
           </p>
         </footer>
       </div>

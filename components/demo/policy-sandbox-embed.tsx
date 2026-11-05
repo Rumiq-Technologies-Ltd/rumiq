@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import dynamic from 'next/dynamic';
-import { PolicySandboxStaticFrame } from '@/app/demo/policy-sandbox/static-frame';
+import { PolicySandboxStaticFrame } from '@/app/(site)/demo/policy-sandbox/static-frame';
 
 /**
  * Section 13 — keeps the demo off the hero's critical path.
@@ -13,7 +13,7 @@ import { PolicySandboxStaticFrame } from '@/app/demo/policy-sandbox/static-frame
  * the same first preset, so the swap is invisible.
  */
 const InteractiveSandbox = dynamic(
-  () => import('@/app/demo/policy-sandbox/sandbox').then((mod) => mod.PolicySandbox),
+  () => import('@/app/(site)/demo/policy-sandbox/sandbox').then((mod) => mod.PolicySandbox),
   { ssr: false, loading: () => <PolicySandboxStaticFrame /> },
 );
 

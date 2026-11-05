@@ -1,15 +1,14 @@
 import type { MetadataRoute } from 'next';
 import { NOINDEX } from '@/lib/flags';
 import { BASE_URL } from '@/lib/seo';
+import { DEV_PREVIEW, PUBLIC_DEPLOY } from '@/lib/site-mode';
 
 /**
- * Section 13. While NOINDEX is true nothing is crawlable: an unfinished site
- * indexed six months early is a lasting problem, and robots.txt is the cheapest
- * of the three defences (the others being the meta robots tag and the
- * X-Robots-Tag header set in proxy.ts).
+ * Section 13. While NOINDEX is true nothing is crawlable. Outside `npm run dev`
+ * only the landing page exists, so the sitemap lists that alone (see sitemap.ts).
  */
 export default function robots(): MetadataRoute.Robots {
-  if (NOINDEX) {
+  if (NOINDEX || !PUBLIC_DEPLOY) {
     return {
       rules: [{ userAgent: '*', disallow: '/' }],
       host: BASE_URL,
@@ -17,7 +16,7 @@ export default function robots(): MetadataRoute.Robots {
   }
 
   return {
-    rules: [{ userAgent: '*', allow: '/', disallow: ['/api/', '/styleguide'] }],
+    rules: [{ userAgent: '*', allow: '/', disallow: DEV_PREVIEW ? ['/api/', '/styleguide'] : ['/api/'] }],
     sitemap: `${BASE_URL}/sitemap.xml`,
     host: BASE_URL,
   };

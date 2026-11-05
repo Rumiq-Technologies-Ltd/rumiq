@@ -43,7 +43,7 @@ export const legalPages: Record<LegalPage['slug'], LegalPage> = {
     eyebrow: 'PRIVACY',
     headline: 'Privacy notice',
     standfirst:
-      'The notice that will govern personal data handled by Rumiq Technologies Ltd, both on this website and in the platform. It is not written yet. What is stated below about this website is factual and checkable in the source.',
+      'The notice that will govern personal data handled by Rumiq Technologies (SMC-Private) Limited, both on this website and in the platform. It is not written yet. What is stated below about this website is factual and checkable in the source.',
     factual: {
       heading: 'True of this website today',
       points: [

@@ -6,7 +6,7 @@
 
 export const site = {
   name: 'Rumiq',
-  legalEntity: 'Rumiq Technologies Ltd',
+  legalEntity: 'Rumiq Technologies (SMC-Private) Limited',
   registeredIn: 'DIFC, Dubai',
   wordmark: 'rumiq',
 } as const;

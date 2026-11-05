@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { NOINDEX } from '@/lib/flags';
+import { PUBLIC_DEPLOY } from '@/lib/site-mode';
 import { site } from '@/content/site';
 
 /**
@@ -14,15 +15,18 @@ import { site } from '@/content/site';
  * are generated in-process from the vendored fonts.
  */
 
+/** The public domain. Used when NEXT_PUBLIC_BASE_URL is not set in production. */
+const PRODUCTION_URL = 'https://rumiq.ai';
+
 function resolveBaseUrl(): string {
-  const raw = process.env.NEXT_PUBLIC_BASE_URL;
+  const raw = process.env.NEXT_PUBLIC_BASE_URL || (process.env.NODE_ENV === 'production' ? PRODUCTION_URL : '');
   if (!raw) return 'http://localhost:3000';
   return raw.replace(/\/$/, '');
 }
 
 export const BASE_URL = resolveBaseUrl();
 
-export const robotsDirective = NOINDEX
+export const robotsDirective = NOINDEX || !PUBLIC_DEPLOY
   ? { index: false, follow: false, nocache: true }
   : { index: true, follow: true };
 

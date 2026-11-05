@@ -116,9 +116,9 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
       { label: 'Trust Center', href: '/trust' },
       { label: 'United States', href: '/regions/united-states' },
       { label: 'Gulf', href: '/regions/gulf' },
-      { label: 'Privacy', href: '/privacy' },
+      { label: 'Privacy', href: '/legal/privacy' },
       { label: 'Cookies', href: '/cookies' },
-      { label: 'Terms', href: '/terms' },
+      { label: 'Terms', href: '/legal/terms' },
     ],
   },
 ];

@@ -77,7 +77,7 @@ export const contact = {
       {
         title: 'Data protection requests',
         body: 'Requests relating to personal data held by Rumiq itself are handled through the routes described in the privacy notice. That notice is awaiting legal review, so use the form in the meantime and mark it as a data protection request.',
-        link: { label: 'Privacy notice', href: '/privacy' },
+        link: { label: 'Privacy notice', href: '/legal/privacy' },
       },
       {
         title: 'Not ready to talk to anyone',

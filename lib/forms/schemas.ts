@@ -36,9 +36,7 @@ const emailField = z
   .min(1, 'Enter the email address we should reply to.')
   .email('That does not look like an email address. Check for a missing @ or a typo in the domain.');
 
-const consentField = z.literal(true, {
-  errorMap: () => ({ message: 'Tick the box so we know you want a reply.' }),
-});
+const consentField = z.literal(true, { error: 'Tick the box so we know you want a reply.' });
 
 /* -------------------------------------------------------------------------- */
 /* Form 1 — working session request (/contact)                                */
@@ -77,9 +75,7 @@ export const insightsSchema = z.object({
 
 export const scorecardSchema = z.object({
   email: emailField,
-  consent: z.literal(true, {
-    errorMap: () => ({ message: 'Tick the box so we can send the scorecard to that address.' }),
-  }),
+  consent: z.literal(true, { error: 'Tick the box so we can send the scorecard to that address.' }),
 });
 
 /** Answers travel with the gate submission so the result can be produced.

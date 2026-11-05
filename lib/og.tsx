@@ -36,7 +36,7 @@ export const OG_CONTENT_TYPE = 'image/png';
 export function ogImage({
   eyebrow,
   title,
-  footer = 'rumiq.com',
+  footer = 'rumiq.ai',
 }: {
   eyebrow: string;
   title: string;

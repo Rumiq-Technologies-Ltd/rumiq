@@ -70,6 +70,30 @@ const nextConfig = {
     pagesBufferLength: 2,
   },
   async headers() {
+    /*
+     * Everything except local development gets the locked-down set: frames are
+     * denied and no CORS header is sent. Previews included. Development keeps the
+     * permissive set because the preview proxy embeds the app in a frame.
+     * This file cannot import TS, so the mode check is repeated here.
+     */
+    const strictHeaders = process.env.NODE_ENV !== 'development';
+
+    if (strictHeaders) {
+      return [
+        {
+          source: '/(.*)',
+          headers: [
+            { key: 'X-Frame-Options', value: 'DENY' },
+            { key: 'Content-Security-Policy', value: "frame-ancestors 'none';" },
+            { key: 'X-Content-Type-Options', value: 'nosniff' },
+            { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+            { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+          ],
+        },
+      ];
+    }
+
+    // Development only (see above).
     return [
       {
         source: "/(.*)",

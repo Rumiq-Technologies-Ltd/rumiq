@@ -78,7 +78,7 @@ export const about = {
     eyebrow: 'THE ENTITY',
     headline: 'Where Rumiq is, and where your data is.',
     facts: [
-      { label: 'Legal entity', value: 'Rumiq Technologies Ltd' },
+      { label: 'Legal entity', value: 'Rumiq Technologies (SMC-Private) Limited' },
       { label: 'Registered in', value: 'DIFC, Dubai' },
       { label: 'US PHI hosting', value: 'US-region by default, with a BAA executed before any PHI is processed.' },
       { label: 'Gulf hosting', value: 'Designed around regional residency and cross-border transfer requirements.' },

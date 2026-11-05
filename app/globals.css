@@ -266,3 +266,168 @@
     transform: none;
   }
 }
+
+/* TEMPORARY LANDING PAGE — the journey flows (components/landing/client-flow.tsx).
+
+   One dot relays through the whole flow. Every connector shares one cycle;
+   each connector's dot moves only during its own slot, and slot n starts the
+   instant slot n-1 ends. Horizontally the connectors run centre to centre
+   under the node circles, so the dot that arrives at a node and the dot that
+   leaves it meet exactly at that node's (hidden) centre: it reads as one dot
+   passing through. Linear timing keeps its speed constant through the hand-off.
+
+   Keyframe percentages cannot use variables, so there is one set per number
+   of connectors. Travel takes 1 / (connectors + 0.5) of the cycle; the last
+   half-slot is a short rest before the dot sets off again. The component sets
+   --relay-name, --relay-cycle and --relay-delay. */
+@media (prefers-reduced-motion: no-preference) {
+  .journey-relay-x,
+  .journey-relay-y {
+    animation-duration: var(--relay-cycle);
+    animation-delay: var(--relay-delay);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .journey-relay-x { animation-name: var(--relay-name-x); }
+  .journey-relay-y { animation-name: var(--relay-name-y); }
+
+  /* Horizontal: opaque the whole way. Both ends sit under node circles. */
+  @keyframes relay-x-2 {
+    0% { left: 0; opacity: 1; }
+    40% { left: calc(100% - 0.375rem); opacity: 1; }
+    40.01%, 100% { left: calc(100% - 0.375rem); opacity: 0; }
+  }
+  @keyframes relay-x-3 {
+    0% { left: 0; opacity: 1; }
+    28.57% { left: calc(100% - 0.375rem); opacity: 1; }
+    28.58%, 100% { left: calc(100% - 0.375rem); opacity: 0; }
+  }
+  @keyframes relay-x-4 {
+    0% { left: 0; opacity: 1; }
+    22.22% { left: calc(100% - 0.375rem); opacity: 1; }
+    22.23%, 100% { left: calc(100% - 0.375rem); opacity: 0; }
+  }
+
+  /* Vertical (phones): the connector runs from under one label to the next
+     circle, so the dot fades in and out at its ends. */
+  @keyframes relay-y-2 {
+    0% { top: 0; opacity: 0; }
+    4% { opacity: 1; }
+    36% { opacity: 1; }
+    40% { top: calc(100% - 0.375rem); opacity: 0; }
+    100% { top: calc(100% - 0.375rem); opacity: 0; }
+  }
+  @keyframes relay-y-3 {
+    0% { top: 0; opacity: 0; }
+    3% { opacity: 1; }
+    25.5% { opacity: 1; }
+    28.57% { top: calc(100% - 0.375rem); opacity: 0; }
+    100% { top: calc(100% - 0.375rem); opacity: 0; }
+  }
+  @keyframes relay-y-4 {
+    0% { top: 0; opacity: 0; }
+    2.5% { opacity: 1; }
+    19.7% { opacity: 1; }
+    22.22% { top: calc(100% - 0.375rem); opacity: 0; }
+    100% { top: calc(100% - 0.375rem); opacity: 0; }
+  }
+}
+
+/* TEMPORARY LANDING PAGE — the "How we work" rail. Both layers are repeating
+   patterns whose background-position is moved by principles-carousel.tsx, so
+   the rail flows: dashes along the unreached track, glints along the fill.
+   Static (but still complete) under reduced motion. */
+.principle-rail-track {
+  background-image: repeating-linear-gradient(
+    90deg,
+    hsl(var(--paper-dark-hsl) / 0.22) 0 6px,
+    transparent 6px 14px
+  );
+}
+
+.principle-rail-fill {
+  background-color: hsl(var(--paper-dark-hsl));
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 34px,
+    hsl(var(--plane-public-hsl) / 0.9) 34px 46px,
+    transparent 46px 72px
+  );
+}
+
+/* TEMPORARY LANDING PAGE — "Who we work with" (who-we-serve.tsx). The client
+   chips take turns: eight chips, 1.5s apart, on a 12s cycle, so exactly one is
+   lit at a time. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes client-chip-turn {
+    0%, 12% {
+      border-color: hsl(var(--paper-dark-hsl));
+      background-color: hsl(var(--paper-dark-hsl) / 0.06);
+      box-shadow: 0 0 0 3px hsl(var(--paper-dark-hsl) / 0.08);
+    }
+    16.5%, 100% {
+      border-color: hsl(var(--rule-hsl));
+      background-color: hsl(var(--paper-hsl));
+      box-shadow: 0 0 0 0 transparent;
+    }
+  }
+  .client-chip {
+    animation: client-chip-turn 12s ease-in-out infinite;
+  }
+}
+
+/* TEMPORARY LANDING PAGE — the HIPAA visual (privacy-flow.tsx). Campaign data
+   flows out past the boundary; patient data runs to the boundary and stops
+   there, and the stop mark answers each time it arrives. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes privacy-out {
+    0% { left: 0; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: calc(100% - 0.5rem); opacity: 0; }
+  }
+  @keyframes privacy-blocked {
+    0% { left: 0; opacity: 0; }
+    12% { opacity: 1; }
+    70% { left: calc(100% - 0.5rem); opacity: 1; transform: scale(1); }
+    82% { left: calc(100% - 0.5rem); opacity: 0; transform: scale(1.8); }
+    100% { left: calc(100% - 0.5rem); opacity: 0; }
+  }
+  @keyframes privacy-stop {
+    0%, 62% { box-shadow: 0 0 0 0 hsl(var(--boundary-hsl) / 0); }
+    74% { box-shadow: 0 0 0 7px hsl(var(--boundary-hsl) / 0.25); }
+    100% { box-shadow: 0 0 0 12px hsl(var(--boundary-hsl) / 0); }
+  }
+  .privacy-out { animation: privacy-out 2.8s ease-in-out infinite; }
+  .privacy-blocked { animation: privacy-blocked 2.8s ease-in infinite; }
+  .privacy-stop { animation: privacy-stop 2.8s ease-out infinite; }
+}
+
+/* TEMPORARY LANDING PAGE — the "How we work" carousel and its visuals. Motion
+   only when the reader has not asked for less. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes principle-enter {
+    from { opacity: 0; transform: translate3d(0, 12px, 0); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes window-grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @keyframes hero-arc-draw {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
+  .hero-arc {
+    stroke-dasharray: 1;
+    animation: hero-arc-draw 1600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .principle-enter {
+    animation: principle-enter 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .journey-window {
+    transform-origin: left center;
+    animation: window-grow 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}

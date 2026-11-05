@@ -1,9 +1,15 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { fontVariables } from '@/lib/fonts';
-import { BoundaryRule, ConsentBanner, Footer, Header, JsonLd, ScrollReveal } from '@/components/rumiq';
-import { BASE_URL, organisationJsonLd, robotsDirective, websiteJsonLd } from '@/lib/seo';
+import { BASE_URL, robotsDirective } from '@/lib/seo';
 import { tokenHex } from '@/lib/design-tokens';
+
+/*
+ * Root layout: document shell only (html, body, fonts, metadata, skip link).
+ * The full site's chrome (Header, Footer, consent, JSON-LD) lives in
+ * app/(site)/layout.tsx, so the temporary landing page in app/(landing) gets
+ * none of it.
+ */
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -17,8 +23,6 @@ export const metadata: Metadata = {
   // metadataBase and the current path, so routes that do not set their own
   // still self-canonicalise rather than inheriting the homepage's.
   alternates: { canonical: './' },
-  // Section 13 — the site stays out of the index until launch. Reinforced by
-  // app/robots.ts and by the X-Robots-Tag header set in proxy.ts.
   robots: robotsDirective,
   applicationName: 'Rumiq',
   formatDetection: { telephone: false, address: false, email: false },
@@ -41,14 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <BoundaryRule />
-        <Header />
         {children}
-        <Footer />
-        <ConsentBanner />
-        <ScrollReveal />
-        {/* Section 13 — organisation and site nodes, once, site-wide. */}
-        <JsonLd data={[organisationJsonLd(), websiteJsonLd()]} />
       </body>
     </html>
   );

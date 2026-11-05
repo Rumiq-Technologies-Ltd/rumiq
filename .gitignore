@@ -86,3 +86,20 @@ node_modules/@next/swc-linux-arm64-musl/next-swc.linux-arm64-musl.node
 credentials.json
 *.key
 .credentials
+
+# Local tooling and editor/OS files
+.claude/
+*.swp
+*.swo
+Thumbs.db
+.idea/
+
+# Logs and local scratch
+*.log
+npm-debug.log*
+/tmp/
+.tmp/
+
+# Test and tool output
+test-results/
+playwright-report/

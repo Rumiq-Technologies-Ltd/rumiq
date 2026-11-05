@@ -7,7 +7,7 @@ const page = legalPages.terms;
 export const metadata = pageMetadata({
   title: page.metaTitle,
   description: page.description,
-  path: '/terms',
+  path: '/legal/terms',
 });
 
 export default function TermsPage() {

@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { footerColumns, solutionsMenu } from '@/content/navigation';
 import { insights } from '@/content/insights';
 import { BASE_URL } from '@/lib/seo';
+import { DEV_PREVIEW } from '@/lib/site-mode';
 
 /**
  * Section 13 — sitemap.
@@ -27,13 +28,23 @@ const staticRoutes: { path: string; priority: number; changeFrequency: MetadataR
   { path: '/insights', priority: 0.6, changeFrequency: 'weekly' },
   { path: '/regions/united-states', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/regions/gulf', priority: 0.6, changeFrequency: 'monthly' },
-  { path: '/privacy', priority: 0.3, changeFrequency: 'yearly' },
+  { path: '/legal/privacy', priority: 0.3, changeFrequency: 'yearly' },
   { path: '/cookies', priority: 0.3, changeFrequency: 'yearly' },
-  { path: '/terms', priority: 0.3, changeFrequency: 'yearly' },
+  { path: '/legal/terms', priority: 0.3, changeFrequency: 'yearly' },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+
+  // TEMPORARY LANDING PAGE (lib/site-mode.ts): outside `npm run dev` the only
+  // page that exists is the landing page, so it is the only URL listed.
+  if (!DEV_PREVIEW) {
+    return [
+      { url: BASE_URL, lastModified: now, changeFrequency: 'monthly', priority: 1 },
+      { url: `${BASE_URL}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
+      { url: `${BASE_URL}/terms`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
+    ];
+  }
 
   const platformPages = (footerColumns.find((column) => column.title === 'Platform')?.links ?? []).map(
     (link) => ({ url: `${BASE_URL}${link.href}`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.8 }),

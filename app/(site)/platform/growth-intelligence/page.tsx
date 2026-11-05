@@ -1,5 +1,5 @@
 import { CTABand, Hero, PolicyCallout, StepSection } from '@/components/rumiq';
-import { GrowthDashboard } from '@/app/demo/dashboard/dashboard';
+import { GrowthDashboard } from '@/app/(site)/demo/dashboard/dashboard';
 import { growthIntelligencePage as copy } from '@/content/platform-pages';
 import { pageMetadata } from '@/lib/seo';
 

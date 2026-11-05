@@ -7,7 +7,7 @@ const page = legalPages.privacy;
 export const metadata = pageMetadata({
   title: page.metaTitle,
   description: page.description,
-  path: '/privacy',
+  path: '/legal/privacy',
 });
 
 export default function PrivacyPage() {
