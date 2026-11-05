@@ -118,8 +118,16 @@ export const landing = {
 
   howWeWork: {
     eyebrow: 'How we work',
-    headline: 'Privacy first. Results always.',
+    headline: 'What every client can count on.',
     principles: [
+      {
+        label: 'Privacy First. Results Always',
+        body: 'Three commitments guide every client we take on. We check compliance first, keep patient information protected, and report every result honestly',
+      },
+      {
+        label: 'Compliance Check before we Start.',
+        body: 'Every new client starts with a compliance review of their website, social media and patient access tools. We flag privacy, accessibility and professional-guidance issues, and we fix them before we grow anything.',
+      },
       {
         label: 'HIPAA-conscious by default.',
         body: 'We never pass patient data to ad platforms like Google or Meta. Every campaign is designed around that rule.',
@@ -210,7 +218,7 @@ export const landing = {
 
   footer: {
     entity: 'Rumiq Technologies (SMC-Private) Limited',
-    copyright: 'Rumiq Technologies (SMC-Private) Limited © 2026',
+    copyright: 'Rumiq Technologies (c) 2026',
     fullSiteNote: 'Our full website is on its way. In the meantime, we’d love to hear from you.',
     links: [
       { label: 'Privacy', href: '/privacy' },

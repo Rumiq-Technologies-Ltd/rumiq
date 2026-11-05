@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
  *     The chips light up one at a time, so each kind of business takes its turn.
  *  2. What they share. Whoever the client is, people need to find them,
  *     understand them and trust them. That is drawn as one path, Find →
- *     Understand → Trust → Patients and families, with a single dot relaying
+ *     Understand → Trust, ending at Patients & Families, with a single dot relaying
  *     along it (the same relay timing as the other flows, globals.css).
  *
  * Every word here is taken from the section's copy; nothing is claimed that
@@ -44,11 +44,11 @@ const clientTypes: { label: string; icon: LucideIcon }[] = [
   { label: 'Medical transport', icon: Ambulance },
 ];
 
-const journey: { label: string; icon: LucideIcon; end?: boolean }[] = [
+const journey: { label: string; icon: LucideIcon; highlight?: boolean }[] = [
+  { label: 'Patients & Families', icon: Users, highlight: true },
   { label: 'Find', icon: Search },
   { label: 'Understand', icon: BookOpen },
   { label: 'Trust', icon: ShieldCheck },
-  { label: 'Patients and families', icon: Users, end: true },
 ];
 
 const SEGMENT_SECONDS = 1.4;
@@ -97,7 +97,7 @@ export function WhoWeServe({ label }: { label: string }) {
                 {!isLast ? (
                   <span aria-hidden="true" className="absolute left-1/2 top-5 h-px w-full bg-navy/25 sm:top-6">
                     <span
-                      className="journey-relay-x motion-reduce:hidden absolute -top-[0.1875rem] size-1.5 rounded-full bg-teal"
+                      className="journey-relay-x motion-reduce:hidden absolute -top-[0.15625rem] size-1.5 rounded-full bg-teal"
                       style={
                         {
                           '--relay-name-x': `relay-x-${segments}`,
@@ -111,7 +111,7 @@ export function WhoWeServe({ label }: { label: string }) {
                 <span
                   className={cn(
                     'relative z-10 flex size-10 items-center justify-center rounded-full border sm:size-12',
-                    step.end ? 'border-navy bg-navy text-paper' : 'border-navy/30 bg-paper text-navy',
+                    step.highlight ? 'border-navy bg-navy text-paper' : 'border-navy/30 bg-paper text-navy',
                   )}
                 >
                   <Icon aria-hidden="true" className="size-5" strokeWidth={1.5} />
@@ -119,7 +119,7 @@ export function WhoWeServe({ label }: { label: string }) {
                 <span
                   className={cn(
                     'max-w-[6.5rem] text-caption font-medium leading-tight',
-                    step.end ? 'text-navy' : 'text-ink',
+                    step.highlight ? 'text-navy' : 'text-ink',
                   )}
                 >
                   {step.label}

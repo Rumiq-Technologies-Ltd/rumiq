@@ -216,7 +216,7 @@ export function ServiceStack({
     <div ref={trackRef} style={pinned ? { height: layout!.trackHeight } : undefined}>
       <div className={cn(pinned && 'sticky')} style={pinned ? { top: layout!.pinTop } : undefined}>
         <div ref={headRef}>
-          <SectionHeader eyebrow={eyebrow} headline={headline} standfirst={intro} />
+          <SectionHeader eyebrow={eyebrow} headline={headline} standfirst={intro} headlineClassName="text-navy" eyebrowClassName="text-[1.125rem]" />
         </div>
 
         <div

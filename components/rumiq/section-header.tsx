@@ -14,6 +14,8 @@ export function SectionHeader({
   inverted = false,
   align = 'left',
   className,
+  headlineClassName,
+  eyebrowClassName,
 }: {
   eyebrow?: string;
   headline: React.ReactNode;
@@ -23,6 +25,10 @@ export function SectionHeader({
   inverted?: boolean;
   align?: 'left' | 'center';
   className?: string;
+  /** Overrides the headline colour, e.g. `text-navy`. */
+  headlineClassName?: string;
+  /** Overrides the eyebrow size or colour on this section only. */
+  eyebrowClassName?: string;
 }) {
   const sizes = {
     'display-xl': 'text-display-xl font-bold',
@@ -33,13 +39,18 @@ export function SectionHeader({
 
   return (
     <div className={cn(align === 'center' && 'mx-auto text-center', className)}>
-      {eyebrow ? <Eyebrow tone={inverted ? 'inverted' : 'muted'}>{eyebrow}</Eyebrow> : null}
+      {eyebrow ? (
+        <Eyebrow tone={inverted ? 'inverted' : 'muted'} className={eyebrowClassName}>
+          {eyebrow}
+        </Eyebrow>
+      ) : null}
       <Tag
         className={cn(
           'max-w-measure',
           sizes[size],
           eyebrow && 'mt-4',
           inverted ? 'text-paper' : 'text-ink',
+          headlineClassName,
           align === 'center' && 'mx-auto',
         )}
       >

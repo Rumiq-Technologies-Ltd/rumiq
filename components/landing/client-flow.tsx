@@ -62,7 +62,7 @@ export function ClientFlow({
                     className={cn('absolute left-1/2 h-px w-full bg-navy/20', row ? 'top-5 sm:top-7' : 'top-7 hidden sm:block')}
                   >
                     <span
-                      className="journey-relay-x motion-reduce:hidden absolute -top-[0.1875rem] size-1.5 rounded-full bg-navy"
+                      className="journey-relay-x motion-reduce:hidden absolute -top-[0.15625rem] size-1.5 rounded-full bg-navy"
                       style={relayStyle(index, segments)}
                     />
                   </span>

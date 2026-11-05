@@ -7,6 +7,9 @@ import { WhoWeServe } from '@/components/landing/who-we-serve';
 import { landing } from '@/content/landing';
 import { ClientFlow, measureFlowNodes } from '@/components/landing/client-flow';
 import { PrivacyFlow } from '@/components/landing/privacy-flow';
+import { PrinciplesCarousel } from '@/components/landing/principles-carousel';
+import { Commitments } from '@/components/landing/commitments';
+import { ComplianceReview } from '@/components/landing/compliance-review';
 import { CareersRoles } from '@/components/landing/careers-roles';
 import { landingJsonLd } from '@/lib/landing/structured-data';
 import { pageMetadata } from '@/lib/seo';
@@ -30,6 +33,8 @@ const contactHref = `mailto:${landing.email}`;
 
 /* "How we work": one visual per principle, in the same order as the copy. */
 const principleVisuals = [
+  <Commitments key="commitments" label="Three commitments for every client: check compliance first, keep patient information protected, report every result honestly" />,
+  <ComplianceReview key="compliance" label="A compliance review: website, social media and patient access checked; privacy and accessibility in review" />,
   <PrivacyFlow key="privacy" label="Your data passes through Rumiq; patient information stays in the practice and only business information reaches ad platforms" />,
   <ClientFlow key="measure" row label="Inquiries, calls and bookings, reported plainly" nodes={measureFlowNodes} />,
 ];
@@ -48,6 +53,7 @@ export default function LandingPage() {
             size="display-xl"
             headline={landing.hero.headline}
             standfirst={landing.hero.subheadline}
+            headlineClassName="text-navy"
             className="lg:max-w-[52rem]"
           />
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
@@ -87,6 +93,8 @@ export default function LandingPage() {
               <SectionHeader
                 eyebrow={`${sectionNumber(2)} · ${landing.whoWeWorkWith.eyebrow}`}
                 headline={landing.whoWeWorkWith.headline}
+                headlineClassName="text-navy"
+                eyebrowClassName="text-[1.125rem]"
               />
               <div className="mt-10 max-w-measure space-y-6">
                 {landing.whoWeWorkWith.paragraphs.map((paragraph) => (
@@ -101,28 +109,17 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How we work. Each principle beside its visual; the sides alternate. */}
+      {/* How we work. A self-rotating carousel: one principle at a time, each with its visual. */}
       <section id="how-we-work" className="scroll-mt-20 border-b border-rule">
         <div className="mx-auto max-w-content px-6 py-section-mobile lg:py-section lg:pl-gutter">
           <SectionHeader
             eyebrow={`${sectionNumber(3)} · ${landing.howWeWork.eyebrow}`}
             headline={landing.howWeWork.headline}
+            headlineClassName="text-navy"
+            eyebrowClassName="text-[1.125rem]"
           />
-          <div className="mt-12 space-y-14 lg:mt-14 lg:space-y-16">
-            {landing.howWeWork.principles.map((principle, i) => {
-              const visual = principleVisuals[i];
-              const textFirst = i % 2 === 0;
-              return (
-                <div key={principle.label} className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-16">
-                  {/* Text first on phones every time; on wide screens the sides alternate. */}
-                  <div className={textFirst ? '' : 'lg:order-2'}>
-                    <h3 className="text-h2 font-semibold">{principle.label}</h3>
-                    <p className="mt-5 max-w-measure text-body-l text-muted">{principle.body}</p>
-                  </div>
-                  {visual ? <div className={textFirst ? '' : 'lg:order-1'}>{visual}</div> : null}
-                </div>
-              );
-            })}
+          <div className="mt-12 lg:mt-14">
+            <PrinciplesCarousel items={landing.howWeWork.principles} visuals={principleVisuals} />
           </div>
         </div>
       </section>
@@ -137,6 +134,7 @@ export default function LandingPage() {
                 eyebrow={`${sectionNumber(4)} · ${landing.careers.eyebrow}`}
                 headline={landing.careers.headline}
                 standfirst={landing.careers.intro}
+                eyebrowClassName="text-[1.125rem]"
               />
             }
             roles={landing.careers.roles}
@@ -153,6 +151,8 @@ export default function LandingPage() {
           <SectionHeader
             eyebrow={`${sectionNumber(5)} · ${landing.contact.eyebrow}`}
             headline={landing.contact.headline}
+            headlineClassName="text-navy"
+            eyebrowClassName="text-[1.125rem]"
             standfirst={landing.contact.body}
           />
           <div className="mt-10 flex flex-wrap items-center gap-6">

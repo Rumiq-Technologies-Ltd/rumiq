@@ -32,6 +32,7 @@ const twMerge = extendTailwindMerge({
             'paper',
             'paper-raised',
             'paper-dark',
+            'navy',
             'ink',
             'plane-public',
             'plane-protected',
