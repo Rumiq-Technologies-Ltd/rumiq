@@ -219,10 +219,9 @@ export const landing = {
   footer: {
     entity: 'Rumiq Technologies (SMC-Private) Limited',
     copyright: 'Rumiq Technologies © 2026',
-    fullSiteNote: 'Our full website is on its way. In the meantime, we’d love to hear from you.',
     links: [
-      { label: 'Privacy', href: '/privacy' },
-      { label: 'Terms', href: '/terms' },
+      { label: 'Privacy Notice', href: '/privacy' },
+      { label: 'Terms of Use', href: '/terms' },
     ],
   },
 

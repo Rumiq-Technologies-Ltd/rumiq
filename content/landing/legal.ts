@@ -13,7 +13,7 @@ export const landingLegal = {
     metaTitle: 'Privacy',
     description: 'How Rumiq Technologies (SMC-Private) Limited handles information from rumiq.ai.',
     eyebrow: 'Privacy',
-    headline: 'Privacy notice',
+    headline: 'Privacy Notice',
     intro:
       'This is a short summary of how we handle information on this website. The full privacy notice will replace it when it is published.',
     sections: [
@@ -60,7 +60,7 @@ export const landingLegal = {
     metaTitle: 'Terms',
     description: 'The basic terms for using rumiq.ai.',
     eyebrow: 'Terms',
-    headline: 'Terms of use',
+    headline: 'Terms of Use',
     intro:
       'These are the basic terms for using this website. The full terms will replace them when they are published.',
     sections: [
