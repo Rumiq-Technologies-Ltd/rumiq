@@ -125,7 +125,7 @@ export const landing = {
         body: 'Three commitments guide every client we take on. We check compliance first, keep patient information protected, and report every result honestly',
       },
       {
-        label: 'Compliance Check before we Start.',
+        label: 'Compliance check before we start.',
         body: 'Every new client starts with a compliance review of their website, social media and patient access tools. We flag privacy, accessibility and professional-guidance issues, and we fix them before we grow anything.',
       },
       {
@@ -218,7 +218,7 @@ export const landing = {
 
   footer: {
     entity: 'Rumiq Technologies (SMC-Private) Limited',
-    copyright: 'Rumiq Technologies (c) 2026',
+    copyright: 'Rumiq Technologies © 2026',
     fullSiteNote: 'Our full website is on its way. In the meantime, we’d love to hear from you.',
     links: [
       { label: 'Privacy', href: '/privacy' },
