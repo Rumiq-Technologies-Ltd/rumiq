@@ -1,8 +1,15 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { PenLine, Search, TrendingUp, Video, type LucideIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import {
+  PenLine,
+  Search,
+  TrendingUp,
+  Video,
+  type LucideIcon,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { serviceTones } from "@/components/landing/service-tones";
 
 /*
  * TEMPORARY LANDING PAGE — "What we do" on phones (<= 767px). No scroll-jacking:
@@ -15,13 +22,13 @@ type Service = { label: string; body: string };
 type Group = { title: string; services: readonly Service[] };
 
 const icons: Record<string, LucideIcon> = {
-  'Search & discovery': Search,
-  'Social & video': Video,
-  'Content & brand': PenLine,
-  'Patients & growth': TrendingUp,
+  "Search & discovery": Search,
+  "Social & video": Video,
+  "Content & brand": PenLine,
+  "Access & growth": TrendingUp,
 };
 
-const num = (n: number) => String(n).padStart(2, '0');
+const num = (n: number) => String(n).padStart(2, "0");
 
 export function MobileServices({ groups }: { groups: readonly Group[] }) {
   const [g, setG] = React.useState(0);
@@ -45,10 +52,15 @@ export function MobileServices({ groups }: { groups: readonly Group[] }) {
 
   return (
     <div className="mt-8">
-      <div role="tablist" aria-label="Service groups" className="grid grid-cols-4 gap-1.5">
+      <div
+        role="tablist"
+        aria-label="Service groups"
+        className="grid grid-cols-4 gap-1.5"
+      >
         {groups.map((x, i) => {
           const Icon = icons[x.title];
           const on = i === g;
+          const tone = serviceTones[i % serviceTones.length]!;
           return (
             <button
               key={x.title}
@@ -57,12 +69,27 @@ export function MobileServices({ groups }: { groups: readonly Group[] }) {
               aria-selected={on}
               onClick={() => pick(i)}
               className={cn(
-                'flex min-h-[4.25rem] flex-col items-center justify-center gap-1.5 rounded-panel border px-1 text-center transition-colors',
-                on ? 'border-navy bg-navy text-paper' : 'border-rule bg-paper-raised text-navy',
+                "flex min-h-[4.25rem] flex-col items-center justify-center gap-1.5 rounded-panel border px-1 text-center transition-colors",
+                on
+                  ? cn(
+                      tone.strip,
+                      tone.dark
+                        ? "border-paper-dark text-paper"
+                        : "border-navy text-navy",
+                    )
+                  : "border-rule bg-paper-raised text-navy",
               )}
             >
-              {Icon ? <Icon aria-hidden="true" className="size-5" strokeWidth={1.75} /> : null}
-              <span className="font-mono text-[0.625rem] uppercase leading-tight tracking-wide">{x.title}</span>
+              {Icon ? (
+                <Icon
+                  aria-hidden="true"
+                  className="size-5"
+                  strokeWidth={1.75}
+                />
+              ) : null}
+              <span className="font-mono text-[0.625rem] uppercase leading-tight tracking-wide">
+                {x.title}
+              </span>
             </button>
           );
         })}
@@ -72,36 +99,71 @@ export function MobileServices({ groups }: { groups: readonly Group[] }) {
           the tallest card of any group and switching tabs never shifts the page.
           Inactive rails are invisible, which also hides them from assistive tech. */}
       <div className="mt-3 grid">
-        {groups.map((x, gi) => (
-          <div
-            key={x.title}
-            ref={(el) => {
-              rails.current[gi] = el;
-            }}
-            onScroll={gi === g ? onScroll : undefined}
-            role="tabpanel"
-            aria-label={x.title}
-            className={cn(
-              '-mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-1 [grid-area:1/1] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
-              gi !== g && 'invisible',
-            )}
-          >
-            {x.services.map((svc, i) => (
-              <div key={svc.label} className="w-[84%] shrink-0 snap-center rounded-panel border border-rule bg-paper p-5">
-                <p className="font-mono text-mono-eyebrow uppercase text-muted">
-                  {num(i + 1)} / {num(x.services.length)}
-                </p>
-                <h4 className="mt-2 text-body-l font-semibold text-navy">{svc.label}</h4>
-                <p className="mt-1.5 text-caption text-muted">{svc.body}</p>
-              </div>
-            ))}
-          </div>
-        ))}
+        {groups.map((x, gi) => {
+          const tone = serviceTones[gi % serviceTones.length]!;
+          return (
+            <div
+              key={x.title}
+              ref={(el) => {
+                rails.current[gi] = el;
+              }}
+              onScroll={gi === g ? onScroll : undefined}
+              role="tabpanel"
+              aria-label={x.title}
+              className={cn(
+                "-mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-1 [grid-area:1/1] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+                gi !== g && "invisible",
+              )}
+            >
+              {x.services.map((svc, i) => (
+                <div
+                  key={svc.label}
+                  className={cn(
+                    "w-[84%] shrink-0 snap-center rounded-panel border p-5",
+                    tone.panel,
+                    tone.dark ? "border-paper-dark" : "border-rule",
+                  )}
+                >
+                  <p
+                    className={cn(
+                      "font-mono text-mono-eyebrow uppercase",
+                      tone.dark ? "text-paper/70" : "text-muted",
+                    )}
+                  >
+                    {num(i + 1)} / {num(x.services.length)}
+                  </p>
+                  <h4
+                    className={cn(
+                      "mt-2 text-body-l font-semibold",
+                      tone.dark ? "text-paper" : "text-navy",
+                    )}
+                  >
+                    {svc.label}
+                  </h4>
+                  <p
+                    className={cn(
+                      "mt-1.5 text-caption",
+                      tone.dark ? "text-paper/80" : "text-muted",
+                    )}
+                  >
+                    {svc.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          );
+        })}
       </div>
 
       <div aria-hidden="true" className="mt-3 flex justify-center gap-1.5">
         {group.services.map((svc, i) => (
-          <span key={svc.label} className={cn('h-1.5 rounded-full transition-all', s === i ? 'w-5 bg-navy' : 'w-1.5 bg-rule')} />
+          <span
+            key={svc.label}
+            className={cn(
+              "h-1.5 rounded-full transition-all",
+              s === i ? "w-5 bg-navy" : "w-1.5 bg-rule",
+            )}
+          />
         ))}
       </div>
     </div>

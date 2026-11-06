@@ -90,7 +90,7 @@ export const landing = {
         ],
       },
       {
-        title: 'Patients & growth',
+        title: 'Access & growth',
         services: [
         {
           label: 'Patient Access & Messaging',

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { ChevronDown, PenLine, Search, TrendingUp, Video, type LucideIcon } from 'lucide-react';
 import { SectionHeader } from '@/components/rumiq';
 import { cn } from '@/lib/utils';
+import { serviceTones } from '@/components/landing/service-tones';
 import { MobileServices } from '@/components/landing/service-mobile';
 
 /* One icon per service group. Decorative, so hidden from assistive tech. Lives
@@ -13,7 +14,7 @@ const groupIcons: Record<string, LucideIcon> = {
   'Search & discovery': Search,
   'Social & video': Video,
   'Content & brand': PenLine,
-  'Patients & growth': TrendingUp,
+  'Access & growth': TrendingUp,
 };
 
 /*
@@ -216,6 +217,7 @@ function ServiceStackDesktop({
         >
           {groups.map((group, i) => {
             const Icon = groupIcons[group.title];
+            const tone = serviceTones[i % serviceTones.length]!;
             const isOpen = !pinned || open === i;
             const lit = pinned && isOpen;
             const LabelTag = pinned ? 'button' : 'div';
@@ -224,8 +226,10 @@ function ServiceStackDesktop({
                 key={group.title}
                 aria-labelledby={`service-group-${i}`}
                 className={cn(
-                  'overflow-hidden rounded-panel border bg-paper transition-[border-color,box-shadow] duration-500',
-                  lit ? 'border-navy/30 shadow-[0_18px_40px_-28px_hsl(var(--paper-dark-hsl)/0.6)]' : 'border-rule',
+                  'overflow-hidden rounded-panel border transition-[border-color,box-shadow] duration-500',
+                  isOpen ? tone.panel : tone.strip,
+                  tone.dark ? 'border-paper-dark' : lit ? 'border-navy/30' : 'border-rule',
+                  lit && 'shadow-[0_18px_40px_-28px_hsl(var(--paper-dark-hsl)/0.6)]',
                 )}
               >
                 <h3 id={`service-group-${i}`} className="m-0">
@@ -233,22 +237,23 @@ function ServiceStackDesktop({
                     {...(pinned ? { type: 'button' as const, onClick: () => goTo(i), 'aria-expanded': isOpen } : {})}
                     className={cn(
                       'relative flex h-12 w-full items-center gap-3 px-4 text-left transition-colors duration-500 sm:h-14 sm:px-7',
-                      lit ? 'bg-navy text-paper' : 'bg-paper-raised text-navy',
-                      pinned && !isOpen && 'hover:bg-rule/60',
+                      tone.strip,
+                      tone.dark ? 'text-paper' : 'text-navy',
+                      pinned && !isOpen && !tone.dark && 'hover:brightness-95',
                     )}
                   >
                     {Icon ? (
                       <span
                         className={cn(
                           'inline-flex size-8 shrink-0 items-center justify-center rounded-full transition-colors duration-500',
-                          lit ? 'bg-paper text-navy' : 'bg-navy text-paper',
+                          tone.dark ? 'bg-paper text-navy' : 'bg-navy text-paper',
                         )}
                       >
                         <Icon aria-hidden="true" className="size-4" strokeWidth={1.75} />
                       </span>
                     ) : null}
                     <span className="truncate font-mono text-mono-eyebrow uppercase">{group.title}</span>
-                    <span aria-hidden="true" className={cn('ml-auto shrink-0 font-mono text-mono-eyebrow', lit ? 'text-paper/70' : 'text-muted')}>
+                    <span aria-hidden="true" className={cn('ml-auto shrink-0 font-mono text-mono-eyebrow', tone.dark ? 'text-paper/70' : 'text-muted')}>
                       {String(i + 1).padStart(2, '0')} / {total}
                     </span>
                     {pinned ? (
@@ -262,7 +267,7 @@ function ServiceStackDesktop({
                             barRefs.current[i] = el;
                           }}
                           aria-hidden="true"
-                          className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-teal"
+                          className={cn('absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0', tone.dark ? 'bg-teal' : 'bg-navy/60')}
                         />
                       </>
                     ) : null}
@@ -282,11 +287,17 @@ function ServiceStackDesktop({
                   <div className="min-h-0 overflow-hidden">
                     {/* A div list, not <ul>: the site's scroll-reveal forces every ul item to
                         full opacity, which would show all three phone services at once. */}
-                    <div role="list" className="grid divide-y divide-rule border-t border-rule md:grid-cols-3 md:divide-x md:divide-y-0">
+                    <div
+                      role="list"
+                      className={cn(
+                        'grid divide-y border-t md:grid-cols-3 md:divide-x md:divide-y-0',
+                        tone.dark ? 'divide-paper/20 border-paper/20' : 'divide-rule border-rule',
+                      )}
+                    >
                       {group.services.map((service) => (
                         <div role="listitem" key={service.label} className="px-4 py-4 sm:px-7 sm:py-5 md:py-6">
-                          <h4 className="text-body-l font-semibold sm:text-h3">{service.label}</h4>
-                          <p className="mt-1.5 text-caption text-muted sm:mt-2">{service.body}</p>
+                          <h4 className={cn('text-body-l font-semibold sm:text-h3', tone.dark ? 'text-paper' : 'text-navy')}>{service.label}</h4>
+                          <p className={cn('mt-1.5 text-caption sm:mt-2', tone.dark ? 'text-paper/80' : 'text-muted')}>{service.body}</p>
                         </div>
                       ))}
                     </div>
