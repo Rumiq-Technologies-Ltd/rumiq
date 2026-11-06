@@ -4,6 +4,7 @@ import * as React from 'react';
 import { ChevronDown, PenLine, Search, TrendingUp, Video, type LucideIcon } from 'lucide-react';
 import { SectionHeader } from '@/components/rumiq';
 import { cn } from '@/lib/utils';
+import { MobileServices } from '@/components/landing/service-mobile';
 
 /* One icon per service group. Decorative, so hidden from assistive tech. Lives
    here, not in the page, because component functions cannot cross the server/
@@ -25,9 +26,8 @@ const groupIcons: Record<string, LucideIcon> = {
  *
  *   pin → group 1 opens → group 2 → group 3 → group 4 → all shut → release
  *
- * On phones a whole group cannot sit on screen under the header, so each step
- * is one service instead: the open group shows its services one at a time,
- * with dots, before handing over to the next group. Same idea, smaller steps.
+ * Phones (<= 767px) get a separate tap-and-swipe layout (service-mobile.tsx),
+ * chosen by CSS so there is no flash on load; this pinned version is hidden there.
  *
  * A thin bar on the open card's label shows progress through its group, and
  * clicking a label scrolls to that group.
@@ -47,19 +47,15 @@ const groupIcons: Record<string, LucideIcon> = {
 type Service = { label: string; body: string };
 type Group = { title: string; services: readonly Service[] };
 
-type Mode = 'static' | 'groups' | 'services';
-type Layout = { mode: Exclude<Mode, 'static'>; trackHeight: number; pinTop: number; step: number; cardsHeight: number; vh: number };
+type Layout = { trackHeight: number; pinTop: number; step: number; cardsHeight: number; vh: number };
 
 const HEADER_HEIGHT = 72;
-const PHONE_MAX = 767;
 /* Scroll per step, as a share of the viewport height. */
-const STEP_SHARE = { groups: 0.38, services: 0.2 } as const;
+const STEP_SHARE = 0.38;
 /* The closing step ("all shut") is shorter than the others. */
 const CLOSE_STEPS = 0.6;
-/* Room for the service dots under a phone card. */
-const DOTS_HEIGHT = 28;
 
-export function ServiceStack({
+function ServiceStackDesktop({
   eyebrow,
   headline,
   intro,
@@ -71,7 +67,6 @@ export function ServiceStack({
   groups: readonly Group[];
 }) {
   const count = groups.length;
-  const perGroup = Math.max(...groups.map((g) => g.services.length));
 
   const trackRef = React.useRef<HTMLDivElement>(null);
   const headRef = React.useRef<HTMLDivElement>(null);
@@ -82,11 +77,10 @@ export function ServiceStack({
   const measureRef = React.useRef<() => void>(() => {});
 
   const [layout, setLayout] = React.useState<Layout | null>(null);
-  // Open group (-1 = none) and, on phones, the service showing inside it.
-  const [open, setOpen] = React.useState({ group: -1, service: 0 });
+  // Open group, -1 = none.
+  const [open, setOpen] = React.useState(-1);
 
-  const mode: Mode = layout?.mode ?? 'static';
-  const pinned = mode !== 'static';
+  const pinned = layout !== null;
 
   // Measure: does the panel, with its tallest open card, fit under the header?
   React.useLayoutEffect(() => {
@@ -94,19 +88,19 @@ export function ServiceStack({
       const head = headRef.current;
       const cards = cardsRef.current;
       if (!head || !cards) return;
+      // Hidden (phones show the other layout): nothing to measure or pin.
+      if (!head.offsetParent) {
+        layoutRef.current = null;
+        setLayout(null);
+        return;
+      }
       const vh = window.innerHeight;
-      const nextMode = window.innerWidth <= PHONE_MAX ? 'services' : 'groups';
 
       const bodies = bodyRefs.current.filter(Boolean) as HTMLDivElement[];
       // Natural content heights. Service items lay out the same in every mode, so
       // this holds whether the cards are currently open, shut or static.
       const lists = bodies.map((b) => b.querySelector<HTMLElement>('[role=list]'));
-      const tallestBody =
-        nextMode === 'groups'
-          ? Math.max(...lists.map((l) => l?.offsetHeight ?? 0))
-          : Math.max(...lists.flatMap((l) => Array.from(l?.children ?? []).map((li) => (li as HTMLElement).offsetHeight))) +
-            DOTS_HEIGHT +
-            1; // the list's top border
+      const tallestBody = Math.max(...lists.map((l) => l?.offsetHeight ?? 0));
       // Shut height = the cards without their bodies, built from the label bars and borders, which never change: a body caught
       // mid-animation reports a height its card is clipping, so it can't be trusted.
       const articles = Array.from(cards.children) as HTMLElement[];
@@ -127,10 +121,9 @@ export function ServiceStack({
         setLayout(null);
         return;
       }
-      const steps = (nextMode === 'groups' ? count : count * perGroup) + CLOSE_STEPS;
-      const step = Math.round(vh * STEP_SHARE[nextMode]);
+      const steps = count + CLOSE_STEPS;
+      const step = Math.round(vh * STEP_SHARE);
       const next: Layout = {
-        mode: nextMode,
         step,
         cardsHeight,
         vh,
@@ -164,16 +157,15 @@ export function ServiceStack({
       window.removeEventListener('resize', measure);
       window.removeEventListener('load', measure);
     };
-  }, [count, perGroup]);
+  }, [count]);
 
   // Scroll drives the step. Runs straight from the scroll event: one rect read
   // and four transforms, and React skips the render when nothing changed.
   React.useEffect(() => {
     if (!layout) {
-      setOpen({ group: -1, service: 0 });
+      setOpen(-1);
       return;
     }
-    const per = layout.mode === 'groups' ? 1 : perGroup;
     const update = () => {
       const track = trackRef.current;
       const current = layoutRef.current;
@@ -184,11 +176,10 @@ export function ServiceStack({
       if (Math.abs(window.innerHeight - current.vh) > 120) measureRef.current();
       const travelled = current.pinTop - track.getBoundingClientRect().top;
       const index = travelled < 0 ? -1 : Math.floor(travelled / current.step);
-      const group = index >= 0 && index < count * per ? Math.floor(index / per) : -1;
-      const service = group >= 0 ? index % per : 0;
-      setOpen((prev) => (prev.group === group && prev.service === service ? prev : { group, service }));
+      const group = index >= 0 && index < count ? index : -1;
+      setOpen((prev) => (prev === group ? prev : group));
       // Progress through the open group, for its bar.
-      const within = group >= 0 ? (travelled - group * per * current.step) / (per * current.step) : 0;
+      const within = group >= 0 ? (travelled - group * current.step) / current.step : 0;
       barRefs.current.forEach((bar, i) => {
         if (bar) bar.style.transform = `scaleX(${i === group ? Math.min(1, Math.max(0, within)) : 0})`;
       });
@@ -196,16 +187,15 @@ export function ServiceStack({
     update();
     window.addEventListener('scroll', update, { passive: true });
     return () => window.removeEventListener('scroll', update);
-  }, [layout, count, perGroup]);
+  }, [layout, count]);
 
   // A label click scrolls to the start of that group.
   const goTo = (i: number) => {
     const track = trackRef.current;
     const current = layoutRef.current;
     if (!track || !current) return;
-    const per = current.mode === 'groups' ? 1 : perGroup;
     const trackTop = track.getBoundingClientRect().top + window.scrollY;
-    const target = trackTop - current.pinTop + current.step * (i * per + 0.15);
+    const target = trackTop - current.pinTop + current.step * (i + 0.15);
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' });
   };
@@ -226,10 +216,9 @@ export function ServiceStack({
         >
           {groups.map((group, i) => {
             const Icon = groupIcons[group.title];
-            const isOpen = !pinned || open.group === i;
+            const isOpen = !pinned || open === i;
             const lit = pinned && isOpen;
             const LabelTag = pinned ? 'button' : 'div';
-            const oneAtATime = mode === 'services';
             return (
               <article
                 key={group.title}
@@ -293,47 +282,14 @@ export function ServiceStack({
                   <div className="min-h-0 overflow-hidden">
                     {/* A div list, not <ul>: the site's scroll-reveal forces every ul item to
                         full opacity, which would show all three phone services at once. */}
-                    <div
-                      role="list"
-                      className={cn(
-                        'border-t border-rule',
-                        oneAtATime
-                          ? // Phones: every service in one cell, one visible at a time.
-                            'grid [grid-template-areas:"service"]'
-                          : 'grid divide-y divide-rule md:grid-cols-3 md:divide-x md:divide-y-0',
-                      )}
-                    >
-                      {group.services.map((service, s) => {
-                        const showing = !oneAtATime || open.service === s;
-                        return (
-                          <div
-                            role="listitem"
-                            key={service.label}
-                            className={cn(
-                              'px-4 py-4 sm:px-7 sm:py-5 md:py-6',
-                              oneAtATime && '[grid-area:service] transition-[opacity,transform] duration-500',
-                              oneAtATime && (showing ? 'opacity-100' : 'pointer-events-none translate-y-1 opacity-0'),
-                            )}
-                          >
-                            <h4 className="text-body-l font-semibold sm:text-h3">{service.label}</h4>
-                            <p className="mt-1.5 text-caption text-muted sm:mt-2">{service.body}</p>
-                          </div>
-                        );
-                      })}
+                    <div role="list" className="grid divide-y divide-rule border-t border-rule md:grid-cols-3 md:divide-x md:divide-y-0">
+                      {group.services.map((service) => (
+                        <div role="listitem" key={service.label} className="px-4 py-4 sm:px-7 sm:py-5 md:py-6">
+                          <h4 className="text-body-l font-semibold sm:text-h3">{service.label}</h4>
+                          <p className="mt-1.5 text-caption text-muted sm:mt-2">{service.body}</p>
+                        </div>
+                      ))}
                     </div>
-                    {oneAtATime ? (
-                      <div aria-hidden="true" className="flex h-7 items-start justify-center gap-1.5">
-                        {group.services.map((service, s) => (
-                          <span
-                            key={service.label}
-                            className={cn(
-                              'h-1.5 rounded-full transition-all duration-300',
-                              open.service === s ? 'w-5 bg-navy' : 'w-1.5 bg-rule',
-                            )}
-                          />
-                        ))}
-                      </div>
-                    ) : null}
                   </div>
                 </div>
               </article>
@@ -342,5 +298,25 @@ export function ServiceStack({
         </div>
       </div>
     </div>
+  );
+}
+
+/* Both layouts are in the DOM; CSS shows one. Phones get the tap-and-swipe version. */
+export function ServiceStack(props: {
+  eyebrow: string;
+  headline: string;
+  intro: string;
+  groups: readonly Group[];
+}) {
+  return (
+    <>
+      <div className="hidden md:block">
+        <ServiceStackDesktop {...props} />
+      </div>
+      <div className="md:hidden">
+        <SectionHeader eyebrow={props.eyebrow} headline={props.headline} standfirst={props.intro} headlineClassName="text-navy" eyebrowClassName="text-[1.125rem]" />
+        <MobileServices groups={props.groups} />
+      </div>
+    </>
   );
 }
