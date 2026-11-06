@@ -26,6 +26,8 @@ export const landing = {
 
   hero: {
     headline: 'Helping American healthcare providers get found, chosen & trusted.',
+    /** The trailing phrase of `headline`, set in Rumiq Teal. */
+    headlineHighlight: 'found, chosen & trusted.',
     subheadline:
       'Rumiq helps US healthcare businesses reach more patients and families, with digital marketing and tech solutions that respect patient privacy.',
     primaryCta: { label: "We're hiring", href: '#careers' },

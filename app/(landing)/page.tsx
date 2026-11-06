@@ -1,18 +1,18 @@
-import type { Metadata } from 'next';
-import { ArrowDown } from 'lucide-react';
-import { Button, Eyebrow, JsonLd, SectionHeader } from '@/components/rumiq';
-import { HeroArcs } from '@/components/landing/hero-arcs';
-import { ServiceStack } from '@/components/landing/service-stack';
-import { WhoWeServe } from '@/components/landing/who-we-serve';
-import { landing } from '@/content/landing';
-import { ClientFlow, measureFlowNodes } from '@/components/landing/client-flow';
-import { PrivacyFlow } from '@/components/landing/privacy-flow';
-import { PrinciplesPanels } from '@/components/landing/principles-panels';
-import { Commitments } from '@/components/landing/commitments';
-import { ComplianceReview } from '@/components/landing/compliance-review';
-import { CareersRoles } from '@/components/landing/careers-roles';
-import { landingJsonLd } from '@/lib/landing/structured-data';
-import { pageMetadata } from '@/lib/seo';
+import type { Metadata } from "next";
+import { ArrowDown } from "lucide-react";
+import { Button, Eyebrow, JsonLd, SectionHeader } from "@/components/rumiq";
+import { HeroArcs } from "@/components/landing/hero-arcs";
+import { ServiceStack } from "@/components/landing/service-stack";
+import { WhoWeServe } from "@/components/landing/who-we-serve";
+import { landing } from "@/content/landing";
+import { ClientFlow, measureFlowNodes } from "@/components/landing/client-flow";
+import { PrivacyFlow } from "@/components/landing/privacy-flow";
+import { PrinciplesPanels } from "@/components/landing/principles-panels";
+import { Commitments } from "@/components/landing/commitments";
+import { ComplianceReview } from "@/components/landing/compliance-review";
+import { CareersRoles } from "@/components/landing/careers-roles";
+import { landingJsonLd } from "@/lib/landing/structured-data";
+import { pageMetadata } from "@/lib/seo";
 
 /*
  * TEMPORARY LANDING PAGE — the one-page rumiq.ai. Copy comes from
@@ -23,20 +23,46 @@ import { pageMetadata } from '@/lib/seo';
 export const metadata: Metadata = pageMetadata({
   title: landing.meta.title,
   description: landing.meta.description,
-  path: '/',
+  path: "/",
 });
 
+/* Sets the trailing phrase of a headline in teal. The phrase must end the headline. */
+function highlightPhrase(text: string, phrase: string) {
+  const start = text.indexOf(phrase);
+  if (start === -1) return text;
+  return [
+    text.slice(0, start),
+    <span key="highlight" className="text-teal">
+      {phrase}
+    </span>,
+  ];
+}
+
 /* Visual markers only. Not copy: the numbers follow section order. */
-const sectionNumber = (n: number) => String(n).padStart(2, '0');
+const sectionNumber = (n: number) => String(n).padStart(2, "0");
 
 const contactHref = `mailto:${landing.email}`;
 
 /* "How we work": one visual per principle, in the same order as the copy. */
 const principleVisuals = [
-  <Commitments key="commitments" label="Three commitments for every client: check compliance first, keep patient information protected, report every result honestly" />,
-  <ComplianceReview key="compliance" label="A compliance review: website, social media and patient access checked; privacy and accessibility in review" />,
-  <PrivacyFlow key="privacy" label="Your data passes through Rumiq; patient information stays in the practice and only business information reaches ad platforms" />,
-  <ClientFlow key="measure" row label="Inquiries, calls and bookings, reported plainly" nodes={measureFlowNodes} />,
+  <Commitments
+    key="commitments"
+    label="Three commitments for every client: check compliance first, keep patient information protected, report every result honestly"
+  />,
+  <ComplianceReview
+    key="compliance"
+    label="A compliance review: website, social media and patient access checked; privacy and accessibility in review"
+  />,
+  <PrivacyFlow
+    key="privacy"
+    label="Your data passes through Rumiq; patient information stays in the practice and only business information reaches ad platforms"
+  />,
+  <ClientFlow
+    key="measure"
+    row
+    label="Inquiries, calls and bookings, reported plainly"
+    nodes={measureFlowNodes}
+  />,
 ];
 
 export default function LandingPage() {
@@ -51,14 +77,19 @@ export default function LandingPage() {
           <SectionHeader
             as="h1"
             size="display-xl"
-            headline={landing.hero.headline}
+            headline={highlightPhrase(
+              landing.hero.headline,
+              landing.hero.headlineHighlight,
+            )}
             standfirst={landing.hero.subheadline}
             headlineClassName="text-navy"
             className="lg:max-w-[52rem]"
           />
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
             <Button asChild size="lg">
-              <a href={landing.hero.primaryCta.href}>{landing.hero.primaryCta.label}</a>
+              <a href={landing.hero.primaryCta.href}>
+                {landing.hero.primaryCta.label}
+              </a>
             </Button>
             {/* Secondary route into the page. The label is the nav's own, so no new copy. */}
             <a
@@ -66,7 +97,10 @@ export default function LandingPage() {
               className="group inline-flex items-center gap-2 text-body font-medium text-navy underline decoration-rule underline-offset-4 transition-colors hover:decoration-navy"
             >
               {landing.nav[0].label}
-              <ArrowDown aria-hidden="true" className="size-4 transition-transform duration-200 group-hover:translate-y-0.5" />
+              <ArrowDown
+                aria-hidden="true"
+                className="size-4 transition-transform duration-200 group-hover:translate-y-0.5"
+              />
             </a>
           </div>
         </div>
@@ -86,7 +120,10 @@ export default function LandingPage() {
       </section>
 
       {/* Who we work with */}
-      <section id="who-we-work-with" className="scroll-mt-20 border-b border-rule bg-paper-raised">
+      <section
+        id="who-we-work-with"
+        className="scroll-mt-20 border-b border-rule bg-paper-raised"
+      >
         <div className="mx-auto max-w-content px-6 py-section-mobile lg:py-section lg:pl-gutter">
           <div className="grid gap-14 lg:grid-cols-2 lg:items-center lg:gap-20">
             <div>
@@ -119,13 +156,19 @@ export default function LandingPage() {
             eyebrowClassName="text-[1.125rem]"
           />
           <div className="mt-12 lg:mt-14">
-            <PrinciplesPanels items={landing.howWeWork.principles} visuals={principleVisuals} />
+            <PrinciplesPanels
+              items={landing.howWeWork.principles}
+              visuals={principleVisuals}
+            />
           </div>
         </div>
       </section>
 
       {/* Careers */}
-      <section id="careers" className="scroll-mt-20 border-b border-rule bg-paper-dark">
+      <section
+        id="careers"
+        className="scroll-mt-20 border-b border-rule bg-paper-dark"
+      >
         <div className="mx-auto max-w-content px-6 py-section-mobile lg:py-section lg:pl-gutter">
           <CareersRoles
             header={
