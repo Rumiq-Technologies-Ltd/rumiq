@@ -26,15 +26,15 @@ const num = (n: number) => String(n).padStart(2, '0');
 export function MobileServices({ groups }: { groups: readonly Group[] }) {
   const [g, setG] = React.useState(0);
   const [s, setS] = React.useState(0);
-  const rail = React.useRef<HTMLDivElement>(null);
+  const rails = React.useRef<(HTMLDivElement | null)[]>([]);
 
   const pick = (i: number) => {
     setG(i);
     setS(0);
-    rail.current?.scrollTo({ left: 0 });
+    rails.current[i]?.scrollTo({ left: 0 });
   };
   const onScroll = () => {
-    const el = rail.current;
+    const el = rails.current[g];
     if (!el) return;
     const card = el.firstElementChild as HTMLElement | null;
     if (!card) return;
@@ -68,23 +68,33 @@ export function MobileServices({ groups }: { groups: readonly Group[] }) {
         })}
       </div>
 
-      <div
-        ref={rail}
-        onScroll={onScroll}
-        role="tabpanel"
-        aria-label={group.title}
-        className="-mx-6 mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {group.services.map((svc, i) => (
+      {/* Every group's rail shares one grid cell, so the area is always as tall as
+          the tallest card of any group and switching tabs never shifts the page.
+          Inactive rails are invisible, which also hides them from assistive tech. */}
+      <div className="mt-3 grid">
+        {groups.map((x, gi) => (
           <div
-            key={svc.label}
-            className="min-h-[10.5rem] w-[84%] shrink-0 snap-center rounded-panel border border-rule bg-paper p-5 first:ml-0"
+            key={x.title}
+            ref={(el) => {
+              rails.current[gi] = el;
+            }}
+            onScroll={gi === g ? onScroll : undefined}
+            role="tabpanel"
+            aria-label={x.title}
+            className={cn(
+              '-mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-1 [grid-area:1/1] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+              gi !== g && 'invisible',
+            )}
           >
-            <p className="font-mono text-mono-eyebrow uppercase text-muted">
-              {num(i + 1)} / {num(group.services.length)}
-            </p>
-            <h4 className="mt-2 text-body-l font-semibold text-navy">{svc.label}</h4>
-            <p className="mt-1.5 text-caption text-muted">{svc.body}</p>
+            {x.services.map((svc, i) => (
+              <div key={svc.label} className="w-[84%] shrink-0 snap-center rounded-panel border border-rule bg-paper p-5">
+                <p className="font-mono text-mono-eyebrow uppercase text-muted">
+                  {num(i + 1)} / {num(x.services.length)}
+                </p>
+                <h4 className="mt-2 text-body-l font-semibold text-navy">{svc.label}</h4>
+                <p className="mt-1.5 text-caption text-muted">{svc.body}</p>
+              </div>
+            ))}
           </div>
         ))}
       </div>
