@@ -167,12 +167,12 @@ export const landing = {
         summary:
           'Own paid ads, organic social growth, SEO, AEO and local search for our clients during an intensive period of growth.',
         youllWorkOn: [
-          'Plan, launch and optimize Google Ads campaigns for each client',
+          'Plan, launch and optimize Google Ads campaigns',
           'Run Meta Ads for local lead generation, and TikTok Ads for national clients',
           'Grow client Facebook and Instagram accounts, plus TikTok for national clients',
-          'Run SEO, local SEO and Google Business Profiles for each client',
+          'Run SEO, local SEO and Google Business Profiles',
           'Lead AEO so clients are recommended by AI search and assistants',
-          'Build an AI-assisted performance dashboard for each client',
+          'Build an AI-assisted performance dashboard',
         ],
         youllBring: [
           '3–5 years in digital marketing, ideally including time at an agency',
@@ -181,7 +181,7 @@ export const landing = {
           'A track record of growing Instagram and Facebook accounts organically',
           'Fluent US English, written and spoken',
           'A fast, skilled AI user, able to show how AI has made their workflow more efficient',
-          'Committed to patient privacy, and willing to learn HIPAA and build it into how you work',
+          'Committed to patient privacy, and willing to learn HIPAA & other healthcare rules and build them into how you work',
         ],
         applySubject: 'Digital Marketing Specialist – Islamabad',
       },
@@ -196,7 +196,7 @@ export const landing = {
           'Design posts, carousels, stories and ad creatives for Facebook, Instagram and TikTok',
           'Design website pages and app screens, then hand clean designs to our engineers',
           'Create simple animations and short explainer videos, with AI video and avatar tools',
-          'Build a brand kit and template library for each client',
+          'Build a brand kit and template library',
         ],
         youllBring: [
           '2–4 years as a graphic, video or multimedia designer, ideally at an agency or in-house',
@@ -204,7 +204,7 @@ export const landing = {
           'Strong video editing skills (Premiere Pro, CapCut or DaVinci Resolve), and design skills in Figma, Photoshop, Illustrator or Canva',
           'A fast, skilled AI user, able to show how AI has made their workflow more efficient',
           'Good written and spoken English, for American audiences',
-          'Committed to patient privacy, and willing to learn HIPAA and build it into how you work',
+          'Committed to patient privacy, and willing to learn HIPAA & other healthcare rules and build them into how you work',
         ],
         applySubject: 'Multimedia Designer – Islamabad',
       },

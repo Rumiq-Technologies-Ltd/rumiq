@@ -57,7 +57,7 @@ export const careerShared = {
       },
       {
         icon: 'trending-up',
-        title: 'Built together.',
+        title: 'Build together.',
         body: 'The people who join now will shape how we work and how we grow.',
       },
     ] satisfies Point[],
@@ -98,7 +98,7 @@ export const careerShared = {
       {
         icon: 'shield-check',
         title: 'Privacy skills that last.',
-        body: 'You learn HIPAA and build it into how you work.',
+        body: 'You learn HIPAA and other healthcare standards, and build them into how you work.',
       },
     ] satisfies Point[],
   },
@@ -155,7 +155,7 @@ export const roleDetails: Record<string, RoleDetail> = {
       ],
     },
     work: {
-      headline: 'What you’ll work on.',
+      headline: 'What you’ll work on, for each client.',
       intro: 'From the first campaign to the client dashboard.',
     },
     people: {
@@ -176,7 +176,7 @@ export const roleDetails: Record<string, RoleDetail> = {
         {
           icon: 'shield-check',
           title: 'Careful with patient data.',
-          body: 'Healthcare is different, and you are willing to learn HIPAA properly.',
+          body: 'Healthcare is different, and you are willing to learn HIPAA and other healthcare standards properly.',
         },
         {
           icon: 'handshake',
@@ -192,9 +192,9 @@ export const roleDetails: Record<string, RoleDetail> = {
       'You will create the videos, graphics and designs for our healthcare clients, from a short Reel to a full website page, using AI tools to move fast.',
     opportunity: {
       eyebrow: 'The opportunity',
-      headline: 'Make work people see.',
+      headline: 'Tell visual stories that people remember.',
       intro:
-        'You will not make one kind of asset on repeat. You move between video, social, ads and web design, for real clients.',
+        'You will not make one kind of asset on repeat. You move between video, images, socials, ads & web design, for real clients.',
       points: [
         {
           icon: 'layers',
@@ -219,7 +219,7 @@ export const roleDetails: Record<string, RoleDetail> = {
       ],
     },
     work: {
-      headline: 'What you’ll work on.',
+      headline: 'What you’ll work on, for each client.',
       intro: 'A mix of video, social and web design.',
     },
     people: {
@@ -240,7 +240,7 @@ export const roleDetails: Record<string, RoleDetail> = {
         {
           icon: 'shield-check',
           title: 'Careful with patient data.',
-          body: 'Healthcare is different, and you are willing to learn HIPAA properly.',
+          body: 'Healthcare is different, and you are willing to learn HIPAA and other healthcare standards properly.',
         },
         {
           icon: 'handshake',
