@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronDown, PenLine, Search, TrendingUp, Video, type LucideIcon } from 'lucide-react';
+import { ChevronDown, Code, PenLine, Search, TrendingUp, Video, type LucideIcon } from 'lucide-react';
 import { SectionHeader } from '@/components/rumiq';
 import { cn } from '@/lib/utils';
 import { serviceTones } from '@/components/landing/service-tones';
@@ -15,17 +15,18 @@ const groupIcons: Record<string, LucideIcon> = {
   'Social & video': Video,
   'Brand & Content': PenLine,
   'Access & growth': TrendingUp,
+  'Web & App build': Code,
 };
 
 /*
  * TEMPORARY LANDING PAGE — "What we do": the section header and a scroll-driven
  * accordion, pinned together as one screen.
  *
- * The header (eyebrow, headline, intro) and the four group cards pin as a
+ * The header (eyebrow, headline, intro) and the group cards pin as a
  * single panel, centred below the site header, so the text stays in view for
  * as long as the cards are being worked through. Scrolling then drives it:
  *
- *   pin → group 1 opens → group 2 → group 3 → group 4 → all shut → release
+ *   pin → group 1 opens → group 2 → group 3 → … → last group → all shut → release
  *
  * Phones (<= 767px) get a separate tap-and-swipe layout (service-mobile.tsx),
  * chosen by CSS so there is no flash on load; this pinned version is hidden there.
@@ -204,7 +205,7 @@ function ServiceStackDesktop({
   }, []);
 
   // Scroll drives the step. Runs straight from the scroll event: one rect read
-  // and four transforms, and React skips the render when nothing changed.
+  // and one transform per group, and React skips the render when nothing changed.
   React.useEffect(() => {
     if (!layout) {
       setOpen(-1);
@@ -281,7 +282,7 @@ function ServiceStackDesktop({
                   <LabelTag
                     {...(pinned ? { type: 'button' as const, onClick: () => goTo(i), 'aria-expanded': isOpen } : {})}
                     className={cn(
-                      'relative flex h-12 w-full items-center gap-3 px-4 text-left transition-colors duration-500 sm:h-14 sm:px-7',
+                      'relative flex h-12 w-full items-center gap-3 px-4 text-left transition-colors duration-500 sm:px-7',
                       tone.strip,
                       tone.dark ? 'text-paper' : 'text-navy',
                       // Keyboard focus ring drawn inside the bar, softened so it does not read as a border on the

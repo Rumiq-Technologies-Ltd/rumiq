@@ -108,6 +108,23 @@ export const landing = {
           },
         ],
       },
+      {
+        title: "Web & App build",
+        services: [
+          {
+            label: "Website Development",
+            body: "Fast, accessible, mobile-first websites that make it easy for patients to find a practice, trust it and book.",
+          },
+          {
+            label: "Mobile Apps",
+            body: "User-friendly apps for iPhone and Android, from booking and portals to internal tools, built with privacy in mind.",
+          },
+          {
+            label: "Copywriting",
+            body: "Clear, human writing for websites, ads and emails that explains care in plain language and sounds like the practice.",
+          },
+        ],
+      },
     ],
   },
 

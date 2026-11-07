@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  Code,
   PenLine,
   Search,
   TrendingUp,
@@ -26,7 +27,11 @@ const icons: Record<string, LucideIcon> = {
   "Social & video": Video,
   "Brand & Content": PenLine,
   "Access & growth": TrendingUp,
+  "Web & App build": Code,
 };
+
+/* Tab captions that need to be shorter than the group title to fit five across. */
+const tabLabels: Record<string, string> = { "Web & App build": "Web & App" };
 
 const num = (n: number) => String(n).padStart(2, "0");
 
@@ -55,7 +60,7 @@ export function MobileServices({ groups }: { groups: readonly Group[] }) {
       <div
         role="tablist"
         aria-label="Service groups"
-        className="grid grid-cols-4 gap-1.5"
+        className="grid grid-cols-5 gap-1"
       >
         {groups.map((x, i) => {
           const Icon = icons[x.title];
@@ -88,7 +93,7 @@ export function MobileServices({ groups }: { groups: readonly Group[] }) {
                 />
               ) : null}
               <span className="font-mono text-[0.625rem] uppercase leading-tight tracking-wide">
-                {x.title}
+                {tabLabels[x.title] ?? x.title}
               </span>
             </button>
           );
