@@ -160,6 +160,49 @@ function ServiceStackDesktop({
     };
   }, [count]);
 
+  // Keep every service title to two lines, and all three in a group the same size. Titles start at
+  // the normal size; if the longest takes a third line, all three shrink together a pixel at a time
+  // until it fits (never below MIN_TITLE_PX). Sizes are set directly on the titles, so a hidden
+  // stack (phones) is skipped and its titles reset to the stylesheet size.
+  React.useEffect(() => {
+    const MIN_TITLE_PX = 15;
+    const fit = (list: HTMLElement) => {
+      const titles = Array.from(list.querySelectorAll<HTMLElement>('h4'));
+      if (titles.length === 0) return;
+      titles.forEach((t) => (t.style.fontSize = ''));
+      if (!list.offsetParent) return;
+      const base = parseFloat(getComputedStyle(titles[0]!).fontSize);
+      const lineCount = () =>
+        Math.max(...titles.map((t) => Math.round(t.getBoundingClientRect().height / parseFloat(getComputedStyle(t).lineHeight))));
+      let size = base;
+      while (lineCount() > 2 && size > MIN_TITLE_PX) {
+        size -= 1;
+        titles.forEach((t) => (t.style.fontSize = `${size}px`));
+      }
+    };
+    const lists = () =>
+      bodyRefs.current.map((b) => b?.querySelector<HTMLElement>('[role=list]')).filter((l): l is HTMLElement => !!l);
+    const run = () => lists().forEach(fit);
+    run();
+    document.fonts?.ready.then(run).catch(() => {});
+    // Refit only when a list's width changes (a font-size change alters its height, never its width).
+    const widths = new Map<Element, number>();
+    const observer =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver((entries) => {
+            for (const entry of entries) {
+              const width = entry.contentRect.width;
+              if (widths.get(entry.target) !== width) {
+                widths.set(entry.target, width);
+                fit(entry.target as HTMLElement);
+              }
+            }
+          });
+    lists().forEach((l) => observer?.observe(l));
+    return () => observer?.disconnect();
+  }, []);
+
   // Scroll drives the step. Runs straight from the scroll event: one rect read
   // and four transforms, and React skips the render when nothing changed.
   React.useEffect(() => {
@@ -241,6 +284,10 @@ function ServiceStackDesktop({
                       'relative flex h-12 w-full items-center gap-3 px-4 text-left transition-colors duration-500 sm:h-14 sm:px-7',
                       tone.strip,
                       tone.dark ? 'text-paper' : 'text-navy',
+                      // Keyboard focus ring drawn inside the bar. The card clips anything outside its edge, so the
+                      // default outside ring left only a stray line under the bar. White on the navy bar, navy elsewhere.
+                      'focus-visible:ring-inset focus-visible:ring-offset-0',
+                      tone.dark ? 'focus-visible:ring-paper' : 'focus-visible:ring-navy',
                       pinned && !isOpen && !tone.dark && 'hover:brightness-95',
                     )}
                   >
@@ -298,19 +345,21 @@ function ServiceStackDesktop({
                   <div className="min-h-0 overflow-hidden">
                     {/* A div list, not <ul>: the site's scroll-reveal forces every ul item to
                         full opacity, which would show all three phone services at once. */}
-                    <div role="list" className="grid border-t border-rule md:grid-cols-3">
+                    {/* Two shared rows across the three columns (titles, then descriptions), so every
+                        description starts at the same height however many lines its title takes. */}
+                    <div role="list" className="grid border-t border-rule md:grid-cols-3 md:grid-rows-[auto_1fr]">
                       {group.services.map((service, index) => (
                         <div
                           role="listitem"
                           key={service.label}
                           className={cn(
-                            'relative px-4 py-3 sm:px-7 sm:py-3 md:py-3',
+                            'relative px-4 py-3 sm:px-7 sm:py-3 md:row-span-2 md:grid md:grid-rows-subgrid md:py-3',
                             // A short navy line between the services, set in from the top and bottom
                             // instead of running the full height of the card.
                             index > 0 && "before:absolute before:bottom-5 before:left-0 before:top-5 before:w-px before:bg-navy/25 before:content-['']",
                           )}
                         >
-                          <h4 className="text-body-l font-semibold text-navy sm:text-h3">{service.label}</h4>
+                          <h4 className="text-body-l font-semibold text-navy sm:text-h3 md:self-center">{service.label}</h4>
                           <p className="mt-1.5 text-caption text-muted sm:mt-2">{service.body}</p>
                         </div>
                       ))}

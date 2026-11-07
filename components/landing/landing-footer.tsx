@@ -15,13 +15,19 @@ export function LandingFooter() {
   return (
     <footer className="bg-paper-dark text-paper">
       <div className="mx-auto max-w-content px-6 py-8 lg:pl-gutter">
-        <div className="flex flex-wrap items-center justify-between gap-x-10 gap-y-5">
-          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-            <Logo variant="reverse" width={120} />
-            <p className="text-body text-paper">Digital marketing, tech &amp; AI for US healthcare.</p>
+        {/* From 900px up: three equal columns (logo | tagline | links) so the tagline sits dead centre.
+            From lg up the container has 64px of padding on the left and 24px on the right, so the row is
+            pulled out 40px to the left (-ml-10) to make it symmetric, and the logo is pushed back
+            in by the same 40px so it keeps its place on the page's left edge. */}
+        <div className="flex flex-wrap items-center justify-between gap-x-10 gap-y-5 lg:-ml-10 min-[900px]:grid min-[900px]:grid-cols-[1fr_auto_1fr]">
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4 min-[900px]:contents">
+            {/* The logo file's wordmark baseline sits about 3px below the baseline of centred text,
+                so the logo is lifted 3px to put both on one baseline. */}
+            <Logo variant="reverse" width={120} className="-translate-y-[3px] lg:ml-10" />
+            <p className="text-body text-paper min-[900px]:text-center">Digital marketing, tech &amp; AI for US healthcare.</p>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 min-[900px]:justify-self-end">
             <nav aria-label="Legal" className="flex gap-6">
               {landing.footer.links.map((link) => (
                 <Link
