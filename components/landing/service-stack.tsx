@@ -227,7 +227,9 @@ function ServiceStackDesktop({
                 aria-labelledby={`service-group-${i}`}
                 className={cn(
                   'overflow-hidden rounded-panel border transition-[border-color,box-shadow] duration-500',
-                  isOpen ? tone.panel : tone.strip,
+                  // Always the body tone: the label bar paints its own, and a shut card shows only the bar. Switching this
+                  // with isOpen would flash the bar color behind the body while it collapses.
+                  tone.panel,
                   tone.dark ? 'border-paper-dark' : lit ? 'border-navy/30' : 'border-rule',
                   lit && 'shadow-[0_18px_40px_-28px_hsl(var(--paper-dark-hsl)/0.6)]',
                 )}
@@ -237,6 +239,7 @@ function ServiceStackDesktop({
                     {...(pinned ? { type: 'button' as const, onClick: () => goTo(i), 'aria-expanded': isOpen } : {})}
                     className={cn(
                       'relative flex h-12 w-full items-center gap-3 px-4 text-left transition-colors duration-500 sm:h-14 sm:px-7',
+                      tone.strip,
                       tone.dark ? 'text-paper' : 'text-navy',
                       pinned && !isOpen && !tone.dark && 'hover:brightness-95',
                     )}
@@ -290,13 +293,13 @@ function ServiceStackDesktop({
                       role="list"
                       className={cn(
                         'grid divide-y border-t md:grid-cols-3 md:divide-x md:divide-y-0',
-                        tone.dark ? 'divide-paper/20 border-paper/20' : 'divide-rule border-rule',
+                        'divide-rule border-rule',
                       )}
                     >
                       {group.services.map((service) => (
                         <div role="listitem" key={service.label} className="px-4 py-4 sm:px-7 sm:py-5 md:py-6">
-                          <h4 className={cn('text-body-l font-semibold sm:text-h3', tone.dark ? 'text-paper' : 'text-navy')}>{service.label}</h4>
-                          <p className={cn('mt-1.5 text-caption sm:mt-2', tone.dark ? 'text-paper/80' : 'text-muted')}>{service.body}</p>
+                          <h4 className={cn('text-body-l font-semibold sm:text-h3', 'text-navy')}>{service.label}</h4>
+                          <p className={cn('mt-1.5 text-caption sm:mt-2', 'text-muted')}>{service.body}</p>
                         </div>
                       ))}
                     </div>

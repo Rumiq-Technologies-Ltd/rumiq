@@ -127,7 +127,7 @@ export function MobileServices({ groups }: { groups: readonly Group[] }) {
                   <p
                     className={cn(
                       "font-mono text-mono-eyebrow uppercase",
-                      tone.dark ? "text-paper/70" : "text-muted",
+                      "text-muted",
                     )}
                   >
                     {num(i + 1)} / {num(x.services.length)}
@@ -135,7 +135,7 @@ export function MobileServices({ groups }: { groups: readonly Group[] }) {
                   <h4
                     className={cn(
                       "mt-2 text-body-l font-semibold",
-                      tone.dark ? "text-paper" : "text-navy",
+                      "text-navy",
                     )}
                   >
                     {svc.label}
@@ -143,7 +143,7 @@ export function MobileServices({ groups }: { groups: readonly Group[] }) {
                   <p
                     className={cn(
                       "mt-1.5 text-caption",
-                      tone.dark ? "text-paper/80" : "text-muted",
+                      "text-muted",
                     )}
                   >
                     {svc.body}
