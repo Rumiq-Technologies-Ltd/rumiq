@@ -131,7 +131,7 @@ export default function LandingPage() {
                 eyebrow={`${sectionNumber(2)} · ${landing.whoWeWorkWith.eyebrow}`}
                 headline={landing.whoWeWorkWith.headline}
                 headlineClassName="text-navy"
-                eyebrowClassName="text-[1.125rem]"
+                eyebrowClassName="text-[1.125rem] font-medium text-teal"
               />
               <div className="mt-10 max-w-measure space-y-6">
                 {landing.whoWeWorkWith.paragraphs.map((paragraph) => (
@@ -153,7 +153,7 @@ export default function LandingPage() {
             eyebrow={`${sectionNumber(3)} · ${landing.howWeWork.eyebrow}`}
             headline={landing.howWeWork.headline}
             headlineClassName="text-navy"
-            eyebrowClassName="text-[1.125rem]"
+            eyebrowClassName="text-[1.125rem] font-medium text-teal"
           />
           <div className="mt-12 lg:mt-14">
             <PrinciplesPanels
@@ -195,7 +195,7 @@ export default function LandingPage() {
             eyebrow={`${sectionNumber(5)} · ${landing.contact.eyebrow}`}
             headline={landing.contact.headline}
             headlineClassName="text-navy"
-            eyebrowClassName="text-[1.125rem]"
+            eyebrowClassName="text-[1.125rem] font-medium text-teal"
             standfirst={landing.contact.body}
           />
           <div className="mt-10 flex flex-wrap items-center gap-6">

@@ -102,7 +102,7 @@ export const landing = {
         },
         {
           label: 'AI Tools',
-          body: 'Practical AI that saves our clients time and resources, from content workflows to smarter reporting.',
+          body: 'Practical AI that saves our clients time and resources, from workflows to smarter reporting.',
         },
         ],
       },

@@ -207,7 +207,7 @@ function ServiceStackDesktop({
     <div ref={trackRef} style={pinned ? { height: layout!.trackHeight } : undefined}>
       <div className={cn(pinned && 'sticky')} style={pinned ? { top: layout!.pinTop } : undefined}>
         <div ref={headRef}>
-          <SectionHeader eyebrow={eyebrow} headline={headline} standfirst={intro} headlineClassName="text-navy" eyebrowClassName="text-[1.125rem]" />
+          <SectionHeader eyebrow={eyebrow} headline={headline} standfirst={intro} headlineClassName="text-navy" eyebrowClassName="text-[1.125rem] font-medium text-teal" />
         </div>
 
         <div
@@ -327,7 +327,7 @@ export function ServiceStack(props: {
         <ServiceStackDesktop {...props} />
       </div>
       <div className="md:hidden">
-        <SectionHeader eyebrow={props.eyebrow} headline={props.headline} standfirst={props.intro} headlineClassName="text-navy" eyebrowClassName="text-[1.125rem]" />
+        <SectionHeader eyebrow={props.eyebrow} headline={props.headline} standfirst={props.intro} headlineClassName="text-navy" eyebrowClassName="text-[1.125rem] font-medium text-teal" />
         <MobileServices groups={props.groups} />
       </div>
     </>
