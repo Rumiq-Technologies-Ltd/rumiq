@@ -18,7 +18,7 @@ export function LandingFooter() {
         <div className="flex flex-wrap items-center justify-between gap-x-10 gap-y-5">
           <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
             <Logo variant="reverse" width={120} />
-            <p className="text-caption text-paper/80">Digital marketing, tech &amp; AI for US healthcare.</p>
+            <p className="text-body text-paper">Digital marketing, tech &amp; AI for US healthcare.</p>
           </div>
 
           <div className="flex items-center gap-6">
