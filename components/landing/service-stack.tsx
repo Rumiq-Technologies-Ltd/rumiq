@@ -237,7 +237,6 @@ function ServiceStackDesktop({
                     {...(pinned ? { type: 'button' as const, onClick: () => goTo(i), 'aria-expanded': isOpen } : {})}
                     className={cn(
                       'relative flex h-12 w-full items-center gap-3 px-4 text-left transition-colors duration-500 sm:h-14 sm:px-7',
-                      tone.strip,
                       tone.dark ? 'text-paper' : 'text-navy',
                       pinned && !isOpen && !tone.dark && 'hover:brightness-95',
                     )}

@@ -46,7 +46,7 @@ export function LandingFooter() {
         </div>
 
         <div className="mt-6 border-t border-paper/15 pt-4">
-          <p className="text-mono-eyebrow text-paper/60">{landing.footer.copyright}</p>
+          <p className="font-mono text-mono-eyebrow text-paper/60">{landing.footer.copyright}</p>
         </div>
       </div>
     </footer>

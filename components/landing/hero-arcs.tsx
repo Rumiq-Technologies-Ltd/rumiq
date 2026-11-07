@@ -42,10 +42,10 @@ const rings: Ring[] = [
   {
     d: 'M600 130 C 410 130, 260 230, 260 340 S 400 540, 600 540',
     back: 'C 660 540, 660 130, 600 130 Z',
-    stroke: 'stroke-boundary/45',
+    stroke: 'stroke-boundary/25',
     width: 1.5,
     delay: '120ms',
-    dot: { r: 6.5, fill: 'fill-boundary/65', seconds: 24, rest: [260, 340] },
+    dot: { r: 6.5, fill: 'fill-boundary/40', seconds: 24, rest: [260, 340] },
   },
   {
     d: 'M600 200 C 460 200, 340 270, 340 350 S 440 480, 600 480',
