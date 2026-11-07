@@ -17,11 +17,11 @@ export const landing = {
   },
 
   nav: [
-    { label: 'What we do', href: '#what-we-do' },
-    { label: 'Who we work with', href: '#who-we-work-with' },
-    { label: 'How we work', href: '#how-we-work' },
-    { label: 'Careers', href: '#careers' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'What we do', href: '/#what-we-do' },
+    { label: 'Who we work with', href: '/#who-we-work-with' },
+    { label: 'How we work', href: '/#how-we-work' },
+    { label: 'Careers', href: '/#careers' },
+    { label: 'Contact', href: '/#contact' },
   ],
 
   hero: {

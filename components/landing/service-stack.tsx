@@ -52,7 +52,7 @@ type Layout = { trackHeight: number; pinTop: number; step: number; cardsHeight: 
 
 const HEADER_HEIGHT = 72;
 /* Scroll per step, as a share of the viewport height. */
-const STEP_SHARE = 0.38;
+const STEP_SHARE = 0.5472;
 /* The closing step ("all shut") is shorter than the others. */
 const CLOSE_STEPS = 0.6;
 
@@ -293,11 +293,12 @@ function ServiceStackDesktop({
                       role="list"
                       className={cn(
                         'grid divide-y border-t md:grid-cols-3 md:divide-x md:divide-y-0',
-                        'divide-rule border-rule',
+                        // Dividers between the three services: a clear navy line, not the pale hairline.
+                        'divide-navy/25 border-rule',
                       )}
                     >
                       {group.services.map((service) => (
-                        <div role="listitem" key={service.label} className="px-4 py-4 sm:px-7 sm:py-5 md:py-6">
+                        <div role="listitem" key={service.label} className="px-4 py-3 sm:px-7 sm:py-3 md:py-3">
                           <h4 className={cn('text-body-l font-semibold sm:text-h3', 'text-navy')}>{service.label}</h4>
                           <p className={cn('mt-1.5 text-caption sm:mt-2', 'text-muted')}>{service.body}</p>
                         </div>

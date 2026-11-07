@@ -47,13 +47,14 @@ const ROTATE_MS = 5000;
 const STRIP_PX = 72;
 const GAP_PX = 8;
 
-type Tone = { strip: string; panel: string; edge: string; dark?: boolean };
+/* `visual` colors the outer border of the panel's illustration (its <figure>) in the card's own hue. */
+type Tone = { strip: string; panel: string; edge: string; visual: string; dark?: boolean };
 
 const tones: Tone[] = [
-  { strip: 'bg-paper-dark', panel: 'bg-paper-dark', edge: 'bg-paper-dark', dark: true },
-  { strip: 'bg-boundary/[0.14]', panel: 'bg-boundary/[0.08]', edge: 'bg-rule' },
-  { strip: 'bg-navy/[0.09]', panel: 'bg-navy/[0.05]', edge: 'bg-rule' },
-  { strip: 'bg-teal/[0.14]', panel: 'bg-teal/[0.07]', edge: 'bg-rule' },
+  { strip: 'bg-paper-dark', panel: 'bg-paper-dark', edge: 'bg-paper-dark', visual: '[&>figure]:border-2 [&>figure]:border-[#6f9be0]', dark: true },
+  { strip: 'bg-boundary/[0.14]', panel: 'bg-boundary/[0.08]', edge: 'bg-rule', visual: '[&>figure]:border-boundary/50' },
+  { strip: 'bg-navy/[0.09]', panel: 'bg-navy/[0.05]', edge: 'bg-rule', visual: '[&>figure]:border-navy/30' },
+  { strip: 'bg-teal/[0.14]', panel: 'bg-teal/[0.07]', edge: 'bg-rule', visual: '[&>figure]:border-teal/50' },
 ];
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -253,7 +254,7 @@ export function PrinciplesPanels({ items, visuals }: { items: readonly Principle
                       <h3 className={cn('text-h2 font-semibold xl:mt-4', tone.dark ? 'text-paper' : 'text-navy')}>{item.label}</h3>
                       <p className={cn('mt-4 text-body xl:mt-5 xl:text-body-l', tone.dark ? 'text-paper/80' : 'text-muted')}>{item.body}</p>
                     </div>
-                    <div>{visuals[i]}</div>
+                    <div className={cn('[&>figure]:border-[1.5px]', tone.visual)}>{visuals[i]}</div>
                   </div>
                 </div>
 

@@ -46,21 +46,29 @@ export function landingJsonLd() {
       isPartOf: { '@id': `${BASE_URL}/#website` },
       inLanguage: 'en-US',
     },
-    ...landing.careers.roles.map((role) => ({
-      '@context': 'https://schema.org',
-      '@type': 'JobPosting',
-      '@id': `${pageUrl}#${role.id}`,
-      title: role.title,
-      description: [role.summary, ...role.youllWorkOn.map((item) => `- ${item}`)].join('\n'),
-      datePosted: JOB_POSTED,
-      validThrough: JOB_VALID_THROUGH,
-      employmentType: 'FULL_TIME',
-      url: `${pageUrl}#careers`,
-      hiringOrganization: { '@type': 'Organization', name: site.name, sameAs: pageUrl },
-      jobLocation: {
-        '@type': 'Place',
-        address: { '@type': 'PostalAddress', addressLocality: 'Islamabad', addressCountry: 'PK' },
-      },
-    })),
+    ...landing.careers.roles.map((role) => roleJsonLd(role)),
   ];
+}
+
+type JobRole = (typeof landing.careers.roles)[number];
+
+/** JobPosting for one role; its url is the role page. */
+export function roleJsonLd(role: JobRole) {
+  const roleUrl = `${BASE_URL}/careers/${role.id}`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    '@id': `${roleUrl}#job`,
+    title: role.title,
+    description: [role.summary, ...role.youllWorkOn.map((item) => `- ${item}`)].join('\n'),
+    datePosted: JOB_POSTED,
+    validThrough: JOB_VALID_THROUGH,
+    employmentType: 'FULL_TIME',
+    url: roleUrl,
+    hiringOrganization: { '@type': 'Organization', name: site.name, sameAs: `${BASE_URL}/` },
+    jobLocation: {
+      '@type': 'Place',
+      address: { '@type': 'PostalAddress', addressLocality: 'Islamabad', addressCountry: 'PK' },
+    },
+  };
 }

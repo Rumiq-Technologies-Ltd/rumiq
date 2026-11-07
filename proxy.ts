@@ -12,7 +12,7 @@ import { DEV_PREVIEW, PUBLIC_DEPLOY } from '@/lib/site-mode';
  * routes — answers 404 before any route code runs.
  */
 const LANDING_ONLY_PATHS =
-  /^\/(?:|privacy|terms|brand\/.*|robots\.txt|sitemap\.xml|opengraph-image.*|icon.*|apple-icon.*|favicon\.ico)$/;
+  /^\/(?:|privacy|terms|careers\/[a-z0-9-]+|brand\/.*|robots\.txt|sitemap\.xml|opengraph-image.*|icon.*|apple-icon.*|favicon\.ico)$/;
 
 export default function proxy(request: Request) {
   if (!DEV_PREVIEW && !LANDING_ONLY_PATHS.test(new URL(request.url).pathname)) {

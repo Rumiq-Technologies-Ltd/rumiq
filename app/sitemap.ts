@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { footerColumns, solutionsMenu } from '@/content/navigation';
+import { landing } from '@/content/landing';
 import { insights } from '@/content/insights';
 import { BASE_URL } from '@/lib/seo';
 import { DEV_PREVIEW } from '@/lib/site-mode';
@@ -41,6 +42,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (!DEV_PREVIEW) {
     return [
       { url: BASE_URL, lastModified: now, changeFrequency: 'monthly', priority: 1 },
+      ...landing.careers.roles.map((role) => ({
+        url: `${BASE_URL}/careers/${role.id}`,
+        lastModified: now,
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+      })),
       { url: `${BASE_URL}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
       { url: `${BASE_URL}/terms`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
     ];
