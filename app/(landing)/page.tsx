@@ -169,7 +169,7 @@ export default function LandingPage() {
         id="careers"
         className="scroll-mt-20 border-b border-rule bg-paper-dark"
       >
-        <div className="mx-auto max-w-content px-6 py-section-mobile lg:py-section lg:pl-gutter">
+        <div className="mx-auto max-w-content px-6 py-section-mobile lg:py-20 lg:pl-gutter">
           <CareersRoles
             header={
               <SectionHeader

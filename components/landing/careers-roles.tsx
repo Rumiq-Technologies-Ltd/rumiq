@@ -2,19 +2,23 @@
 
 import * as React from 'react';
 import { ChevronDown } from 'lucide-react';
-import { Button, Eyebrow } from '@/components/rumiq';
+import { Button } from '@/components/rumiq';
 import { cn } from '@/lib/utils';
 
 /*
- * TEMPORARY LANDING PAGE — the open roles, one at a time, kept short.
+ * TEMPORARY LANDING PAGE — the open roles, as slim rows that open one at a time.
  *
- * The facts every role shares (type, location, contract, hours, accommodation)
- * sit once, as a strip above the tabs, instead of inside each role. The chosen
- * role's panel has the title and summary with how to apply beside them (below
- * them on smaller screens), then the two lists side by side across the full
- * panel, so most points fit on one line. The tabs sit beside the section
- * heading from lg up. Arrow keys, Home and End move
- * between the tabs. Below the medium breakpoint the lists fold closed.
+ * Built to take little height. Each role is a single row: title, one-line
+ * summary and an Apply button, always in view. Opening a row (one at a time)
+ * reveals the two lists and how to apply, side by side, so the section stays
+ * about three rows tall until a visitor asks for more. The facts every role
+ * shares (type, location, contract, hours, accommodation) sit once as a slim
+ * strip above the rows: five columns from lg up, a swipeable row below. Nothing
+ * is dropped: shut rows stay in the page and open with their button.
+ *
+ * Standard accordion semantics: each title is a button with aria-expanded, the
+ * panel is a labelled region, and a shut panel is inert so its links and text
+ * leave the tab order until it opens.
  */
 
 type Role = {
@@ -29,59 +33,11 @@ type Role = {
 
 type Fact = { label: string; value: string };
 
-/*
- * A list that folds away below the medium breakpoint and is closed by default.
- * From md up it is always open, so nothing is hidden where there is room.
- */
-function FoldableList({
-  id,
-  title,
-  items,
-}: {
-  id: string;
-  title: string;
-  items: readonly string[];
-}) {
-  const [open, setOpen] = React.useState(false);
-  const [wide, setWide] = React.useState(false);
-  const listId = `${id}-list`;
-
-  // Below the medium breakpoint the title is a toggle. At and above it the list is
-  // always shown, so the toggle is not rendered there at all: no control that
-  // does nothing, and no false "collapsed" state announced to assistive tech.
-  React.useEffect(() => {
-    const query = window.matchMedia('(min-width: 768px)');
-    const update = () => setWide(query.matches);
-    update();
-    query.addEventListener('change', update);
-    return () => query.removeEventListener('change', update);
-  }, []);
-
-  const heading = (
-    <span className="flex w-full items-center justify-between gap-4 py-3 font-medium text-paper md:py-0">
-      {title}
-      {!wide ? (
-        <ChevronDown aria-hidden="true" className={cn('size-5 shrink-0 transition-transform duration-200', open && 'rotate-180')} />
-      ) : null}
-    </span>
-  );
-
+function BulletList({ title, items }: { title: string; items: readonly string[] }) {
   return (
     <div>
-      {wide ? (
-        <p className="pb-0">{heading}</p>
-      ) : (
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls={listId}
-          onClick={() => setOpen((value) => !value)}
-          className="block w-full text-left md:hidden"
-        >
-          {heading}
-        </button>
-      )}
-      <ul id={listId} className={cn('space-y-2 pb-4 text-caption text-paper/80 md:mt-3 md:pb-0', open ? 'block' : 'hidden', 'md:block')}>
+      <p className="font-medium text-paper">{title}</p>
+      <ul className="mt-3 space-y-2 text-caption text-paper/80">
         {items.map((item) => (
           <li key={item} className="relative pl-4">
             <span aria-hidden="true" className="absolute left-0 top-[0.6em] size-1.5 rounded-full bg-teal" />
@@ -100,115 +56,105 @@ export function CareersRoles({
   applicationsNote,
   header,
 }: {
-  /** The section heading. From lg up the role tabs sit beside it. */
+  /** The section heading. */
   header: React.ReactNode;
   roles: readonly Role[];
   facts: readonly Fact[];
   email: string;
   applicationsNote: string;
 }) {
-  const [selected, setSelected] = React.useState(0);
-  const tabRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
-  const role = roles[selected]!;
-
-  const select = (index: number) => {
-    setSelected(index);
-    tabRefs.current[index]?.focus();
-  };
-
-  const onKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-    const last = roles.length - 1;
-    if (event.key === 'ArrowRight') select(selected === last ? 0 : selected + 1);
-    else if (event.key === 'ArrowLeft') select(selected === 0 ? last : selected - 1);
-    else if (event.key === 'Home') select(0);
-    else if (event.key === 'End') select(last);
-    else return;
-    event.preventDefault();
-  };
-
-  const applyHref = `mailto:${email}?subject=${encodeURIComponent(role.applySubject)}`;
+  // One role open at a time; -1 = all shut.
+  const [open, setOpen] = React.useState(-1);
 
   return (
     <>
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
-        <div className="lg:max-w-[46rem]">{header}</div>
-        <div role="tablist" aria-label="Open roles" className="flex shrink-0 flex-col gap-1.5 rounded-panel border border-paper/15 bg-paper/[0.04] p-1.5 sm:inline-flex sm:flex-row sm:self-start sm:gap-2 lg:self-auto">
-          {roles.map((item, index) => {
-            const active = index === selected;
-            return (
-              <button
-                key={item.id}
-                ref={(node) => {
-                  tabRefs.current[index] = node;
-                }}
-                id={`tab-${item.id}`}
-                type="button"
-                role="tab"
-                aria-selected={active}
-                aria-controls={`panel-${item.id}`}
-                tabIndex={active ? 0 : -1}
-                onClick={() => setSelected(index)}
-                onKeyDown={onKeyDown}
-                className={cn(
-                  'whitespace-nowrap rounded-button px-4 py-2.5 text-left text-body font-medium transition-colors duration-120 sm:text-center',
-                  active ? 'bg-paper text-navy' : 'text-paper/80 hover:bg-paper/10 hover:text-paper',
-                )}
-              >
-                {item.tabLabel}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <div className="lg:max-w-[52rem]">{header}</div>
 
       {/* What every role shares, said once. */}
-      <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-paper/15 py-5 lg:mt-10 lg:grid-cols-5 lg:gap-x-8">
-        {facts.map((fact, index) => (
-          <div key={fact.label} className={cn(index === facts.length - 1 && 'col-span-2 lg:col-span-1')}>
+      <dl className="mt-6 flex snap-x gap-x-6 overflow-x-auto border-y border-paper/15 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-8 lg:grid lg:grid-cols-5 lg:gap-x-8 lg:overflow-visible">
+        {facts.map((fact) => (
+          <div key={fact.label} className="w-44 shrink-0 snap-start sm:w-52 lg:w-auto">
             <dt className="font-mono text-mono-eyebrow uppercase text-paper/60">{fact.label}</dt>
             <dd className="mt-1 text-caption text-paper">{fact.value}</dd>
           </div>
         ))}
       </dl>
 
-      <article
-        key={role.id}
-        id={`panel-${role.id}`}
-        role="tabpanel"
-        aria-labelledby={`tab-${role.id}`}
-        className="mt-6 rounded-panel border border-paper/15 bg-paper/[0.04] p-5 sm:p-8"
-      >
-        {/* Role on the left; from lg up, how to apply on the right. */}
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-12">
-          <div>
-            <Eyebrow tone="inverted">Now hiring</Eyebrow>
-            <h3 className="mt-3 text-h3 font-semibold text-paper">{role.title}</h3>
-            <p className="mt-3 max-w-measure text-body text-paper/80">{role.summary}</p>
-          </div>
-          <div className="order-last lg:order-none">
-            <p className="text-caption text-paper">
-              Email your CV and portfolio to{' '}
-              <a href={`mailto:${email}`} className="break-all underline decoration-paper/40 underline-offset-4 hover:decoration-paper sm:break-normal">
-                {email}
-              </a>
-              , with “{role.applySubject}” in the subject line.
-            </p>
-            <p className="mt-2 text-caption text-paper/70">{applicationsNote}</p>
-            <Button asChild inverted size="lg" className="mt-4">
-              <a href={applyHref}>Apply by email</a>
-            </Button>
-          </div>
+      <div className="mt-5 grid gap-3">
+        {roles.map((role, index) => {
+          const isOpen = open === index;
+          const applyHref = `mailto:${email}?subject=${encodeURIComponent(role.applySubject)}`;
+          return (
+            <article
+              key={role.id}
+              className={cn(
+                'overflow-hidden rounded-panel border border-paper/15 transition-colors duration-300',
+                isOpen ? 'bg-paper/[0.08]' : 'bg-paper/[0.04]',
+              )}
+            >
+              <div className="flex items-center gap-6 p-4 sm:px-6 sm:py-4">
+                <h3 className="m-0 min-w-0 flex-1">
+                  <button
+                    type="button"
+                    id={`role-${role.id}`}
+                    aria-expanded={isOpen}
+                    aria-controls={`panel-${role.id}`}
+                    onClick={() => setOpen(isOpen ? -1 : index)}
+                    className="group grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-paper"
+                  >
+                    <span className="col-start-1 row-start-1 text-body-l font-semibold text-paper sm:text-h3">{role.title}</span>
+                    <span className="col-span-2 row-start-2 text-caption font-normal text-paper/75 sm:col-span-1">{role.summary}</span>
+                    <span
+                      aria-hidden="true"
+                      className="col-start-2 row-start-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-paper/30 text-paper transition-colors group-hover:bg-paper/10 sm:row-span-2"
+                    >
+                      <ChevronDown className={cn('size-4 transition-transform duration-300', isOpen && 'rotate-180')} />
+                    </span>
+                  </button>
+                </h3>
+                {/* On phones the button lives inside the opened role, to keep the shut rows slim. */}
+                <Button asChild inverted size="md" className="hidden shrink-0 sm:inline-flex">
+                  <a href={applyHref}>Apply by email</a>
+                </Button>
+              </div>
 
-          <div className="grid border-t border-paper/15 md:grid-cols-2 md:gap-x-10 md:pt-6 lg:col-span-2 lg:gap-x-14">
-            <div className="border-b border-paper/15 md:border-0">
-              <FoldableList id={`${role.id}-work`} title="You’ll work on:" items={role.youllWorkOn} />
-            </div>
-            <div className="border-b border-paper/15 md:border-0">
-              <FoldableList id={`${role.id}-bring`} title="You’ll bring:" items={role.youllBring} />
-            </div>
-          </div>
-        </div>
-      </article>
+              {/* Collapsed with grid rows so the height animates; inert while shut. */}
+              <div
+                id={`panel-${role.id}`}
+                role="region"
+                aria-labelledby={`role-${role.id}`}
+                inert={isOpen ? undefined : true}
+                className={cn(
+                  'grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+                  isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+                )}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  <div className="border-t border-paper/15 px-4 pb-5 pt-5 sm:px-6">
+                    <div className="grid gap-6 md:grid-cols-2 md:gap-x-10">
+                      <BulletList title="You’ll work on:" items={role.youllWorkOn} />
+                      <BulletList title="You’ll bring:" items={role.youllBring} />
+                    </div>
+                    <div className="mt-5 border-t border-paper/15 pt-4">
+                      <p className="text-caption text-paper">
+                        Email your CV and portfolio to{' '}
+                        <a href={`mailto:${email}`} className="break-all underline decoration-paper/40 underline-offset-4 hover:decoration-paper sm:break-normal">
+                          {email}
+                        </a>
+                        , with “{role.applySubject}” in the subject line.
+                      </p>
+                      <p className="mt-1 text-caption text-paper/70">{applicationsNote}</p>
+                      <Button asChild inverted size="md" className="mt-4 sm:hidden">
+                        <a href={applyHref}>Apply by email</a>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </>
   );
 }
