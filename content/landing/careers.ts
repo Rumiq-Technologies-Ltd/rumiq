@@ -88,7 +88,7 @@ export const careerShared = {
       {
         icon: 'globe',
         title: 'US healthcare clients.',
-        body: 'Pakistan business hours, with US Eastern hours when needed.',
+        body: 'Pakistan business hours, with US hours when needed.',
       },
       {
         icon: 'sparkles',

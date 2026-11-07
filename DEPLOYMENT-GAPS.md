@@ -145,8 +145,7 @@ verified in production and dev. These items remain before or just after launch:
 - **Open. Job posting wording to confirm.** The Digital Marketing posting says
   "HIPAA compliant". The owner's brief asks for "HIPAA-conscious" on the public
   site, so the page avoids that phrase. The same posting says "Florida (US Eastern)
-  hours", which is probably a slip for US Eastern hours. The page uses "US Eastern
-  hours".
+  hours", which is probably a slip for US hours. The page uses "US hours".
 - **Open. Location wording.** The new postings say "Shared living and working
   space, Islamabad" and mention free accommodation. The owner's earlier copy named
   a co-working space in Gulberg Greens. The page uses the new wording and no longer

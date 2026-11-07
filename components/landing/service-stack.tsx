@@ -289,18 +289,20 @@ function ServiceStackDesktop({
                   <div className="min-h-0 overflow-hidden">
                     {/* A div list, not <ul>: the site's scroll-reveal forces every ul item to
                         full opacity, which would show all three phone services at once. */}
-                    <div
-                      role="list"
-                      className={cn(
-                        'grid divide-y border-t md:grid-cols-3 md:divide-x md:divide-y-0',
-                        // Dividers between the three services: a clear navy line, not the pale hairline.
-                        'divide-navy/25 border-rule',
-                      )}
-                    >
-                      {group.services.map((service) => (
-                        <div role="listitem" key={service.label} className="px-4 py-3 sm:px-7 sm:py-3 md:py-3">
-                          <h4 className={cn('text-body-l font-semibold sm:text-h3', 'text-navy')}>{service.label}</h4>
-                          <p className={cn('mt-1.5 text-caption sm:mt-2', 'text-muted')}>{service.body}</p>
+                    <div role="list" className="grid border-t border-rule md:grid-cols-3">
+                      {group.services.map((service, index) => (
+                        <div
+                          role="listitem"
+                          key={service.label}
+                          className={cn(
+                            'relative px-4 py-3 sm:px-7 sm:py-3 md:py-3',
+                            // A short navy line between the services, set in from the top and bottom
+                            // instead of running the full height of the card.
+                            index > 0 && "before:absolute before:bottom-5 before:left-0 before:top-5 before:w-px before:bg-navy/25 before:content-['']",
+                          )}
+                        >
+                          <h4 className="text-body-l font-semibold text-navy sm:text-h3">{service.label}</h4>
+                          <p className="mt-1.5 text-caption text-muted sm:mt-2">{service.body}</p>
                         </div>
                       ))}
                     </div>

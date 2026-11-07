@@ -156,7 +156,7 @@ export const landing = {
       { label: 'Type', value: 'Full-time, in person' },
       { label: 'Location', value: 'Shared living and working space, Islamabad' },
       { label: 'Contract', value: '1 year from mid-November 2026, with regular performance reviews' },
-      { label: 'Hours', value: 'Pakistan business hours, with US Eastern hours when needed' },
+      { label: 'Hours', value: 'Pakistan business hours, with US hours when needed' },
       { label: 'Accommodation', value: 'Free, in the shared living and working space, for the full contract' },
     ],
     roles: [
