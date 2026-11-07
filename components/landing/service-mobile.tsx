@@ -24,7 +24,7 @@ type Group = { title: string; services: readonly Service[] };
 const icons: Record<string, LucideIcon> = {
   "Search & discovery": Search,
   "Social & video": Video,
-  "Content & brand": PenLine,
+  "Brand & Content": PenLine,
   "Access & growth": TrendingUp,
 };
 

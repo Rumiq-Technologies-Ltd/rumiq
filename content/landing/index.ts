@@ -65,25 +65,25 @@ export const landing = {
             body: "Instagram, Facebook and TikTok content that builds trust in local communities and beyond.",
           },
           {
-            label: "YouTube",
-            body: "Short and long-form video that explains healthcare options, answers common questions and puts a friendly face to the practice.",
+            label: "Image & Video",
+            body: "Image and video generation and editing, motion graphics and 3D, for clients’ ads, posts and websites.",
           },
           {
-            label: "LinkedIn",
-            body: "Regular, thoughtful content that helps healthcare professionals become trusted, recognized voices in their field.",
+            label: "YouTube",
+            body: "Short and long-form video that explains healthcare options, answers common questions and puts a friendly face to the practice.",
           },
         ],
       },
       {
-        title: "Content & brand",
+        title: "Brand & Content",
         services: [
           {
             label: "Brand Guidelines",
             body: "A clear, consistent look and voice, so every website, ad and post feels unmistakably like our client.",
           },
           {
-            label: "Copy & Content",
-            body: "Clear, warm, plain-English writing for websites, ads and posts.",
+            label: "LinkedIn",
+            body: "Regular, thoughtful content that helps healthcare professionals become trusted, recognized voices in their field.",
           },
           {
             label: "Email Marketing & Newsletters",

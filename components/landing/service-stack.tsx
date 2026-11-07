@@ -13,7 +13,7 @@ import { MobileServices } from '@/components/landing/service-mobile';
 const groupIcons: Record<string, LucideIcon> = {
   'Search & discovery': Search,
   'Social & video': Video,
-  'Content & brand': PenLine,
+  'Brand & Content': PenLine,
   'Access & growth': TrendingUp,
 };
 
@@ -273,7 +273,7 @@ function ServiceStackDesktop({
                   // Always the body tone: the label bar paints its own, and a shut card shows only the bar. Switching this
                   // with isOpen would flash the bar color behind the body while it collapses.
                   tone.panel,
-                  tone.dark ? 'border-paper-dark' : lit ? 'border-navy/30' : 'border-rule',
+                  tone.dark ? 'border-paper-dark' : 'border-rule',
                   lit && 'shadow-[0_18px_40px_-28px_hsl(var(--paper-dark-hsl)/0.6)]',
                 )}
               >
@@ -284,10 +284,10 @@ function ServiceStackDesktop({
                       'relative flex h-12 w-full items-center gap-3 px-4 text-left transition-colors duration-500 sm:h-14 sm:px-7',
                       tone.strip,
                       tone.dark ? 'text-paper' : 'text-navy',
-                      // Keyboard focus ring drawn inside the bar. The card clips anything outside its edge, so the
-                      // default outside ring left only a stray line under the bar. White on the navy bar, navy elsewhere.
+                      // Keyboard focus ring drawn inside the bar, softened so it does not read as a border on the
+                      // open card. The card clips anything outside its edge, so the ring stays inside the bar.
                       'focus-visible:ring-inset focus-visible:ring-offset-0',
-                      tone.dark ? 'focus-visible:ring-paper' : 'focus-visible:ring-navy',
+                      tone.dark ? 'focus-visible:ring-paper/60' : 'focus-visible:ring-navy/40',
                       pinned && !isOpen && !tone.dark && 'hover:brightness-95',
                     )}
                   >
