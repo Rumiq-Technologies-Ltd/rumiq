@@ -145,12 +145,12 @@ export const roleDetails: Record<string, RoleDetail> = {
         {
           icon: 'zap',
           title: 'Early on AEO.',
-          body: 'Helping clients get recommended by AI search and assistants is new work, and you will lead it.',
+          body: 'Helping clients get recommended by AI search and assistants is a new and evolving field, and you will lead it.',
         },
         {
           icon: 'trending-up',
-          title: 'Room to grow.',
-          body: 'The way you run marketing now becomes the way Rumiq runs marketing.',
+          title: 'Systems building.',
+          body: 'The way you run marketing now may become the way Rumiq runs marketing.',
         },
       ],
     },
@@ -213,8 +213,8 @@ export const roleDetails: Record<string, RoleDetail> = {
         },
         {
           icon: 'trending-up',
-          title: 'Room to grow.',
-          body: 'Early designers set the look of the company. What you make now becomes how Rumiq looks.',
+          title: 'Systems building.',
+          body: 'Early designers set the look of the company. What you make now may become how Rumiq looks.',
         },
       ],
     },
