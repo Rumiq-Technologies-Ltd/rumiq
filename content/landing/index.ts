@@ -192,15 +192,15 @@ export const landing = {
         summary:
           'Create the videos, graphics and designs that bring our clients’ brands to life across social media, ads, Google Business Profiles and websites.',
         youllWorkOn: [
-          'Edit Instagram Reels, TikToks and short video ads, using AI tools for editing, captions and resizing',
+          'Edit Instagram Reels, TikToks and video ads, using AI tools for editing, captions and resizing',
           'Design posts, carousels, stories and ad creatives for Facebook, Instagram and TikTok',
           'Design website pages and app screens, then hand clean designs to our engineers',
-          'Create simple animations and short explainer videos, with AI video and avatar tools',
+          'Create simple animations and explainer videos, with AI video and avatar tools',
           'Build a brand kit and template library',
         ],
         youllBring: [
           '2–4 years as a graphic, video or multimedia designer, ideally at an agency or in-house',
-          'A portfolio with a strong visual eye across short-form video, social graphics and some web or app design',
+          'A portfolio with a strong visual eye across video, social graphics and some web or app design',
           'Strong video editing skills (Premiere Pro, CapCut or DaVinci Resolve), and design skills in Figma, Photoshop, Illustrator or Canva',
           'A fast, skilled AI user, able to show how AI has made their workflow more efficient',
           'Good written and spoken English, for American audiences',

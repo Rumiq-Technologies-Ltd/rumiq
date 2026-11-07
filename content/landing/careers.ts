@@ -150,7 +150,7 @@ export const roleDetails: Record<string, RoleDetail> = {
         {
           icon: 'trending-up',
           title: 'Systems building.',
-          body: 'The way you run marketing now may become the way Rumiq runs marketing.',
+          body: 'Early marketers set the marketing approach of Rumiq and our clients. What you build now may become how future clients’ campaigns are run.',
         },
       ],
     },
@@ -189,7 +189,7 @@ export const roleDetails: Record<string, RoleDetail> = {
 
   'multimedia-designer': {
     pitch:
-      'You will create the videos, graphics and designs for our healthcare clients, from a short Reel to a full website page, using AI tools to move fast.',
+      'You will create the videos, graphics and designs for our healthcare clients, from a Reel to a full website page, using AI tools to move fast.',
     opportunity: {
       eyebrow: 'The opportunity',
       headline: 'Tell visual stories that people remember.',
@@ -199,7 +199,7 @@ export const roleDetails: Record<string, RoleDetail> = {
         {
           icon: 'layers',
           title: 'Range, not repetition.',
-          body: 'Short-form video, social graphics, ad creatives, website pages and app screens.',
+          body: 'Video, social graphics, ad creatives, website pages and app screens.',
         },
         {
           icon: 'wand',
@@ -214,13 +214,13 @@ export const roleDetails: Record<string, RoleDetail> = {
         {
           icon: 'trending-up',
           title: 'Systems building.',
-          body: 'Early designers set the look of the company. What you make now may become how Rumiq looks.',
+          body: 'Early designers set the visual aesthetic of Rumiq and our clients. What you make now may become how future clients’ assets look and feel.',
         },
       ],
     },
     work: {
       headline: 'What you’ll work on, for each client.',
-      intro: 'A mix of video, social and web design.',
+      intro: 'A mix of video, image and web design.',
     },
     people: {
       eyebrow: 'Who we want',
@@ -229,8 +229,8 @@ export const roleDetails: Record<string, RoleDetail> = {
       qualities: [
         {
           icon: 'eye',
-          title: 'A good visual eye.',
-          body: 'You know what good looks like, and your portfolio shows it.',
+          title: 'A sharp eye for design.',
+          body: 'You know what great looks like, and your portfolio shows it.',
         },
         {
           icon: 'wand',
