@@ -1,4 +1,4 @@
-import { Building2, CalendarCheck, FileText, MessageSquare, PhoneCall, Users, type LucideIcon } from 'lucide-react';
+import { Building2, Users, type LucideIcon } from 'lucide-react';
 import { Logo } from '@/components/rumiq';
 import { cn } from '@/lib/utils';
 
@@ -103,12 +103,4 @@ export const clientFlowNodes: Node[] = [
   { label: 'Healthcare business', icon: Building2 },
   { label: 'Rumiq', mark: true },
   { label: 'Patients and families', icon: Users },
-];
-
-/** The four stages for the "How we work" measurement flow. */
-export const measureFlowNodes: Node[] = [
-  { label: 'Inquiries', icon: MessageSquare },
-  { label: 'Calls', icon: PhoneCall },
-  { label: 'Bookings', icon: CalendarCheck },
-  { label: 'Business Intelligence', icon: FileText },
 ];

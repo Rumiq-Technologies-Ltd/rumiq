@@ -5,7 +5,7 @@ import { HeroArcs } from "@/components/landing/hero-arcs";
 import { ServiceStack } from "@/components/landing/service-stack";
 import { WhoWeServe } from "@/components/landing/who-we-serve";
 import { landing } from "@/content/landing";
-import { ClientFlow, measureFlowNodes } from "@/components/landing/client-flow";
+import { MeasureFlow } from "@/components/landing/measure-flow";
 import { PrivacyFlow } from "@/components/landing/privacy-flow";
 import { PrinciplesPanels } from "@/components/landing/principles-panels";
 import { Commitments } from "@/components/landing/commitments";
@@ -57,11 +57,9 @@ const principleVisuals = [
     key="privacy"
     label="Your data passes through Rumiq; patient information stays in the practice and only business information reaches ad platforms"
   />,
-  <ClientFlow
+  <MeasureFlow
     key="measure"
-    row
-    label="Inquiries, calls and bookings, reported plainly"
-    nodes={measureFlowNodes}
+    label="Inquiries, calls and bookings all feed into Rumiq, which turns them into business intelligence"
   />,
 ];
 

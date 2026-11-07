@@ -584,3 +584,102 @@
     animation: hero-arc-draw 1600ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 }
+
+/* TEMPORARY LANDING PAGE — "Measured honestly" (measure-flow.tsx). Every
+   part runs on CSS, on one 4s loop, so they all start together whenever the
+   visual is shown: the source dots in to Rumiq (0–28%), Rumiq pulses (~36%),
+   a dot drops to the card (40–50%) and the findings light up in turn. */
+@media (prefers-reduced-motion: no-preference) {
+  /* The three source dots, one keyframe set per path (generated from the
+     paths in measure-flow.tsx, eased with cubic-bezier(0.45, 0, 0.25, 1)).
+     The same fractions of each path at the same moments, so they leave
+     together and reach Rumiq together. Translations are SVG user units. */
+  @keyframes measure-dot-0 {
+    0.00% { transform: translate(50.00px, 0.00px); }
+    2.00% { transform: translate(50.03px, 0.85px); }
+    4.00% { transform: translate(50.56px, 3.72px); }
+    6.00% { transform: translate(53.75px, 8.90px); }
+    8.00% { transform: translate(64.93px, 15.67px); }
+    10.00% { transform: translate(88.38px, 21.85px); }
+    12.00% { transform: translate(114.28px, 26.68px); }
+    14.00% { transform: translate(131.99px, 31.21px); }
+    16.00% { transform: translate(141.76px, 35.58px); }
+    18.00% { transform: translate(146.62px, 39.49px); }
+    20.00% { transform: translate(148.81px, 42.71px); }
+    22.00% { transform: translate(149.67px, 45.14px); }
+    24.00% { transform: translate(149.94px, 46.79px); }
+    26.00% { transform: translate(150.00px, 47.71px); }
+    28.00% { transform: translate(150.00px, 48.00px); }
+    100% { transform: translate(150px, 48px); }
+  }
+  @keyframes measure-dot-1 {
+    0.00% { transform: translate(150.00px, 0.00px); }
+    2.00% { transform: translate(150.00px, 0.46px); }
+    4.00% { transform: translate(150.00px, 2.11px); }
+    6.00% { transform: translate(150.00px, 5.59px); }
+    8.00% { transform: translate(150.00px, 11.70px); }
+    10.00% { transform: translate(150.00px, 20.25px); }
+    12.00% { transform: translate(150.00px, 28.63px); }
+    14.00% { transform: translate(150.00px, 35.01px); }
+    16.00% { transform: translate(150.00px, 39.53px); }
+    18.00% { transform: translate(150.00px, 42.71px); }
+    20.00% { transform: translate(150.00px, 44.91px); }
+    22.00% { transform: translate(150.00px, 46.40px); }
+    24.00% { transform: translate(150.00px, 47.34px); }
+    26.00% { transform: translate(150.00px, 47.85px); }
+    28.00% { transform: translate(150.00px, 48.00px); }
+    100% { transform: translate(150px, 48px); }
+  }
+  @keyframes measure-dot-2 {
+    0.00% { transform: translate(250.00px, 0.00px); }
+    2.00% { transform: translate(249.97px, 0.85px); }
+    4.00% { transform: translate(249.44px, 3.72px); }
+    6.00% { transform: translate(246.25px, 8.90px); }
+    8.00% { transform: translate(235.07px, 15.67px); }
+    10.00% { transform: translate(211.62px, 21.85px); }
+    12.00% { transform: translate(185.72px, 26.68px); }
+    14.00% { transform: translate(168.01px, 31.21px); }
+    16.00% { transform: translate(158.24px, 35.58px); }
+    18.00% { transform: translate(153.38px, 39.49px); }
+    20.00% { transform: translate(151.19px, 42.71px); }
+    22.00% { transform: translate(150.33px, 45.14px); }
+    24.00% { transform: translate(150.06px, 46.79px); }
+    26.00% { transform: translate(150.00px, 47.71px); }
+    28.00% { transform: translate(150.00px, 48.00px); }
+    100% { transform: translate(150px, 48px); }
+  }
+  @keyframes measure-dot-fade {
+    0% { opacity: 0; }
+    5%, 26% { opacity: 1; }
+    30%, 100% { opacity: 0; }
+  }
+  .measure-dot { opacity: 0; animation: measure-dot-fade 4s linear infinite both; }
+  .measure-dot-0 { animation-name: measure-dot-0, measure-dot-fade; }
+  .measure-dot-1 { animation-name: measure-dot-1, measure-dot-fade; }
+  .measure-dot-2 { animation-name: measure-dot-2, measure-dot-fade; }
+
+  @keyframes measure-hub {
+    0%, 28%, 52%, 100% { box-shadow: 0 0 0 0 hsl(var(--paper-dark-hsl) / 0); }
+    36% { box-shadow: 0 0 0 8px hsl(var(--paper-dark-hsl) / 0.12); }
+  }
+  .measure-hub { animation: measure-hub 4s ease-out infinite; }
+  @keyframes measure-out {
+    0%, 38% { transform: translate3d(0, 0, 0); opacity: 0; }
+    40% { opacity: 1; }
+    50% { transform: translate3d(0, 13px, 0); opacity: 1; }
+    54%, 100% { transform: translate3d(0, 13px, 0); opacity: 0; }
+  }
+  .measure-out-dot { animation: measure-out 4s ease-in-out infinite both; }
+  @keyframes measure-finding {
+    0%, 50% { background-color: transparent; }
+    56%, 70% { background-color: hsl(var(--plane-public-hsl) / 0.14); }
+    82%, 100% { background-color: transparent; }
+  }
+  .measure-finding { animation: measure-finding 4s ease-in-out infinite both; }
+  @keyframes measure-finding-flag {
+    0%, 50% { background-color: transparent; }
+    56%, 70% { background-color: hsl(var(--boundary-hsl) / 0.16); }
+    82%, 100% { background-color: transparent; }
+  }
+  .measure-finding-flag { animation: measure-finding-flag 4s ease-in-out infinite both; }
+}

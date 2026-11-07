@@ -33,7 +33,9 @@ import { cn } from '@/lib/utils';
  * 1px border is the gap between two clips (an outer one filled with the
  * border colour, an inner one 1px smaller holding the panel). Content and
  * strip labels are always mounted and cross-fade with CSS transitions keyed
- * on data-open, so nothing waits on a JS timer. Timing lives in globals.css
+ * on data-open, so nothing waits on a JS timer. A clip-path does not shrink
+ * a panel's layout box, so the folded panels still reach past the row; the row
+ * clips them, or the page would scroll sideways. Timing lives in globals.css
  * (pp-*).
  *
  * Under prefers-reduced-motion it does not rotate unless the reader presses
@@ -162,7 +164,7 @@ export function PrinciplesPanels({ items, visuals }: { items: readonly Principle
     <div ref={rootRef}>
       <div
         ref={rowRef}
-        className={cn('pp-row relative flex flex-col gap-2 xl:h-[30rem] xl:flex-row', sized && 'pp-sized', animate && 'pp-animate')}
+        className={cn('pp-row relative flex flex-col gap-2 xl:h-[30rem] xl:flex-row', sized && 'pp-sized overflow-hidden', animate && 'pp-animate')}
       >
         {items.map((item, i) => {
           const open = i === index;

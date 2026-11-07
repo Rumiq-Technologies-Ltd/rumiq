@@ -30,29 +30,31 @@ export function Commitments({ label }: { label: string }) {
       </div>
 
       <div className="relative ml-[1.375rem] mt-2">
-        {/* The spine, and the dot that runs down it. */}
-        {/* Rows have a fixed height (h-14, sm:h-[3.75rem]), so the spine can stop exactly
-            at the centre of the last row: half a row up from the bottom. */}
-        <span aria-hidden="true" className="absolute bottom-7 left-0 top-0 w-px bg-navy/20 sm:bottom-[30px]">
+        {/* The spine, and the dot that runs down it. The rows grow with their text
+            but share one height (auto-rows-fr), so the spine can stop exactly at the
+            centre of the last row: half a row up from the bottom, where a row is
+            (height - pt-3 - two gap-3) / 3. */}
+        <span aria-hidden="true" className="absolute bottom-[calc((100%-2.25rem)/6)] left-0 top-0 w-px bg-navy/20">
           <span className="commit-dot motion-reduce:hidden absolute -left-[3.5px] size-2 rounded-full bg-teal" />
         </span>
 
-        <ol className="space-y-3 pt-3">
+        <ol className="grid auto-rows-fr gap-3 pt-3">
           {commitments.map((item, i) => {
             const Icon = item.icon;
             return (
-              <li key={item.label} className="relative flex items-center pl-6 sm:pl-8">
+              <li key={item.label} className="relative flex items-center pl-4 sm:pl-8">
                 {/* Branch from the spine. */}
-                <span aria-hidden="true" className="absolute left-0 top-1/2 h-px w-6 bg-navy/20 sm:w-8" />
+                <span aria-hidden="true" className="absolute left-0 top-1/2 h-px w-4 bg-navy/20 sm:w-8" />
                 <span
-                  className="commit-row flex h-14 flex-1 items-center gap-3 rounded-card border border-rule bg-paper-raised px-3 sm:h-[3.75rem] sm:gap-4 sm:px-4"
+                  className="commit-row flex min-h-14 flex-1 items-center gap-2.5 self-stretch rounded-card border border-rule bg-paper-raised px-3 py-2.5 sm:min-h-[3.75rem] sm:gap-4 sm:px-4"
                   style={{ animationDelay: `${(0.7 + i * 1.4).toFixed(1)}s` }}
                 >
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-navy/25 bg-paper">
+                  <span className="hidden size-8 shrink-0 items-center justify-center rounded-full border border-navy/25 bg-paper min-[400px]:flex sm:size-9">
                     <Icon aria-hidden="true" className="size-4 text-navy" strokeWidth={1.75} />
                   </span>
-                  <span className="flex-1 text-caption font-medium text-ink sm:text-body">{item.label}</span>
-                  <span className="font-mono text-mono-eyebrow text-muted">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="min-w-0 flex-1 text-caption font-medium leading-snug text-ink sm:text-body sm:leading-snug">{item.label}</span>
+                  {/* Below 400px the icon and number give way so the label keeps its room. */}
+                  <span className="hidden shrink-0 font-mono text-mono-eyebrow text-muted min-[400px]:inline">{String(i + 1).padStart(2, '0')}</span>
                 </span>
               </li>
             );

@@ -264,12 +264,21 @@ function ServiceStackDesktop({
                           aria-hidden="true"
                           className={cn('size-4 shrink-0 transition-transform duration-500', isOpen && 'rotate-180')}
                         />
+                        {/* A faint track under the open card's bar, so the progress reads as "this far of that". */}
+                        <span
+                          aria-hidden="true"
+                          className={cn(
+                            'absolute inset-x-0 bottom-0 h-1 transition-opacity duration-500',
+                            tone.dark ? 'bg-paper/20' : 'bg-navy/10',
+                            isOpen ? 'opacity-100' : 'opacity-0',
+                          )}
+                        />
                         <span
                           ref={(el) => {
                             barRefs.current[i] = el;
                           }}
                           aria-hidden="true"
-                          className={cn('absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0', tone.dark ? 'bg-teal' : 'bg-navy/60')}
+                          className={cn('absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0', tone.dark ? 'bg-teal' : 'bg-navy/80')}
                         />
                       </>
                     ) : null}
