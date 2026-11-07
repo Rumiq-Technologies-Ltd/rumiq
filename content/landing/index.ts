@@ -58,23 +58,6 @@ export const landing = {
         ],
       },
       {
-        title: "Social & video",
-        services: [
-          {
-            label: "Social Media",
-            body: "Instagram, Facebook and TikTok content that builds trust in local communities and beyond.",
-          },
-          {
-            label: "Image & Video",
-            body: "Image and video generation and editing, motion graphics and 3D, for clients’ ads, posts and websites.",
-          },
-          {
-            label: "YouTube",
-            body: "Short and long-form video that explains healthcare options, answers common questions and puts a friendly face to the practice.",
-          },
-        ],
-      },
-      {
         title: "Brand & Content",
         services: [
           {
@@ -92,23 +75,6 @@ export const landing = {
         ],
       },
       {
-        title: "Access & growth",
-        services: [
-          {
-            label: "Patient Access & Messaging",
-            body: "Making it easy for patients to call, book or message, and making sure every inquiry gets a fast, helpful reply.",
-          },
-          {
-            label: "Analytics & Growth Intelligence",
-            body: "Clear tracking and reporting that shows where new patients come from and where to invest next.",
-          },
-          {
-            label: "AI Tools",
-            body: "Practical AI that saves our clients time and resources, from workflows to smarter reporting.",
-          },
-        ],
-      },
-      {
         title: "Web & App build",
         services: [
           {
@@ -122,6 +88,40 @@ export const landing = {
           {
             label: "Copywriting",
             body: "Clear, human writing for websites, ads and emails that explains care in plain language and sounds like the practice.",
+          },
+        ],
+      },
+      {
+        title: "Social & video",
+        services: [
+          {
+            label: "Social Media",
+            body: "Instagram, Facebook and TikTok content that builds trust in local communities and beyond.",
+          },
+          {
+            label: "Image & Video",
+            body: "Image and video generation and editing, motion graphics and 3D, for clients’ ads, posts and websites.",
+          },
+          {
+            label: "YouTube",
+            body: "Short and long-form video that explains healthcare options, answers common questions and puts a friendly face to the practice.",
+          },
+        ],
+      },
+      {
+        title: "Access & growth",
+        services: [
+          {
+            label: "Patient Access & Messaging",
+            body: "Making it easy for patients to call, book or message, and making sure every inquiry gets a fast, helpful reply.",
+          },
+          {
+            label: "Analytics & Growth Intelligence",
+            body: "Clear tracking and reporting that shows where new patients come from and where to invest next.",
+          },
+          {
+            label: "AI Tools",
+            body: "Practical AI that saves our clients time and resources, from workflows to smarter reporting.",
           },
         ],
       },
