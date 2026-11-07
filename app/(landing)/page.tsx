@@ -182,7 +182,7 @@ export default function LandingPage() {
             }
             roles={landing.careers.roles}
             facts={landing.careers.facts}
-            email={landing.email}
+            email={landing.careersEmail}
             applicationsNote={landing.careers.applicationsNote}
           />
         </div>

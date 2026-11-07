@@ -56,7 +56,7 @@ const segments = journey.length - 1;
 
 export function WhoWeServe({ label }: { label: string }) {
   return (
-    <figure aria-label={label} className="overflow-hidden rounded-panel border border-rule bg-paper">
+    <figure aria-label={label} className="overflow-hidden rounded-panel border border-teal bg-paper">
       {/* 1 — the range of clients. */}
       <div className="p-5 sm:p-8">
         <ul className="flex flex-wrap gap-2">
@@ -77,7 +77,7 @@ export function WhoWeServe({ label }: { label: string }) {
         </ul>
 
         {/* The scale, in the copy's own words. */}
-        <div className="mt-6 flex items-center gap-3 font-mono text-mono-eyebrow uppercase text-muted">
+        <div className="mt-6 flex items-center gap-3 font-mono text-mono-eyebrow uppercase text-navy">
           <span className="shrink-0">Local practices</span>
           <span aria-hidden="true" className="relative h-px flex-1 bg-gradient-to-r from-navy/15 to-navy/60">
             <span className="absolute -right-0.5 -top-[3px] size-[7px] rotate-45 border-r border-t border-navy/60" />

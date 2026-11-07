@@ -227,6 +227,8 @@ export const landing = {
     ],
   },
 
-  /** The one email address on the page. Used for every mailto. */
-  email: 'mohammed.khan@rumiq.ai',
+  /** General contact address: the Contact section and the legal pages. */
+  email: 'info@rumiq.ai',
+  /** Applications for open roles. Both addresses are aliases that reach the same inbox. */
+  careersEmail: 'careers@rumiq.ai',
 } as const;

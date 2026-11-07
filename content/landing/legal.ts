@@ -46,7 +46,7 @@ export const landingLegal = {
       {
         heading: 'Your choices',
         paragraphs: [
-          'You can ask what information we hold about you, or ask us to correct or delete it, by emailing mohammed.khan@rumiq.ai.',
+          'You can ask what information we hold about you, or ask us to correct or delete it, by emailing info@rumiq.ai.',
         ],
       },
       {
@@ -96,7 +96,7 @@ export const landingLegal = {
       },
       {
         heading: 'Contact',
-        paragraphs: ['Questions about these terms can be sent to mohammed.khan@rumiq.ai.'],
+        paragraphs: ['Questions about these terms can be sent to info@rumiq.ai.'],
       },
     ],
   },
