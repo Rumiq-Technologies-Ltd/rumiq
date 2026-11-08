@@ -62,7 +62,7 @@ export const landing = {
         services: [
           {
             label: "Brand Guidelines",
-            body: "A clear, consistent look and voice, so every website, ad and post feels unmistakably like our client.",
+            body: "A clear, consistent look and voice, so every website, app, ad, post or video feels unmistakably like our client.",
           },
           {
             label: "LinkedIn",
@@ -70,7 +70,7 @@ export const landing = {
           },
           {
             label: "Email Marketing & Newsletters",
-            body: "Useful, well-timed emails that keep patients informed and bring them back.",
+            body: "Useful, well-timed emails and newsletters that keep patients informed and bring them back.",
           },
         ],
       },
@@ -79,7 +79,7 @@ export const landing = {
         services: [
           {
             label: "Copywriting",
-            body: "Clear, human writing for websites, ads and emails that explains care in plain language and sounds like the practice.",
+            body: "Clear, human writing for websites, apps, ads and emails that explains your products and services in plain language and sounds like you.",
           },
           {
             label: "Website Development",
@@ -96,7 +96,7 @@ export const landing = {
         services: [
           {
             label: "Image & Video",
-            body: "Image and video generation and editing, motion graphics and 3D, for clients’ ads, posts and websites.",
+            body: "Image and video generation and editing, motion graphics and 3D, for clients’ ads, posts, websites and apps.",
           },
           {
             label: "Social Media",
@@ -104,7 +104,7 @@ export const landing = {
           },
           {
             label: "YouTube",
-            body: "Short and long-form video that explains healthcare options, answers common questions and puts a friendly face to the practice.",
+            body: "Short and long-form video that explains healthcare products and services, answers common questions and puts a friendly face to your business.",
           },
         ],
       },
@@ -117,7 +117,7 @@ export const landing = {
           },
           {
             label: "Patient Access & Messaging",
-            body: "Making it easy for patients to call, book or message, and making sure every inquiry gets a fast, helpful reply.",
+            body: "Making it easy for patients to call, message or book, and making sure every inquiry gets a fast, helpful reply.",
           },
           {
             label: "Analytics & Growth Intelligence",
