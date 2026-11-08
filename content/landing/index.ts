@@ -78,6 +78,10 @@ export const landing = {
         title: "Web & App build",
         services: [
           {
+            label: "Copywriting",
+            body: "Clear, human writing for websites, ads and emails that explains care in plain language and sounds like the practice.",
+          },
+          {
             label: "Website Development",
             body: "Fast, accessible, mobile-first websites that make it easy for patients to find a practice, trust it and book.",
           },
@@ -85,22 +89,18 @@ export const landing = {
             label: "Mobile Apps",
             body: "User-friendly apps for iPhone and Android, from booking and portals to internal tools, built with privacy in mind.",
           },
-          {
-            label: "Copywriting",
-            body: "Clear, human writing for websites, ads and emails that explains care in plain language and sounds like the practice.",
-          },
         ],
       },
       {
         title: "Social & video",
         services: [
           {
-            label: "Social Media",
-            body: "Instagram, Facebook and TikTok content that builds trust in local communities and beyond.",
-          },
-          {
             label: "Image & Video",
             body: "Image and video generation and editing, motion graphics and 3D, for clients’ ads, posts and websites.",
+          },
+          {
+            label: "Social Media",
+            body: "Instagram, Facebook and TikTok content that builds trust in local communities and beyond.",
           },
           {
             label: "YouTube",
@@ -112,16 +112,16 @@ export const landing = {
         title: "Access & growth",
         services: [
           {
+            label: "AI Tools",
+            body: "Practical AI that saves our clients time and resources, from workflows to smarter reporting.",
+          },
+          {
             label: "Patient Access & Messaging",
             body: "Making it easy for patients to call, book or message, and making sure every inquiry gets a fast, helpful reply.",
           },
           {
             label: "Analytics & Growth Intelligence",
             body: "Clear tracking and reporting that shows where new patients come from and where to invest next.",
-          },
-          {
-            label: "AI Tools",
-            body: "Practical AI that saves our clients time and resources, from workflows to smarter reporting.",
           },
         ],
       },
