@@ -165,7 +165,8 @@ export const landing = {
     headline: "Join us early. We're hiring.",
     intro:
       "Rumiq is a new company with real clients and real work from day one. We’re building a small, sharp team in Islamabad, and the people who join now will shape how we grow.",
-    /* Both open roles, from the job posting documents. Salary is not published
+    /* The open role, from its job posting document. Closed roles live in
+       content/landing/careers-archive.ts. Salary is not published
        here; the owner's rule is that it goes in the job ad or to shortlisted
        candidates. Each role has its own closing date, start and application note. */
     facts: [
@@ -189,35 +190,6 @@ export const landing = {
       },
     ],
     roles: [
-      {
-        id: "digital-marketing-specialist",
-        tabLabel: "Digital Marketing Specialist",
-        title: "Digital Marketing Specialist",
-        summary:
-          "Own paid ads, organic social growth, SEO, AEO and local search for our clients during an intensive period of growth.",
-        youllWorkOn: [
-          "Plan, launch and optimize Google Ads campaigns",
-          "Run Meta Ads for local lead generation, and TikTok Ads for national clients",
-          "Grow client Facebook and Instagram accounts, plus TikTok for national clients",
-          "Run SEO, local SEO and Google Business Profiles",
-          "Lead AEO so clients are recommended by AI search and assistants",
-          "Build an AI-assisted performance dashboard",
-        ],
-        youllBring: [
-          "3–5 years in digital marketing, ideally including time at an agency",
-          "Proven, hands-on results with Google Ads and Meta Ads, backed by numbers",
-          "Hands-on SEO experience, plus a working understanding of AEO",
-          "A track record of growing Instagram and Facebook accounts organically",
-          "Fluent US English, written and spoken",
-          "A fast, skilled AI user, able to show how AI has made their workflow more efficient",
-          "Committed to patient privacy, and willing to learn HIPAA & other healthcare rules and build them into how you work",
-        ],
-        applySubject: "Digital Marketing Specialist – Islamabad",
-        start: "Mid-November 2026",
-        applicationsClose: "2026-11-12",
-        applicationsNote:
-          "Applications close 12 November 2026, close of business (Pakistan time). Only shortlisted candidates will be contacted.",
-      },
       {
         id: "ai-video-producer",
         tabLabel: "AI Video Producer & Motion Designer",
