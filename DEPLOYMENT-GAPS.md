@@ -174,3 +174,10 @@ verified in production and dev. These items remain before or just after launch:
   optional now but recommended.
 - Confirm a Vercel Preview deployment sends `noindex` (it should, through
   `VERCEL_ENV`).
+
+- **Open. AI Video Producer posting vs the site.** The posting names a salary
+  (PKR 120,000–140,000) and "Gulberg Greens" and says "start as soon as
+  possible". The page keeps salary off (owner's rule), uses the generic "shared
+  living and working space, Islamabad" wording, and shows the start per role.
+  The posting does not mention US hours; the shared Hours fact still says
+  "with US hours when needed".

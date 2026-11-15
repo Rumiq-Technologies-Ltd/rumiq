@@ -35,6 +35,7 @@ export const careerShared = {
     heroEyebrow: 'Careers · Islamabad',
     workEyebrow: 'The job',
     bring: 'You’ll bring:',
+    niceToHave: 'Nice to have:',
     alsoHiring: 'Also hiring',
     apply: 'Apply by email',
   },
@@ -78,7 +79,7 @@ export const careerShared = {
       {
         icon: 'calendar-check',
         title: 'A one-year contract.',
-        body: 'It starts in mid-November 2026, with regular performance reviews.',
+        body: 'It comes with regular performance reviews along the way.',
       },
       {
         icon: 'users',
@@ -105,12 +106,6 @@ export const careerShared = {
 
   apply: {
     eyebrow: 'How to apply',
-    headline: 'Send us your CV and portfolio.',
-    steps: [
-      { title: 'Email us.', body: 'Send your CV and portfolio, with the role in the subject line.' },
-      { title: 'We review.', body: 'Only shortlisted candidates will be contacted.' },
-      { title: 'You start.', body: 'The contract begins in mid-November 2026.' },
-    ],
   },
 } as const;
 
@@ -120,10 +115,36 @@ export type RoleDetail = {
   opportunity: { eyebrow: string; headline: string; intro: string; points: Point[] };
   work: { headline: string; intro: string };
   people: { eyebrow: string; headline: string; intro: string; qualities: Point[] };
+  /** Roles with a longer wish list show it under "You'll bring:". */
+  niceToHave?: string[];
+  /** How the role's work is made, step by step, then the standards it is held to. */
+  pipeline?: {
+    eyebrow: string;
+    headline: string;
+    intro: string;
+    steps: { title: string; body: string }[];
+    note: string;
+    standardsTitle: string;
+    standards: { title: string; body: string }[];
+  };
+  apply: {
+    headline: string;
+    /** What the email should contain. */
+    include?: string[];
+    steps: { title: string; body: string }[];
+  };
 };
 
 export const roleDetails: Record<string, RoleDetail> = {
   'digital-marketing-specialist': {
+    apply: {
+      headline: 'Send us your CV and portfolio.',
+      steps: [
+        { title: 'Email us.', body: 'Send your CV and portfolio, with the role in the subject line.' },
+        { title: 'We review.', body: 'Only shortlisted candidates will be contacted.' },
+        { title: 'You start.', body: 'The contract begins in mid-November 2026.' },
+      ],
+    },
     pitch:
       'You will run paid ads, organic social, SEO, AEO and local search for our healthcare clients, and see the results of your work quickly.',
     opportunity: {
@@ -187,66 +208,157 @@ export const roleDetails: Record<string, RoleDetail> = {
     },
   },
 
-  'multimedia-designer': {
+  'ai-video-producer': {
     pitch:
-      'You will create the videos, graphics and designs for our healthcare clients, from a Reel to a full website page, using AI tools to move fast.',
+      'You will take ideas from concept to finished cut, with traditional production craft and AI video tools, and own our video and motion content for social media, ads, LinkedIn, YouTube and presentations.',
     opportunity: {
       eyebrow: 'The opportunity',
-      headline: 'Tell visual stories that people remember.',
+      headline: 'Own video from idea to final cut.',
       intro:
-        'You will not make one kind of asset on repeat. You move between video, images, socials, ads & web design, for real clients.',
+        'You will not just edit someone else’s footage. You take the idea all the way to the finished cut, and you choose the right tool for each story.',
       points: [
         {
           icon: 'layers',
-          title: 'Range, not repetition.',
-          body: 'Video, social graphics, ad creatives, website pages and app screens.',
+          title: 'Idea to final cut.',
+          body: 'Concept, storyboard, AI generation, finishing and edit, all in your hands.',
         },
         {
           icon: 'wand',
-          title: 'AI as a creative tool.',
-          body: 'Edit, caption, resize and animate with AI video and avatar tools.',
+          title: 'The latest AI tools.',
+          body: 'Work hands-on every day with the newest AI image, video and avatar tools.',
         },
         {
-          icon: 'eye',
-          title: 'Your eye on the brand.',
-          body: 'You build the brand kit and template library for each client.',
+          icon: 'handshake',
+          title: 'Direct access.',
+          body: 'You work directly with our CEO and a small team, with real ownership of everything you make.',
         },
         {
           icon: 'trending-up',
           title: 'Systems building.',
-          body: 'Early designers set the visual aesthetic of Rumiq and our clients. What you make now may become how future clients’ assets look and feel.',
+          body: 'Early video producers set the production standard of Rumiq and our clients. What you build now may become how future clients’ videos are made.',
         },
       ],
     },
     work: {
       headline: 'What you’ll work on, for each client.',
-      intro: 'A mix of video, image and web design.',
+      intro: 'Video and motion. Our developers handle UI and web design.',
+    },
+    pipeline: {
+      eyebrow: 'How we make videos',
+      headline: 'The pipeline you will run.',
+      intro: 'A hybrid of production craft and AI tools, from first idea to final delivery.',
+      steps: [
+        {
+          title: 'Concept and storyboard.',
+          body: 'Develop the idea with the team, draft the script (AI tools help), and storyboard each shot, including which aspect ratios you need.',
+        },
+        {
+          title: 'Product reference images.',
+          body: 'Build clean, accurate reference images of the product or location in Photoshop, and basic 3D such as Cinema 4D or Blender where useful. These keep the product consistent when AI generates around it.',
+        },
+        {
+          title: 'AI still images.',
+          body: 'Generate on-brand stills with AI image tools such as Nano Banana (Google Gemini) or ChatGPT image generation, using the reference images as input.',
+        },
+        {
+          title: 'Image-to-video.',
+          body: 'Animate the stills in AI video tools such as Kling, Runway, Veo or Higgsfield.',
+        },
+        {
+          title: 'Repair and finishing.',
+          body: 'In After Effects, fix AI artifacts and add text, titles, logos and motion graphics.',
+        },
+        {
+          title: 'Edit and assemble.',
+          body: 'In Premiere Pro (or DaVinci Resolve), combine AI shots with live and stock footage, add voiceover (human or AI), music and sound design, then cut versions for each platform and for presentations.',
+        },
+        {
+          title: 'Quality control.',
+          body: 'Check every piece for accuracy and brand consistency before it goes out, while juggling several projects against deadlines.',
+        },
+      ],
+      note: 'Not everything we make is fully AI-generated. Many videos feature real people, filmed footage and human voiceovers, which you edit and enhance with AI tools. We also make presenter-style videos with AI avatars in HeyGen. The right tool depends on the story, and part of your job is choosing it.',
+      standardsTitle: 'Our production standards',
+      standards: [
+        {
+          title: 'Product bible first.',
+          body: 'Create 5–10 clean, consistently lit reference images of each product or location. Every AI generation starts from these.',
+        },
+        {
+          title: 'Stills first, then animate.',
+          body: 'Image-to-video gives far more control than text-to-video and wastes fewer credits.',
+        },
+        {
+          title: 'Short shots.',
+          body: 'AI quality drops in long clips, so keep shots to 5–10 seconds and stitch them together in the edit.',
+        },
+        {
+          title: 'Prompts in a fixed order.',
+          body: 'Subject, action, camera move, lighting, style, mood. Generate 3–4 variants of each shot and keep the best.',
+        },
+        {
+          title: 'No AI-rendered logos or on-screen text.',
+          body: 'AI garbles them. All text and logos are added in After Effects.',
+        },
+        {
+          title: 'Plan for every format.',
+          body: 'Deliver 9:16, 1:1 and 16:9 versions, and burn in captions, since most social video is watched on mute.',
+        },
+        {
+          title: 'One look, one voice.',
+          body: 'Use one color grade (LUT) and one voice across a series, so it feels like a single brand.',
+        },
+      ],
     },
     people: {
       eyebrow: 'Who we want',
       headline: 'The kind of person who fits.',
-      intro: 'A strong portfolio gets you shortlisted. These qualities decide whether you enjoy working with us.',
+      intro: 'A strong showreel gets you shortlisted. These qualities decide whether you enjoy working with us.',
       qualities: [
         {
           icon: 'eye',
-          title: 'A sharp eye for design.',
-          body: 'You know what great looks like, and your portfolio shows it.',
+          title: 'Detail-obsessed.',
+          body: 'You notice when a product looks slightly different from one shot to the next.',
+        },
+        {
+          icon: 'sparkles',
+          title: 'A sharp creative eye.',
+          body: 'You have a strong sense of visual aesthetics, composition and pacing.',
         },
         {
           icon: 'wand',
-          title: 'Quick with AI.',
-          body: 'You use AI in your daily work and can show how it made you more efficient.',
+          title: 'Curious about AI.',
+          body: 'You enjoy trying new AI tools, and you learn them quickly.',
         },
         {
-          icon: 'shield-check',
-          title: 'Careful with patient data.',
-          body: 'Healthcare is different, and you are willing to learn HIPAA and other healthcare standards properly.',
+          icon: 'target',
+          title: 'Takes ownership.',
+          body: 'You are hard-working and reliable, and you see every piece through to delivery.',
         },
+      ],
+    },
+    niceToHave: [
+      'Basic 3D (Cinema 4D or Blender) for product references',
+      'Product photography and lighting, or camera, gimbal and green-screen experience',
+      'Motion tracking and rotoscoping, for example in Mocha',
+      'Sound design and AI voiceover tools, for example ElevenLabs',
+      'Experience creating content for healthcare, wellness or other regulated industries, and an understanding of patient privacy',
+    ],
+    apply: {
+      headline: 'Send us your CV and showreel.',
+      include: [
+        'Your CV',
+        'A link to your showreel or video portfolio (YouTube, Vimeo, Behance, Google Drive or Instagram)',
+        'For one video you made with AI tools: a short note on the steps and tools you used',
+        'Your earliest start date',
+      ],
+      steps: [
+        { title: 'Email us.', body: 'Send everything listed, with the role in the subject line.' },
         {
-          icon: 'handshake',
-          title: 'Easy to hand work to.',
-          body: 'You hand over clean files and clear designs, so our engineers can build on them.',
+          title: 'We review.',
+          body: 'We read applications as they arrive. Applications without video work will not be considered.',
         },
+        { title: 'Practical task.', body: 'Shortlisted candidates will be asked to complete a short practical task.' },
       ],
     },
   },

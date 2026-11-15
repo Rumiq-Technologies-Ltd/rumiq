@@ -167,10 +167,7 @@ export const landing = {
       "Rumiq is a new company with real clients and real work from day one. We’re building a small, sharp team in Islamabad, and the people who join now will shape how we grow.",
     /* Both open roles, from the job posting documents. Salary is not published
        here; the owner's rule is that it goes in the job ad or to shortlisted
-       candidates. Applications close 12 November 2026. */
-    applicationsClose: "2026-11-12",
-    applicationsNote:
-      "Applications close 12 November 2026, close of business (Pakistan time). Only shortlisted candidates will be contacted.",
+       candidates. Each role has its own closing date, start and application note. */
     facts: [
       { label: "Type", value: "Full-time, in person" },
       {
@@ -179,8 +176,7 @@ export const landing = {
       },
       {
         label: "Contract",
-        value:
-          "1 year from mid-November 2026, with regular performance reviews",
+        value: "1 year, with regular performance reviews",
       },
       {
         label: "Hours",
@@ -217,29 +213,44 @@ export const landing = {
           "Committed to patient privacy, and willing to learn HIPAA & other healthcare rules and build them into how you work",
         ],
         applySubject: "Digital Marketing Specialist – Islamabad",
+        start: "Mid-November 2026",
+        applicationsClose: "2026-11-12",
+        applicationsNote:
+          "Applications close 12 November 2026, close of business (Pakistan time). Only shortlisted candidates will be contacted.",
       },
       {
-        id: "multimedia-designer",
-        tabLabel: "Multimedia Designer",
-        title: "Multimedia Designer",
+        id: "ai-video-producer",
+        tabLabel: "AI Video Producer & Motion Designer",
+        title: "AI Video Producer & Motion Designer",
         summary:
-          "Create the videos, graphics and designs that bring our clients’ brands to life across social media, ads, Google Business Profiles and websites.",
+          "Take ideas from concept to finished cut with AI video tools and traditional craft, for social media, ads, LinkedIn, YouTube and presentations.",
         youllWorkOn: [
-          "Edit Instagram Reels, TikToks and video ads, using AI tools for editing, captions and resizing",
-          "Design posts, carousels, stories and ad creatives for Facebook, Instagram and TikTok",
-          "Design website pages and app screens, then hand clean designs to our engineers",
-          "Create simple animations and explainer videos, with AI video and avatar tools",
-          "Build a brand kit and template library",
+          "Produce reels, ads and videos for Instagram, Facebook, TikTok, LinkedIn and YouTube, plus longer videos for YouTube and presentations",
+          "Create AI avatar and presenter videos in HeyGen, from script to finished edit",
+          "Edit live-action footage of real people, such as interviews, testimonials and talking-head videos, using AI tools to clean up, enhance and speed up the edit",
+          "Record, edit and mix human voiceovers, or produce AI voiceovers when they suit the piece better",
+          "Create motion graphics, kinetic typography, logo animations and explainer videos",
+          "Run our full AI video pipeline, and keep improving it as new tools appear",
+          "Add music and sound design, and color-grade every video for a consistent brand look",
+          "Create supporting graphics with AI tools when a campaign needs them",
+          "Keep an organized library of reference images, prompts, templates and brand assets",
+          "Manage several projects at once and deliver on time",
         ],
         youllBring: [
-          "2–4 years as a graphic, video or multimedia designer, ideally at an agency or in-house",
-          "A portfolio with a strong visual eye across video, social graphics and some web or app design",
-          "Strong video editing skills (Premiere Pro, CapCut or DaVinci Resolve), and design skills in Figma, Photoshop, Illustrator or Canva",
-          "A fast, skilled AI user, able to show how AI has made their workflow more efficient",
-          "Good written and spoken English, for American audiences",
-          "Committed to patient privacy, and willing to learn HIPAA & other healthcare rules and build them into how you work",
+          "2–3 years in video editing and motion graphics, with a showreel that proves it",
+          "Strong skills in Adobe Premiere Pro (or DaVinci Resolve) and After Effects",
+          "Hands-on experience with at least one AI image tool and one AI video tool, such as Nano Banana, ChatGPT images, Midjourney, Kling, Runway, Veo or Higgsfield",
+          "Experience with AI avatar tools such as HeyGen, or the ability to learn them quickly",
+          "Experience editing live-action footage and working with human voiceovers",
+          "A good grasp of Photoshop for preparing reference images and fixing details",
+          "Storytelling ability: you know how to structure a 15–60 second video that holds attention",
+          "Good written and spoken English",
         ],
-        applySubject: "Multimedia Designer – Islamabad",
+        applySubject: "AI Video Producer – [Your Name]",
+        start: "As soon as possible",
+        applicationsClose: "2026-11-20",
+        applicationsNote:
+          "Applications close 20 November 2026, close of business (Pakistan time). We review applications as they arrive, so apply early.",
       },
     ],
   },

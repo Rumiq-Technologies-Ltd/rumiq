@@ -9,8 +9,8 @@ import { landing } from '@/content/landing';
 
 /** Published when the roles were posted. Keep in step with the careers section. */
 const JOB_POSTED = '2026-11-05';
-/** The application deadline from the job postings: close of business, Pakistan time (UTC+5). */
-const JOB_VALID_THROUGH = `${landing.careers.applicationsClose}T23:59:59+05:00`;
+/** Each role's deadline from its job posting: close of business, Pakistan time (UTC+5). */
+const validThrough = (closes: string) => `${closes}T23:59:59+05:00`;
 
 export function landingJsonLd() {
   const organisationId = `${BASE_URL}/#organisation`;
@@ -62,7 +62,7 @@ export function roleJsonLd(role: JobRole) {
     title: role.title,
     description: [role.summary, ...role.youllWorkOn.map((item) => `- ${item}`)].join('\n'),
     datePosted: JOB_POSTED,
-    validThrough: JOB_VALID_THROUGH,
+    validThrough: validThrough(role.applicationsClose),
     employmentType: 'FULL_TIME',
     url: roleUrl,
     hiringOrganization: { '@type': 'Organization', name: site.name, sameAs: `${BASE_URL}/` },

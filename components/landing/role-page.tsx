@@ -11,6 +11,7 @@ import {
   Home,
   Layers,
   Mail,
+  Plus,
   Rocket,
   ShieldCheck,
   Sparkles,
@@ -61,6 +62,8 @@ type Role = {
   youllWorkOn: readonly string[];
   youllBring: readonly string[];
   applySubject: string;
+  start: string;
+  applicationsNote: string;
 };
 type Fact = { label: string; value: string };
 
@@ -91,7 +94,6 @@ export function RolePage({
   otherRoles,
   facts,
   email,
-  applicationsNote,
   closes,
 }: {
   role: Role;
@@ -99,11 +101,12 @@ export function RolePage({
   otherRoles: readonly Role[];
   facts: readonly Fact[];
   email: string;
-  applicationsNote: string;
   closes: string;
 }) {
+  const heroFacts = [...facts, { label: 'Start', value: role.start }];
   const applyHref = `mailto:${email}?subject=${encodeURIComponent(role.applySubject)}`;
   const { startup, perks, apply, labels } = careerShared;
+  const { pipeline } = detail;
 
   return (
     <main id="main" className="scroll-mt-20 pb-20 lg:pb-0">
@@ -142,7 +145,7 @@ export function RolePage({
 
             {/* The facts every role shares. */}
             <dl className="divide-y divide-paper/15 rounded-panel border border-paper/15 bg-paper/[0.06] px-5">
-              {facts.map((fact) => (
+              {heroFacts.map((fact) => (
                 <div key={fact.label} className="py-4">
                   <dt className="font-mono text-mono-eyebrow uppercase text-paper/60">{fact.label}</dt>
                   <dd className="mt-1 text-caption text-paper">{fact.value}</dd>
@@ -243,8 +246,57 @@ export function RolePage({
         </div>
       </section>
 
+      {/* How the work is made (roles that have a pipeline). */}
+      {pipeline && (
+        <section className="border-b border-rule bg-paper-alt">
+          <div className={SECTION}>
+            <SectionHeader
+              eyebrow={pipeline.eyebrow}
+              headline={pipeline.headline}
+              headlineClassName="text-navy"
+              eyebrowClassName={EYEBROW}
+              standfirst={pipeline.intro}
+            />
+            <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
+              {pipeline.steps.map((step, index) => (
+                <li key={step.title} className="rounded-panel border border-rule bg-paper p-5 sm:p-6">
+                  <span
+                    aria-hidden="true"
+                    className="inline-flex size-9 items-center justify-center rounded-full bg-navy font-mono text-mono-eyebrow text-paper"
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="mt-4 text-body-l font-semibold text-navy">{step.title}</h3>
+                  <p className="mt-2 text-caption text-muted">{step.body}</p>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-8 max-w-measure border-l-[3px] border-teal pl-5 text-body text-ink">{pipeline.note}</p>
+
+            <div className="mt-12 rounded-panel bg-paper-dark p-6 text-paper sm:p-8">
+              <h3 className="text-h3 font-semibold">{pipeline.standardsTitle}</h3>
+              <ul className="mt-6 grid gap-x-10 gap-y-5 md:grid-cols-2">
+                {pipeline.standards.map((item) => (
+                  <li key={item.title} className="flex items-start gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="mt-1 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-teal text-paper"
+                    >
+                      <Check className="size-3" strokeWidth={3} />
+                    </span>
+                    <span className="text-body text-paper/80">
+                      <span className="font-semibold text-paper">{item.title}</span> {item.body}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* The people */}
-      <section className="border-b border-rule bg-paper-alt">
+      <section className={cn('border-b border-rule', !pipeline && 'bg-paper-alt')}>
         <div className={SECTION}>
           <SectionHeader
             eyebrow={detail.people.eyebrow}
@@ -280,6 +332,25 @@ export function RolePage({
               ))}
             </ul>
           </div>
+
+          {detail.niceToHave && (
+            <div className="mt-4 rounded-panel border border-rule bg-paper p-6 sm:p-8">
+              <h3 className="text-h3 font-semibold text-navy">{labels.niceToHave}</h3>
+              <ul className="mt-5 grid gap-x-10 gap-y-4 md:grid-cols-2">
+                {detail.niceToHave.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-body text-ink">
+                    <span
+                      aria-hidden="true"
+                      className="mt-1 inline-flex size-5 shrink-0 items-center justify-center rounded-full border border-teal text-teal"
+                    >
+                      <Plus className="size-3" strokeWidth={3} />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </section>
 
@@ -304,28 +375,43 @@ export function RolePage({
         <div className={SECTION}>
           <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
             <div>
-              <SectionHeader eyebrow={apply.eyebrow} headline={apply.headline} headlineClassName="text-navy" eyebrowClassName={EYEBROW} />
+              <SectionHeader eyebrow={apply.eyebrow} headline={detail.apply.headline} headlineClassName="text-navy" eyebrowClassName={EYEBROW} />
               <p className="mt-5 max-w-measure text-body-l text-muted">
-                Email your CV and portfolio to{' '}
+                Email us at{' '}
                 <a
                   href={`mailto:${email}`}
                   className="break-all text-navy underline decoration-navy/40 underline-offset-4 hover:decoration-navy sm:break-normal"
                 >
                   {email}
                 </a>
-                , with “{role.applySubject}” in the subject line.
+                , with “{role.applySubject}” in the subject line{detail.apply.include ? ' and include:' : '.'}
               </p>
+              {detail.apply.include && (
+                <ul className="mt-5 max-w-measure space-y-3">
+                  {detail.apply.include.map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-body text-ink">
+                      <span
+                        aria-hidden="true"
+                        className="mt-1 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-teal text-paper"
+                      >
+                        <Check className="size-3" strokeWidth={3} />
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
               <Button asChild size="lg" className="mt-8 w-full sm:w-auto">
                 <a href={applyHref}>
                   <Mail aria-hidden="true" className="size-5" />
                   {labels.apply}
                 </a>
               </Button>
-              <p className="mt-4 text-caption text-muted">{applicationsNote}</p>
+              <p className="mt-4 text-caption text-muted">{role.applicationsNote}</p>
             </div>
 
             <ol className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-              {apply.steps.map((step, index) => (
+              {detail.apply.steps.map((step, index) => (
                 <li key={step.title} className="flex items-start gap-4 rounded-panel border border-rule bg-paper-raised p-5">
                   <span
                     aria-hidden="true"

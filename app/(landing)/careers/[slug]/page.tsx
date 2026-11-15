@@ -24,12 +24,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   });
 }
 
-const closesLabel = new Date(`${landing.careers.applicationsClose}T12:00:00Z`).toLocaleDateString('en-GB', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-  timeZone: 'UTC',
-});
+const closesLabel = (iso: string) =>
+  new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
 
 export default async function CareerRolePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -46,8 +47,7 @@ export default async function CareerRolePage({ params }: { params: Promise<{ slu
         otherRoles={landing.careers.roles.filter((item) => item.id !== slug)}
         facts={landing.careers.facts}
         email={landing.careersEmail}
-        applicationsNote={landing.careers.applicationsNote}
-        closes={closesLabel}
+        closes={closesLabel(role.applicationsClose)}
       />
     </>
   );
